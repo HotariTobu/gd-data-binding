@@ -3,5 +3,6 @@
 
 # Only include the addons folder when downloading from the Asset Library.
 /**        export-ignore
+/addons    !export-ignore
 /addons/gd_data_binding    !export-ignore
 /addons/gd_data_binding/** !export-ignore
