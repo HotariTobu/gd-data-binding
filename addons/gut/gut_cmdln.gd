@@ -11,24 +11,24 @@
 # ------------------------------------------------------------------------------
 extends SceneTree
 
-
 func _init():
 	var max_iter = 20
 	var iter = 0
 
 	# Not seen this wait more than 1.
-	while Engine.get_main_loop() == null and iter < max_iter:
+	while(Engine.get_main_loop() == null and iter < max_iter):
 		await create_timer(.01).timeout
 		iter += 1
 
-	if Engine.get_main_loop() == null:
-		push_error("Main loop did not start in time.")
+	if(Engine.get_main_loop() == null):
+		push_error('Main loop did not start in time.')
 		quit(0)
 		return
 
-	var cli = load("res://addons/gut/cli/gut_cli.gd").new()
+	var cli = load('res://addons/gut/cli/gut_cli.gd').new()
 	get_root().add_child(cli)
 	cli.main()
+
 
 # ##############################################################################
 #(G)odot (U)nit (T)est class

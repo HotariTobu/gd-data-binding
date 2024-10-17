@@ -7,14 +7,12 @@ class BaseGutPanelControl:
 	var _lbl_invalid = Label.new()
 
 	var value = null:
-		get:
-			return get_value()
-		set(val):
-			set_value(val)
+		get: return get_value()
+		set(val): set_value(val)
 
 	signal changed
 
-	func _init(title, val, hint = ""):
+	func _init(title, val, hint=""):
 		size_flags_horizontal = SIZE_EXPAND_FILL
 		mouse_filter = MOUSE_FILTER_PASS
 
@@ -22,19 +20,21 @@ class BaseGutPanelControl:
 		label.mouse_filter = label.MOUSE_FILTER_STOP
 		add_child(label)
 
-		_lbl_unsaved.text = "*"
+		_lbl_unsaved.text = '*'
 		_lbl_unsaved.visible = false
 		add_child(_lbl_unsaved)
 
-		_lbl_invalid.text = "!"
+		_lbl_invalid.text = '!'
 		_lbl_invalid.visible = false
 		add_child(_lbl_invalid)
 
 		label.text = title
 		label.tooltip_text = hint
 
-	func mark_unsaved(is_it = true):
+
+	func mark_unsaved(is_it=true):
 		_lbl_unsaved.visible = is_it
+
 
 	func mark_invalid(is_it):
 		_lbl_invalid.visible = is_it
@@ -57,7 +57,7 @@ class NumberControl:
 
 	var value_ctrl = SpinBox.new()
 
-	func _init(title, val, v_min, v_max, hint = ""):
+	func _init(title, val, v_min, v_max, hint=""):
 		super._init(title, val, hint)
 
 		value_ctrl.value = val
@@ -85,7 +85,7 @@ class StringControl:
 
 	var value_ctrl = LineEdit.new()
 
-	func _init(title, val, hint = ""):
+	func _init(title, val, hint=""):
 		super._init(title, val, hint)
 
 		value_ctrl.size_flags_horizontal = value_ctrl.SIZE_EXPAND_FILL
@@ -104,6 +104,7 @@ class StringControl:
 		value_ctrl.text = val
 
 
+
 # ------------------------------------------------------------------------------
 # ------------------------------------------------------------------------------
 class BooleanControl:
@@ -111,7 +112,7 @@ class BooleanControl:
 
 	var value_ctrl = CheckBox.new()
 
-	func _init(title, val, hint = ""):
+	func _init(title, val, hint=""):
 		super._init(title, val, hint)
 
 		value_ctrl.button_pressed = val
@@ -137,19 +138,17 @@ class SelectControl:
 
 	var value_ctrl = OptionButton.new()
 
-	var text = "":
-		get:
-			return value_ctrl.get_item_text(value_ctrl.selected)
-		set(val):
-			pass
+	var text = '' :
+		get: return value_ctrl.get_item_text(value_ctrl.selected)
+		set(val): pass
 
-	func _init(title, val, choices, hint = ""):
+	func _init(title, val, choices, hint=""):
 		super._init(title, val, hint)
 
 		var select_idx = 0
 		for i in range(choices.size()):
 			value_ctrl.add_item(choices[i])
-			if val == choices[i]:
+			if(val == choices[i]):
 				select_idx = i
 		value_ctrl.selected = select_idx
 		value_ctrl.size_flags_horizontal = value_ctrl.SIZE_EXPAND_FILL
@@ -173,7 +172,7 @@ class ColorControl:
 
 	var value_ctrl = ColorPickerButton.new()
 
-	func _init(title, val, hint = ""):
+	func _init(title, val, hint=""):
 		super._init(title, val, hint)
 		value_ctrl.size_flags_horizontal = value_ctrl.SIZE_EXPAND_FILL
 		value_ctrl.color = val
@@ -197,12 +196,12 @@ class DirectoryControl:
 
 	var _btn_dir := Button.new()
 
-	func _init(title, val, hint = ""):
+	func _init(title, val, hint=""):
 		super._init(title, val, hint)
 
 		label.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 
-		_btn_dir.text = "..."
+		_btn_dir.text = '...'
 		_btn_dir.pressed.connect(_on_dir_button_pressed)
 
 		value_ctrl.text = val
@@ -224,12 +223,13 @@ class DirectoryControl:
 		add_child(dialog)
 
 	func _update_display():
-		var is_empty = value_ctrl.text == ""
+		var is_empty = value_ctrl.text == ''
 		enabled_button.button_pressed = !is_empty
 		enabled_button.disabled = is_empty
 
+
 	func _ready():
-		if Engine.is_editor_hint():
+		if(Engine.is_editor_hint()):
 			dialog.size = Vector2(1000, 700)
 		else:
 			dialog.size = Vector2(500, 350)
@@ -260,23 +260,23 @@ class DirectoryControl:
 class FileDialogSuperPlus:
 	extends FileDialog
 
-	var show_diretory_types = true:
-		set(val):
+	var show_diretory_types = true :
+		set(val) :
 			show_diretory_types = val
 			_update_display()
 
-	var show_res = true:
-		set(val):
+	var show_res = true :
+		set(val) :
 			show_res = val
 			_update_display()
 
-	var show_user = true:
-		set(val):
+	var show_user = true :
+		set(val) :
 			show_user = val
 			_update_display()
 
-	var show_os = true:
-		set(val):
+	var show_os = true :
+		set(val) :
 			show_os = val
 			_update_display()
 
@@ -288,6 +288,7 @@ class FileDialogSuperPlus:
 	func _ready():
 		_init_controls()
 		_update_display()
+
 
 	func _init_controls():
 		_dir_type_hbox = HBoxContainer.new()
@@ -305,9 +306,9 @@ class FileDialogSuperPlus:
 		_dir_type_hbox.add_child(_btn_os)
 		_dir_type_hbox.add_child(spacer2)
 
-		_btn_res.text = "res://"
-		_btn_user.text = "user://"
-		_btn_os.text = "  OS  "
+		_btn_res.text = 'res://'
+		_btn_user.text = 'user://'
+		_btn_os.text = '  OS  '
 
 		get_vbox().add_child(_dir_type_hbox)
 		get_vbox().move_child(_dir_type_hbox, 0)
@@ -316,8 +317,9 @@ class FileDialogSuperPlus:
 		_btn_user.pressed.connect(func(): access = ACCESS_USERDATA)
 		_btn_os.pressed.connect(func(): access = ACCESS_FILESYSTEM)
 
+
 	func _update_display():
-		if is_inside_tree():
+		if(is_inside_tree()):
 			_dir_type_hbox.visible = show_diretory_types
 			_btn_res.visible = show_res
 			_btn_user.visible = show_user
@@ -363,8 +365,9 @@ class SaveLoadControl:
 		dlg_save.file_selected.connect(_on_save_selected)
 		add_child(dlg_save)
 
+
 	func _ready():
-		if Engine.is_editor_hint():
+		if(Engine.is_editor_hint()):
 			dlg_load.size = Vector2(1000, 700)
 			dlg_save.size = Vector2(1000, 700)
 		else:

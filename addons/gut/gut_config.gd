@@ -4,11 +4,11 @@
 # to a json file.  It is also responsible for applying these settings to GUT.
 #
 # ##############################################################################
-var valid_fonts = ["AnonymousPro", "CourierPro", "LobsterTwo", "Default"]
+var valid_fonts = ['AnonymousPro', 'CourierPro', 'LobsterTwo', 'Default']
 
 var default_options = {
 	background_color = Color(.15, .15, .15, 1).to_html(),
-	config_file = "res://.gutconfig.json",
+	config_file = 'res://.gutconfig.json',
 	# used by editor to handle enabled/disabled dirs.  All dirs configured go
 	# here and only the enabled dirs go into dirs
 	configured_dirs = [],
@@ -18,35 +18,37 @@ var default_options = {
 	# lowercase name with spaces:  0/SCRIPT_ONLY/script only
 	# The GUI gut config expects the value to be the enum value and not a string
 	# when saved.
-	double_strategy = "SCRIPT_ONLY",
+	double_strategy = 'SCRIPT_ONLY',
 	# named differently than gut option so we can use it as a flag in the cli
 	errors_do_not_cause_failure = false,
 	font_color = Color(.8, .8, .8, 1).to_html(),
-	font_name = "CourierPrime",
+	font_name = 'CourierPrime',
 	font_size = 16,
 	hide_orphans = false,
 	ignore_pause = false,
 	include_subdirs = false,
-	inner_class = "",
-	junit_xml_file = "",
+	inner_class = '',
+	junit_xml_file = '',
 	junit_xml_timestamp = false,
 	log_level = 1,
 	opacity = 100,
 	paint_after = .1,
-	post_run_script = "",
-	pre_run_script = "",
-	prefix = "test_",
-	selected = "",
+	post_run_script = '',
+	pre_run_script = '',
+	prefix = 'test_',
+	selected = '',
 	should_exit = false,
 	should_exit_on_success = false,
 	should_maximize = false,
 	compact_mode = false,
 	show_help = false,
-	suffix = ".gd",
+	suffix = '.gd',
 	tests = [],
-	unit_test_name = "",
+	unit_test_name = '',
+
 	gut_on_top = true,
 }
+
 
 var options = default_options.duplicate()
 
@@ -60,28 +62,28 @@ func _null_copy(h):
 
 func _load_options_from_config_file(file_path, into):
 	# SHORTCIRCUIT
-	if !FileAccess.file_exists(file_path):
-		if file_path != "res://.gutconfig.json":
+	if(!FileAccess.file_exists(file_path)):
+		if(file_path != 'res://.gutconfig.json'):
 			print('ERROR:  Config File "', file_path, '" does not exist.')
 			return -1
 		else:
 			return 1
 
 	var f = FileAccess.open(file_path, FileAccess.READ)
-	if f == null:
+	if(f == null):
 		var result = FileAccess.get_open_error()
-		push_error(str("Could not load data ", file_path, " ", result))
+		push_error(str("Could not load data ", file_path, ' ', result))
 		return result
 
 	var json = f.get_as_text()
-	f = null  # close file
+	f = null # close file
 
 	var test_json_conv = JSON.new()
 	test_json_conv.parse(json)
 	var results = test_json_conv.get_data()
 	# SHORTCIRCUIT
-	if results == null:
-		print("\n\n", "!! ERROR parsing file:  ", file_path)
+	if(results == null):
+		print("\n\n",'!! ERROR parsing file:  ', file_path)
 		return -1
 
 	# Get all the options out of the config file using the option name.  The
@@ -90,12 +92,11 @@ func _load_options_from_config_file(file_path, into):
 
 	return 1
 
-
 func _load_dict_into(source, dest):
 	for key in dest:
-		if source.has(key):
-			if source[key] != null:
-				if typeof(source[key]) == TYPE_DICTIONARY:
+		if(source.has(key)):
+			if(source[key] != null):
+				if(typeof(source[key]) == TYPE_DICTIONARY):
 					_load_dict_into(source[key], dest[key])
 				else:
 					dest[key] = source[key]
@@ -106,7 +107,7 @@ func _load_dict_into(source, dest):
 func _apply_options(opts, gut):
 	gut.include_subdirectories = opts.include_subdirs
 
-	if opts.inner_class != "":
+	if(opts.inner_class != ''):
 		gut.inner_class_name = opts.inner_class
 	gut.log_level = opts.log_level
 	gut.ignore_pause_before_teardown = opts.ignore_pause
@@ -121,8 +122,8 @@ func _apply_options(opts, gut):
 
 	# Sometimes it is the index, sometimes it's a string.  This sets it regardless
 	gut.double_strategy = GutUtils.get_enum_value(
-		opts.double_strategy, GutUtils.DOUBLE_STRATEGY, GutUtils.DOUBLE_STRATEGY.SCRIPT_ONLY
-	)
+		opts.double_strategy, GutUtils.DOUBLE_STRATEGY,
+		GutUtils.DOUBLE_STRATEGY.SCRIPT_ONLY)
 
 	gut.unit_test_name = opts.unit_test_name
 	gut.pre_run_script = opts.pre_run_script
@@ -136,20 +137,19 @@ func _apply_options(opts, gut):
 
 	return gut
 
-
 # --------------------------
 # Public
 # --------------------------
 func write_options(path):
-	var content = JSON.stringify(options, " ")
+	var content = JSON.stringify(options, ' ')
 
 	var f = FileAccess.open(path, FileAccess.WRITE)
 	var result = FileAccess.get_open_error()
-	if f != null:
+	if(f != null):
 		f.store_string(content)
-		f = null  # closes file
+		f = null # closes file
 	else:
-		print("ERROR:  could not open file ", path, " ", result)
+		print('ERROR:  could not open file ', path, ' ', result)
 	return result
 
 
@@ -174,6 +174,9 @@ func load_options_no_defaults(path):
 
 func apply_options(gut):
 	_apply_options(options, gut)
+
+
+
 
 # ##############################################################################
 # The MIT License (MIT)

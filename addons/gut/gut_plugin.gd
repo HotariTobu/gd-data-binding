@@ -3,7 +3,6 @@ extends EditorPlugin
 
 var _bottom_panel = null
 
-
 func _version_conversion():
 	var EditorGlobals = load("res://addons/gut/gui/editor_globals.gd")
 	EditorGlobals.create_temp_directory()
@@ -11,13 +10,12 @@ func _version_conversion():
 	var VersionConversion = load("res://addons/gut/version_conversion.gd")
 	VersionConversion.convert()
 
-
 func _enter_tree():
 	_version_conversion()
 
-	_bottom_panel = preload("res://addons/gut/gui/GutBottomPanel.tscn").instantiate()
+	_bottom_panel = preload('res://addons/gut/gui/GutBottomPanel.tscn').instantiate()
 
-	var button = add_control_to_bottom_panel(_bottom_panel, "GUT")
+	var button = add_control_to_bottom_panel(_bottom_panel, 'GUT')
 	button.shortcut_in_tooltip = true
 
 	# ---------
@@ -42,6 +40,7 @@ func _exit_tree():
 	# Always remember to remove_at it from the engine when deactivated
 	remove_control_from_bottom_panel(_bottom_panel)
 	_bottom_panel.free()
+
 
 # This seems like a good idea at first, but it deletes the settings for ALL
 # projects.  If by chance you want to do that you can uncomment this, reload the
