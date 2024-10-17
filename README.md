@@ -1,3 +1,5 @@
+![icon](./icon.svg)
+
 # GD Data Binding
 
 GD Data Binding is a library to use the MVVM pattern in GDScript.
