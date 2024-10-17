@@ -1,0 +1,91 @@
+[gd_scene load_steps=3 format=3 uid="uid://bxwn3qsksum3m"]
+
+[ext_resource type="Script" path="res://examples/edits.gd" id="1_k03nm"]
+[ext_resource type="LabelSettings" uid="uid://bcnt8xhjv02bx" path="res://examples/header_label_settings.tres" id="2_msf8a"]
+
+[node name="Edits" type="HBoxContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -406.0
+offset_top = -129.5
+offset_right = 406.0
+offset_bottom = 129.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_k03nm")
+
+[node name="Col1" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Col1"]
+layout_mode = 2
+text = "Line Edit"
+label_settings = ExtResource("2_msf8a")
+
+[node name="GridContainer" type="GridContainer" parent="Col1"]
+layout_mode = 2
+columns = 2
+
+[node name="Label" type="Label" parent="Col1/GridContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Current text:"
+
+[node name="LineLabel" type="Label" parent="Col1/GridContainer"]
+layout_mode = 2
+text_overrun_behavior = 4
+
+[node name="Label2" type="Label" parent="Col1/GridContainer"]
+layout_mode = 2
+text = "On Submitted"
+
+[node name="OnSubmittedLineEdit" type="LineEdit" parent="Col1/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label3" type="Label" parent="Col1/GridContainer"]
+layout_mode = 2
+text = "On Focus Exited
+"
+
+[node name="OnFocusExitedLineEdit" type="LineEdit" parent="Col1/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label4" type="Label" parent="Col1/GridContainer"]
+layout_mode = 2
+text = "On Changed"
+
+[node name="OnChangedLineEdit" type="LineEdit" parent="Col1/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VSeparator" type="VSeparator" parent="."]
+layout_mode = 2
+
+[node name="Col2" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Col2"]
+layout_mode = 2
+text = "Text Edit"
+label_settings = ExtResource("2_msf8a")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Col2"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="TextLabel" type="Label" parent="Col2/ScrollContainer"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="TextEdit" type="TextEdit" parent="Col2"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+wrap_mode = 1

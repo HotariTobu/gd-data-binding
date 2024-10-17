@@ -1,0 +1,33 @@
+name: CI Check
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  ci-check:
+    name: CI Check
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup GDScript Toolkit
+      uses: Scony/godot-gdscript-toolkit@master
+
+    - name: Format check
+      run: gdformat --check .
+
+    - name: Lint
+      run: gdlint .
+
+    - name: Setup Godot
+      uses: chickensoft-games/setup-godot@v1
+      with:
+        version: 4.3.0
+        use-dotnet: false
+        include-templates: false
+
+    - name: Test
+      run: godot --headless --debug --path "$PWD" -s addons/gut/gut_cmdln.gd -gexit

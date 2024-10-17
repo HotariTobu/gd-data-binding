@@ -1,0 +1,7 @@
+# Normalize line endings for all files that Git considers text files.
+* text=auto eol=lf
+
+# Only include the addons folder when downloading from the Asset Library.
+/**        export-ignore
+/addons/gd_data_binding    !export-ignore
+/addons/gd_data_binding/** !export-ignore

@@ -1,0 +1,4 @@
+excluded_directories: !!set
+  .git: null
+  gdscript_formatter: null
+  gut: null

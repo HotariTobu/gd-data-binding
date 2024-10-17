@@ -1,0 +1,106 @@
+[gd_scene load_steps=3 format=3 uid="uid://dikch0vkpn4d"]
+
+[ext_resource type="Script" path="res://examples/containers.gd" id="1_h5x2s"]
+[ext_resource type="LabelSettings" uid="uid://bcnt8xhjv02bx" path="res://examples/header_label_settings.tres" id="2_lcuu5"]
+
+[node name="Containers" type="HBoxContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -302.0
+offset_top = -215.5
+offset_right = 302.0
+offset_bottom = 215.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_h5x2s")
+
+[node name="Col1" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Col1"]
+layout_mode = 2
+text = "Split Container"
+label_settings = ExtResource("2_lcuu5")
+
+[node name="DisplayRow" type="HBoxContainer" parent="Col1"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Col1/DisplayRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Current Offset:"
+
+[node name="SplitOffsetLabel" type="Label" parent="Col1/DisplayRow"]
+layout_mode = 2
+
+[node name="HSplitContainer" type="HSplitContainer" parent="Col1"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="Col1/HSplitContainer"]
+layout_mode = 2
+color = Color(1, 0, 0, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="Col1/HSplitContainer"]
+layout_mode = 2
+color = Color(0, 1, 0, 1)
+
+[node name="VSplitContainer" type="VSplitContainer" parent="Col1"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="Col1/VSplitContainer"]
+layout_mode = 2
+color = Color(0, 0, 1, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="Col1/VSplitContainer"]
+layout_mode = 2
+color = Color(1, 1, 0, 1)
+
+[node name="VSeparator" type="VSeparator" parent="."]
+layout_mode = 2
+
+[node name="Col2" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_stretch_ratio = 2.0
+
+[node name="Label" type="Label" parent="Col2"]
+layout_mode = 2
+text = "Tab Continer"
+label_settings = ExtResource("2_lcuu5")
+
+[node name="DisplayRow" type="HBoxContainer" parent="Col2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Col2/DisplayRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Current Tab:"
+
+[node name="TabLabel" type="Label" parent="Col2/DisplayRow"]
+layout_mode = 2
+
+[node name="TabContainer" type="TabContainer" parent="Col2"]
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 2
+current_tab = 0
+
+[node name="RED" type="ColorRect" parent="Col2/TabContainer"]
+layout_mode = 2
+color = Color(1, 0, 0, 1)
+metadata/_tab_index = 0
+
+[node name="GREEN" type="ColorRect" parent="Col2/TabContainer"]
+visible = false
+layout_mode = 2
+color = Color(0, 1, 0, 1)
+metadata/_tab_index = 1
+
+[node name="BLUE" type="ColorRect" parent="Col2/TabContainer"]
+visible = false
+layout_mode = 2
+color = Color(0, 0, 1, 1)
+metadata/_tab_index = 2

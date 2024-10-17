@@ -1,0 +1,51 @@
+[gd_scene load_steps=3 format=3 uid="uid://bfilseyqk17g6"]
+
+[ext_resource type="Script" path="res://examples/notification.gd" id="1_jmpmd"]
+[ext_resource type="LabelSettings" uid="uid://bcnt8xhjv02bx" path="res://examples/header_label_settings.tres" id="1_vjl1f"]
+
+[node name="Notification" type="HBoxContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -123.5
+offset_top = -45.0
+offset_right = 123.5
+offset_bottom = 45.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jmpmd")
+
+[node name="Col1" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Col1"]
+layout_mode = 2
+text = "Notification"
+label_settings = ExtResource("1_vjl1f")
+
+[node name="DisplayRow" type="HBoxContainer" parent="Col1"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Col1/DisplayRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Current Items:"
+
+[node name="ItemsLabel" type="Label" parent="Col1/DisplayRow"]
+layout_mode = 2
+
+[node name="ActionRow" type="HBoxContainer" parent="Col1"]
+layout_mode = 2
+
+[node name="ItemEdit" type="LineEdit" parent="Col1/ActionRow"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="AddButton" type="Button" parent="Col1/ActionRow"]
+layout_mode = 2
+text = "ADD"
+
+[connection signal="text_submitted" from="Col1/ActionRow/ItemEdit" to="." method="_on_item_edit_text_submitted"]
+[connection signal="pressed" from="Col1/ActionRow/AddButton" to="." method="_on_add_button_pressed"]

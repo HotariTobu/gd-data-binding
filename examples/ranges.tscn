@@ -1,0 +1,53 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0solb5v3hf1u"]
+
+[ext_resource type="LabelSettings" uid="uid://bcnt8xhjv02bx" path="res://examples/header_label_settings.tres" id="1_5emnn"]
+[ext_resource type="Script" path="res://examples/ranges.gd" id="1_hl8ri"]
+
+[node name="Ranges" type="HBoxContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -172.5
+offset_right = 250.0
+offset_bottom = 172.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hl8ri")
+
+[node name="Col1" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Col1"]
+layout_mode = 2
+text = "Range"
+label_settings = ExtResource("1_5emnn")
+
+[node name="DisplayRow" type="HBoxContainer" parent="Col1"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Col1/DisplayRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Current Value:"
+
+[node name="ValueLabel" type="Label" parent="Col1/DisplayRow"]
+layout_mode = 2
+
+[node name="HSlider" type="HSlider" parent="Col1"]
+layout_mode = 2
+step = 0.01
+
+[node name="VSlider" type="VSlider" parent="Col1"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+step = 0.01
+
+[node name="ProgressBar" type="ProgressBar" parent="Col1"]
+layout_mode = 2
+
+[node name="SpinBox" type="SpinBox" parent="Col1"]
+layout_mode = 2

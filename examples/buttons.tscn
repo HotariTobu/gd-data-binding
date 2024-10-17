@@ -1,0 +1,184 @@
+[gd_scene load_steps=3 format=3 uid="uid://p7swf5sjivj0"]
+
+[ext_resource type="Script" path="res://examples/buttons.gd" id="1_sfuve"]
+[ext_resource type="LabelSettings" uid="uid://bcnt8xhjv02bx" path="res://examples/header_label_settings.tres" id="2_u12hm"]
+
+[node name="Buttons" type="HBoxContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -279.0
+offset_top = -99.0
+offset_right = 279.0
+offset_bottom = 99.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_sfuve")
+
+[node name="Col1" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Col1"]
+layout_mode = 2
+text = "Toggle Button"
+label_settings = ExtResource("2_u12hm")
+
+[node name="DisplayRow" type="HBoxContainer" parent="Col1"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Col1/DisplayRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Current State:"
+
+[node name="BinaryStateLabel" type="Label" parent="Col1/DisplayRow"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Col1"]
+layout_mode = 2
+toggle_mode = true
+text = "Toggle Button"
+
+[node name="CheckBox" type="CheckBox" parent="Col1"]
+layout_mode = 2
+text = "Check Box"
+
+[node name="CheckButton" type="CheckButton" parent="Col1"]
+layout_mode = 2
+text = "Check Button"
+
+[node name="InvertedButton" type="Button" parent="Col1"]
+layout_mode = 2
+toggle_mode = true
+text = "Inverted Toggle Button"
+
+[node name="InvertedCheckBox" type="CheckBox" parent="Col1"]
+layout_mode = 2
+text = "Inverted Check Box"
+
+[node name="InvertedCheckButton" type="CheckButton" parent="Col1"]
+layout_mode = 2
+text = "Inverted Check Button"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Col1"]
+layout_mode = 2
+
+[node name="OnButton" type="Button" parent="Col1/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "On"
+
+[node name="OffButton" type="Button" parent="Col1/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Off"
+
+[node name="VSeparator" type="VSeparator" parent="."]
+layout_mode = 2
+
+[node name="Col2" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Col2"]
+layout_mode = 2
+text = "Color Picker Button"
+label_settings = ExtResource("2_u12hm")
+
+[node name="DisplayRow" type="HBoxContainer" parent="Col2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Col2/DisplayRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Current Color:"
+
+[node name="ColorLabel" type="Label" parent="Col2/DisplayRow"]
+layout_mode = 2
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="Col2"]
+layout_mode = 2
+text = " "
+
+[node name="ColorRect" type="ColorRect" parent="Col2"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Col2"]
+layout_mode = 2
+
+[node name="RedButton" type="Button" parent="Col2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "RED"
+
+[node name="GreenButton" type="Button" parent="Col2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "GREEN"
+
+[node name="BlueButton" type="Button" parent="Col2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "BLUE"
+
+[node name="VSeparator2" type="VSeparator" parent="."]
+layout_mode = 2
+
+[node name="Col3" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Col3"]
+layout_mode = 2
+text = "Option Button"
+label_settings = ExtResource("2_u12hm")
+
+[node name="DisplayRow" type="HBoxContainer" parent="Col3"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Col3/DisplayRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Current Index:"
+
+[node name="OptionIndexLabel" type="Label" parent="Col3/DisplayRow"]
+layout_mode = 2
+
+[node name="OptionButton" type="OptionButton" parent="Col3"]
+layout_mode = 2
+item_count = 3
+popup/item_0/text = "Option 1"
+popup/item_1/text = "Option 2"
+popup/item_1/id = 1
+popup/item_2/text = "Option 3"
+popup/item_2/id = 2
+
+[node name="Select1Button" type="Button" parent="Col3"]
+layout_mode = 2
+text = "Select 1"
+
+[node name="Select2Button" type="Button" parent="Col3"]
+layout_mode = 2
+text = "Select 2"
+
+[node name="Select3Button" type="Button" parent="Col3"]
+layout_mode = 2
+text = "Select 3"
+
+[node name="DeselectButton" type="Button" parent="Col3"]
+layout_mode = 2
+text = "Deselect"
+
+[connection signal="pressed" from="Col1/HBoxContainer/OnButton" to="." method="_on_on_button_pressed"]
+[connection signal="pressed" from="Col1/HBoxContainer/OffButton" to="." method="_on_off_button_pressed"]
+[connection signal="pressed" from="Col2/HBoxContainer/RedButton" to="." method="_on_color_button_pressed" binds= [Color(1, 0, 0, 1)]]
+[connection signal="pressed" from="Col2/HBoxContainer/GreenButton" to="." method="_on_color_button_pressed" binds= [Color(0, 1, 0, 1)]]
+[connection signal="pressed" from="Col2/HBoxContainer/BlueButton" to="." method="_on_color_button_pressed" binds= [Color(0, 0, 1, 1)]]
+[connection signal="pressed" from="Col3/Select1Button" to="." method="_on_select_button_pressed" binds= [0]]
+[connection signal="pressed" from="Col3/Select2Button" to="." method="_on_select_button_pressed" binds= [1]]
+[connection signal="pressed" from="Col3/Select3Button" to="." method="_on_select_button_pressed" binds= [2]]
+[connection signal="pressed" from="Col3/DeselectButton" to="." method="_on_deselect_button_pressed"]
