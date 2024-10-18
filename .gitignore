@@ -1,3 +1,6 @@
+# Export result
+/dist/*
+
 # Godot 4+ specific ignores
 .godot/
 /android/
@@ -5,7 +8,8 @@
 # Godot-specific ignores
 .import/
 export.cfg
-export_presets.cfg
+# export_presets.cfg
+!.gdignore
 
 # Imported translations (automatically generated from CSV files)
 *.translation
