@@ -69,7 +69,7 @@ size_flags_stretch_ratio = 2.0
 
 [node name="Label" type="Label" parent="Col2"]
 layout_mode = 2
-text = "Tab Continer"
+text = "Tab Container"
 label_settings = ExtResource("2_lcuu5")
 
 [node name="DisplayRow" type="HBoxContainer" parent="Col2"]
