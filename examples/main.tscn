@@ -1,0 +1,62 @@
+[gd_scene load_steps=2 format=3 uid="uid://dn81ykkacfc4v"]
+
+[ext_resource type="Script" path="res://examples/main.gd" id="1_dl8kd"]
+
+[node name="Main" type="HBoxContainer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -193.0
+offset_top = -68.0
+offset_right = 193.0
+offset_bottom = 68.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dl8kd")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Buttons"
+
+[node name="Button2" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Containers"
+
+[node name="Button3" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Edits"
+
+[node name="Button4" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Ranges"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="VBoxContainer2"]
+layout_mode = 2
+text = "Notification"
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="VBoxContainer3"]
+layout_mode = 2
+text = "Counter with GDDB"
+
+[node name="Button2" type="Button" parent="VBoxContainer3"]
+layout_mode = 2
+text = "Counter without GDDB"
+
+[connection signal="pressed" from="VBoxContainer/Button" to="." method="_change_scene_to" binds= ["buttons"]]
+[connection signal="pressed" from="VBoxContainer/Button2" to="." method="_change_scene_to" binds= ["containers"]]
+[connection signal="pressed" from="VBoxContainer/Button3" to="." method="_change_scene_to" binds= ["edits"]]
+[connection signal="pressed" from="VBoxContainer/Button4" to="." method="_change_scene_to" binds= ["ranges"]]
+[connection signal="pressed" from="VBoxContainer2/Button" to="." method="_change_scene_to" binds= ["notification"]]
+[connection signal="pressed" from="VBoxContainer3/Button" to="." method="_change_scene_to" binds= ["counters/with_gddb"]]
+[connection signal="pressed" from="VBoxContainer3/Button2" to="." method="_change_scene_to" binds= ["counters/without_gddb"]]
