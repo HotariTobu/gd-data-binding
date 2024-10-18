@@ -1,4 +1,4 @@
-![icon](./icon.svg)
+![icon](assets/icon.svg)
 
 # GD Data Binding
 
