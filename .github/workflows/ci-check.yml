@@ -33,4 +33,4 @@ jobs:
       run: godot --headless --import --path "$PWD"
 
     - name: Test
-      run: godot --headless --debug --path "$PWD" -s addons/gut/gut_cmdln.gd -gexit
+      run: godot --headless --debug --path "$PWD" -s addons/gut/gut_cmdln.gd -gexit -gconfig .gutconfig
