@@ -4,6 +4,8 @@
 
 GD Data Binding is a Godot library that simplifies your UI coding by automatically syncing data between views and models.
 
+[Godot Asset Library](https://godotengine.org/asset-library/asset/3423)
+
 ## Demo
 
 ![buttons demo](images/buttons.gif)
