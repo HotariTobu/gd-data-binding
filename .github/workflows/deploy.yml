@@ -29,7 +29,7 @@ jobs:
       with:
         version: 4.3.0
         use-dotnet: false
-        include-templates: false
+        include-templates: true
 
     - name: Export for web
       run: godot --headless --export-release "Web"
