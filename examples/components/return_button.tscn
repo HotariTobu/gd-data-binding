@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cor4h51ei6b54"]
+
+[ext_resource type="Texture2D" uid="uid://dgkpw3tgosl6t" path="res://assets/return.svg" id="1_q6uks"]
+
+[node name="ReturnButton" type="Button"]
+icon = ExtResource("1_q6uks")
