@@ -66,3 +66,40 @@ class Data:
 ```
 
 However, in this way, you must know that `count` is the content of `$Label` and update `$Label.text` when updating `count`.
+
+Using GD Data Binding, the code can be rewritten like this;
+
+```gdscript
+var _data = BindingSource.new(Data.new())
+
+
+func _ready():
+	_data.bind("count").using(_get_label).to_label($Label)
+
+
+func _on_button_pressed():
+	_data.count += 1
+
+
+static func _get_label(count: int):
+	return "Count: %s" % count
+
+
+class Data:
+	var count: int = 0
+```
+
+`BindingSource` wraps data objects and provides binding functions.
+
+In `_ready`, bind `count` and `$Label.text`.
+To convert the count value into the label content (e.g. `count = 5` -> "Count: 5"), use `_get_label`.
+
+In `_on_button_pressed`, only increase `count`, but not update `$Label.text` directly.
+
+In the view of the MVVM pattern:
+
+- *View*: `_ready`, `_get_label`
+- *ViewModel*: `_on_button_pressed`
+- *Model*: `Data`
+
+The important point is that you can be unaware of *View* when defining *ViewModel*.
