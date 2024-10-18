@@ -6,11 +6,11 @@ GD Data Binding is a Godot library that simplifies your UI coding by automatical
 
 ## Demo
 
-![Buttons demo](images/buttons.gif)
-![Containers demo](images/containers.gif)
-![Edits demo](images/edits.gif)
-![Ranges demo](images/ranges.gif)
-![Notification demo](images/notification.gif)
+![buttons demo](images/buttons.gif)
+![containers demo](images/containers.gif)
+![edits demo](images/edits.gif)
+![ranges demo](images/ranges.gif)
+![notification demo](images/notification.gif)
 
 ## Example
 
@@ -36,5 +36,7 @@ Reference: https://learn.microsoft.com/dotnet/architecture/maui/mvvm
 
 For example, imagine to create a counter.
 The view has a label to show the counted number and a button to count up the number.
+
+![counter demo](images/counter.gif)
 
 The basic way to update the label content is that the button-pressed handler increases the count value and assigns it to the `text` of the label.
