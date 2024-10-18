@@ -8,6 +8,8 @@ GD Data Binding is a Godot library that simplifies your UI coding by automatical
 
 ## Demo
 
+You can try it [here](https://hotaritobu.github.io/gd-data-binding/).
+
 ![buttons demo](images/buttons.gif)
 ![containers demo](images/containers.gif)
 ![edits demo](images/edits.gif)
