@@ -1,17 +1,32 @@
 class_name BaseBindingSource
 
-var _source_object: Object
+var _source_object
+var _property_list: Array[Dictionary]
+
 var _target_dict = {}
 
 
-func _init(source_object: Object = self, source_value_change_notify_signal = null):
+func _init(source_object = self, source_value_change_notify_signal = null):
+	assert(source_object != null, "The source object must not be null.")
 	assert(
-		source_object != self or BaseBindingSource != get_script(),
+		source_object is not Object or source_object != self or BaseBindingSource != get_script(),
 		"The source object must be passed unless the class inherits BindingSource."
 	)
-	assert(source_object != self, "Currently, initialize by self is not supported.")
+	assert(
+		source_object is not Object or source_object != self,
+		"Currently, initialize by self is not supported."
+	)
 
 	_source_object = source_object
+
+	if source_object is Object:
+		_property_list = source_object.get_property_list()
+
+	elif source_object is Dictionary:
+		_property_list = _get_dict_property_list(source_object)
+
+	else:
+		push_error("The source object must be an object or a dict.")
 
 	if (
 		(
@@ -26,31 +41,22 @@ func _init(source_object: Object = self, source_value_change_notify_signal = nul
 
 
 func _get_property_list():
-	assert(_source_object != self, "The extended class instance cannot be inspected in the editor")
-	return _source_object.get_property_list()
-
-
-func _property_can_revert(property):
-	return _source_object.property_can_revert(property)
-
-
-func _property_get_revert(property):
-	return _source_object.property_get_revert(property)
+	return _property_list
 
 
 func _get(property):
-	return _source_object.get(property)
+	return _source_object[property]
 
 
 func _set(property, value):
-	_source_object.set(property, value)
+	_source_object[property] = value
 	_update_target(property, value)
 	return true
 
 
 func bind_to(
 	source_property: StringName,
-	target_object: Object,
+	target_object,
 	target_property: StringName,
 	converter_pipeline: BindingConverterPipeline = null,
 	target_value_change_signal = null
@@ -77,7 +83,7 @@ func bind_to(
 	binding_dict[binding_key] = binding
 
 
-func unbind_from(source_property: StringName, target_object: Object, target_property: StringName):
+func unbind_from(source_property: StringName, target_object, target_property: StringName):
 	assert(
 		_target_dict.has(source_property),
 		"The source property %s has not been bound to any target properties." % source_property
@@ -98,7 +104,7 @@ func unbind_from(source_property: StringName, target_object: Object, target_prop
 
 
 func _on_source_value_change_notified(source_property: StringName):
-	var source_value = _source_object.get(source_property)
+	var source_value = _source_object[source_property]
 	_update_target(source_property, source_value)
 
 
@@ -112,17 +118,42 @@ func _update_target(source_property: StringName, source_value: Variant):
 		binding.pass_source_value(source_value)
 
 
-static func _get_binding_key(target_object: Object, target_property: StringName):
-	return "%s.%s" % [target_object.get_instance_id(), target_property]
+static func _get_dict_property_list(dict: Dictionary):
+	var property_list: Array[Dictionary] = []
+
+	for key in dict:
+		var value = dict[key]
+		var type = typeof(value)
+
+		var property = {
+			"name": key,
+			"type": type,
+			"class_name": value.get_class() if type == TYPE_OBJECT else "",
+		}
+		property_list.append(property)
+
+	return property_list
+
+
+static func _get_binding_key(target_object, target_property: StringName):
+	if target_object is Object:
+		return "%s.%s" % [target_object.get_instance_id(), target_property]
+
+	elif target_object is Dictionary:
+		var id = target_object.get_or_add("__BINDING_ID__", UUID.v7())
+		return "%s.%s" % [id, target_property]
+
+	else:
+		push_error("The target object must be an object or a dict.")
 
 
 class BindingWithTargetSignal:
 	extends Binding
 
 	func _init(
-		source_object: Object,
+		source_object,
 		source_property: StringName,
-		target_object: Object,
+		target_object,
 		target_property: StringName,
 		converter_pipeline: BindingConverterPipeline,
 		target_value_change_signal

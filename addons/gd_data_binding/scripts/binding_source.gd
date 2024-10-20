@@ -51,7 +51,7 @@ class Binder:
 		converter_pipeline.append(converter)
 		return Binder.new(_source, _source_property, converter_pipeline)
 
-	func to(target_object: Object, target_property: StringName, target_value_change_signal = null):
+	func to(target_object, target_property: StringName, target_value_change_signal = null):
 		_source.bind_to(
 			_source_property,
 			target_object,
@@ -186,7 +186,7 @@ class Unbinder:
 		_source = source
 		_source_property = source_property
 
-	func from(target_object: Object, target_property: StringName):
+	func from(target_object, target_property: StringName):
 		_source.unbind_from(_source_property, target_object, target_property)
 
 	func from_toggle_button(button: Button):
