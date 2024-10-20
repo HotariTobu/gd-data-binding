@@ -1,0 +1,21 @@
+name: Publish to Godot Asset Library
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  publish:
+    name: Publish to Godot Asset Library
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Edit Asset
+        uses: deep-entertainment/godot-asset-lib-action@v0.6.0
+        with:
+          username: Hotari
+          password: ${{ secrets.ASSET_STORE_PASSWORD }}
+          assetId: 3423
+          assetTemplate: .asset-template

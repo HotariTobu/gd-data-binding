@@ -1,0 +1,15 @@
+{
+  "type": "addon",
+  "title": "GD Data Binding",
+  "version_string": "{{ context.release.tag_name }}",
+  "category": "Scripts",
+  "category_id": "6",
+  "godot_version": "4.0",
+  "cost": "CC0",
+  "description": "GD Data Binding is a Godot library that simplifies your UI coding by automatically syncing data between views and models.",
+  "download_provider": "GitHub",
+  "download_commit": "{{ env.GITHUB_SHA }}",
+  "browse_url": "{{ context.repository.html_url }}",
+  "issues_url": "{{ context.repository.html_url }}/issues",
+  "icon_url": "https://raw.githubusercontent.com/HotariTobu/gd-data-binding/refs/heads/main/images/icon.png"
+}
