@@ -11,11 +11,24 @@ var _sources: Array:
 func before_all():
 	var data = Data.new()
 
+	var x2 = func(value): return value * 2
+
+	var dict_source_with_wrapped_target = BindingSource.new(_dict_new())
+	dict_source_with_wrapped_target.bind("single_value").using(x2).to(
+		dict_source_with_wrapped_target, "double_value"
+	)
+
+	var dict = _dict_new()
+	var dict_source_without_wrapped_target = BindingSource.new(dict)
+	dict_source_without_wrapped_target.bind("single_value").using(x2).to(dict, "double_value")
+
 	_source_dict = {
 		"with_str_notification": BindingSource.new(Data.new(), "notified"),
 		"with_dir_notification": BindingSource.new(data, data.notified),
 		"with_ext_notification": BindingSource.new(Data.new(), notified),
 		"without_notification": BindingSource.new(Data.new()),
+		"dict_with_wrapped_target": dict_source_with_wrapped_target,
+		"dict_without_wrapped_target": dict_source_without_wrapped_target,
 	}
 
 
@@ -44,47 +57,83 @@ func test_access_src(source: BindingSource = use_parameters(_sources)):
 func test_init_target_value(
 	target_objects: Dictionary = use_parameters(_get_params_for_test_init_target_value())
 ):
-	assert_eq(target_objects["int_var"].int_var, 1)
-	assert_eq(target_objects["int_var"].str_var, "1")
-	assert_eq(target_objects["int_var"].int_prop, 1)
-	assert_eq(target_objects["int_var"].str_prop, "1")
-	assert_eq(target_objects["int_var"].single_value, 1)
-	assert_eq(target_objects["int_var"].double_value, 2)
+	assert_eq(target_objects["data_int_var"].int_var, 1)
+	assert_eq(target_objects["data_int_var"].str_var, "1")
+	assert_eq(target_objects["data_int_var"].int_prop, 1)
+	assert_eq(target_objects["data_int_var"].str_prop, "1")
+	assert_eq(target_objects["data_int_var"].single_value, 1)
+	assert_eq(target_objects["data_int_var"].double_value, 2)
 
-	assert_eq(target_objects["str_var"].int_var, 2)
-	assert_eq(target_objects["str_var"].str_var, "2")
-	assert_eq(target_objects["str_var"].int_prop, 2)
-	assert_eq(target_objects["str_var"].str_prop, "2")
-	assert_eq(target_objects["str_var"].single_value, 2)
-	assert_eq(target_objects["str_var"].double_value, 4)
+	assert_eq(target_objects["data_str_var"].int_var, 2)
+	assert_eq(target_objects["data_str_var"].str_var, "2")
+	assert_eq(target_objects["data_str_var"].int_prop, 2)
+	assert_eq(target_objects["data_str_var"].str_prop, "2")
+	assert_eq(target_objects["data_str_var"].single_value, 2)
+	assert_eq(target_objects["data_str_var"].double_value, 4)
 
-	assert_eq(target_objects["int_prop"].int_var, 3)
-	assert_eq(target_objects["int_prop"].str_var, "3")
-	assert_eq(target_objects["int_prop"].int_prop, 3)
-	assert_eq(target_objects["int_prop"].str_prop, "3")
-	assert_eq(target_objects["int_prop"].single_value, 3)
-	assert_eq(target_objects["int_prop"].double_value, 6)
+	assert_eq(target_objects["data_int_prop"].int_var, 3)
+	assert_eq(target_objects["data_int_prop"].str_var, "3")
+	assert_eq(target_objects["data_int_prop"].int_prop, 3)
+	assert_eq(target_objects["data_int_prop"].str_prop, "3")
+	assert_eq(target_objects["data_int_prop"].single_value, 3)
+	assert_eq(target_objects["data_int_prop"].double_value, 6)
 
-	assert_eq(target_objects["str_prop"].int_var, 4)
-	assert_eq(target_objects["str_prop"].str_var, "4")
-	assert_eq(target_objects["str_prop"].int_prop, 4)
-	assert_eq(target_objects["str_prop"].str_prop, "4")
-	assert_eq(target_objects["str_prop"].single_value, 4)
-	assert_eq(target_objects["str_prop"].double_value, 8)
+	assert_eq(target_objects["data_str_prop"].int_var, 4)
+	assert_eq(target_objects["data_str_prop"].str_var, "4")
+	assert_eq(target_objects["data_str_prop"].int_prop, 4)
+	assert_eq(target_objects["data_str_prop"].str_prop, "4")
+	assert_eq(target_objects["data_str_prop"].single_value, 4)
+	assert_eq(target_objects["data_str_prop"].double_value, 8)
 
-	assert_eq(target_objects["single_value"].int_var, 5)
-	assert_eq(target_objects["single_value"].str_var, "5")
-	assert_eq(target_objects["single_value"].int_prop, 5)
-	assert_eq(target_objects["single_value"].str_prop, "5")
-	assert_eq(target_objects["single_value"].single_value, 5)
-	assert_eq(target_objects["single_value"].double_value, 10)
+	assert_eq(target_objects["data_single_value"].int_var, 5)
+	assert_eq(target_objects["data_single_value"].str_var, "5")
+	assert_eq(target_objects["data_single_value"].int_prop, 5)
+	assert_eq(target_objects["data_single_value"].str_prop, "5")
+	assert_eq(target_objects["data_single_value"].single_value, 5)
+	assert_eq(target_objects["data_single_value"].double_value, 10)
 
-	assert_eq(target_objects["double_value"].int_var, 10)
-	assert_eq(target_objects["double_value"].str_var, "10")
-	assert_eq(target_objects["double_value"].int_prop, 10)
-	assert_eq(target_objects["double_value"].str_prop, "10")
-	assert_eq(target_objects["double_value"].single_value, 10)
-	assert_eq(target_objects["double_value"].double_value, 20)
+	assert_eq(target_objects["data_double_value"].int_var, 10)
+	assert_eq(target_objects["data_double_value"].str_var, "10")
+	assert_eq(target_objects["data_double_value"].int_prop, 10)
+	assert_eq(target_objects["data_double_value"].str_prop, "10")
+	assert_eq(target_objects["data_double_value"].single_value, 10)
+	assert_eq(target_objects["data_double_value"].double_value, 20)
+
+	assert_eq(target_objects["dict_int_var"].int_var, 1)
+	assert_eq(target_objects["dict_int_var"].str_var, "1")
+	assert_eq(target_objects["dict_int_var"].int_prop, 1)
+	assert_eq(target_objects["dict_int_var"].str_prop, "1")
+	assert_eq(target_objects["dict_int_var"].single_value, 1)
+
+	assert_eq(target_objects["dict_str_var"].int_var, 2)
+	assert_eq(target_objects["dict_str_var"].str_var, "2")
+	assert_eq(target_objects["dict_str_var"].int_prop, 2)
+	assert_eq(target_objects["dict_str_var"].str_prop, "2")
+	assert_eq(target_objects["dict_str_var"].single_value, 2)
+
+	assert_eq(target_objects["dict_int_prop"].int_var, 3)
+	assert_eq(target_objects["dict_int_prop"].str_var, "3")
+	assert_eq(target_objects["dict_int_prop"].int_prop, 3)
+	assert_eq(target_objects["dict_int_prop"].str_prop, "3")
+	assert_eq(target_objects["dict_int_prop"].single_value, 3)
+
+	assert_eq(target_objects["dict_str_prop"].int_var, 4)
+	assert_eq(target_objects["dict_str_prop"].str_var, "4")
+	assert_eq(target_objects["dict_str_prop"].int_prop, 4)
+	assert_eq(target_objects["dict_str_prop"].str_prop, "4")
+	assert_eq(target_objects["dict_str_prop"].single_value, 4)
+
+	assert_eq(target_objects["dict_single_value"].int_var, 5)
+	assert_eq(target_objects["dict_single_value"].str_var, "5")
+	assert_eq(target_objects["dict_single_value"].int_prop, 5)
+	assert_eq(target_objects["dict_single_value"].str_prop, "5")
+	assert_eq(target_objects["dict_single_value"].single_value, 5)
+
+	assert_eq(target_objects["dict_double_value"].int_var, 10)
+	assert_eq(target_objects["dict_double_value"].str_var, "10")
+	assert_eq(target_objects["dict_double_value"].int_prop, 10)
+	assert_eq(target_objects["dict_double_value"].str_prop, "10")
+	assert_eq(target_objects["dict_double_value"].single_value, 10)
 
 
 func test_source_to_target(
@@ -101,40 +150,70 @@ func test_source_to_target(
 
 	source.single_value = 10
 
-	assert_eq(target_objects["int_var"].int_var, 6)
-	assert_eq(target_objects["int_var"].str_var, "6")
-	assert_eq(target_objects["int_var"].int_prop, 6)
-	assert_eq(target_objects["int_var"].str_prop, "6")
-	assert_eq(target_objects["int_var"].single_value, 6)
-	assert_eq(target_objects["int_var"].double_value, 12)
+	assert_eq(target_objects["data_int_var"].int_var, 6)
+	assert_eq(target_objects["data_int_var"].str_var, "6")
+	assert_eq(target_objects["data_int_var"].int_prop, 6)
+	assert_eq(target_objects["data_int_var"].str_prop, "6")
+	assert_eq(target_objects["data_int_var"].single_value, 6)
+	assert_eq(target_objects["data_int_var"].double_value, 12)
 
-	assert_eq(target_objects["str_var"].int_var, 7)
-	assert_eq(target_objects["str_var"].str_var, "7")
-	assert_eq(target_objects["str_var"].int_prop, 7)
-	assert_eq(target_objects["str_var"].str_prop, "7")
-	assert_eq(target_objects["str_var"].single_value, 7)
-	assert_eq(target_objects["str_var"].double_value, 14)
+	assert_eq(target_objects["data_str_var"].int_var, 7)
+	assert_eq(target_objects["data_str_var"].str_var, "7")
+	assert_eq(target_objects["data_str_var"].int_prop, 7)
+	assert_eq(target_objects["data_str_var"].str_prop, "7")
+	assert_eq(target_objects["data_str_var"].single_value, 7)
+	assert_eq(target_objects["data_str_var"].double_value, 14)
 
-	assert_eq(target_objects["int_prop"].int_var, 8)
-	assert_eq(target_objects["int_prop"].str_var, "8")
-	assert_eq(target_objects["int_prop"].int_prop, 8)
-	assert_eq(target_objects["int_prop"].str_prop, "8")
-	assert_eq(target_objects["int_prop"].single_value, 8)
-	assert_eq(target_objects["int_prop"].double_value, 16)
+	assert_eq(target_objects["data_int_prop"].int_var, 8)
+	assert_eq(target_objects["data_int_prop"].str_var, "8")
+	assert_eq(target_objects["data_int_prop"].int_prop, 8)
+	assert_eq(target_objects["data_int_prop"].str_prop, "8")
+	assert_eq(target_objects["data_int_prop"].single_value, 8)
+	assert_eq(target_objects["data_int_prop"].double_value, 16)
 
-	assert_eq(target_objects["str_prop"].int_var, 9)
-	assert_eq(target_objects["str_prop"].str_var, "9")
-	assert_eq(target_objects["str_prop"].int_prop, 9)
-	assert_eq(target_objects["str_prop"].str_prop, "9")
-	assert_eq(target_objects["str_prop"].single_value, 9)
-	assert_eq(target_objects["str_prop"].double_value, 18)
+	assert_eq(target_objects["data_str_prop"].int_var, 9)
+	assert_eq(target_objects["data_str_prop"].str_var, "9")
+	assert_eq(target_objects["data_str_prop"].int_prop, 9)
+	assert_eq(target_objects["data_str_prop"].str_prop, "9")
+	assert_eq(target_objects["data_str_prop"].single_value, 9)
+	assert_eq(target_objects["data_str_prop"].double_value, 18)
 
-	assert_eq(target_objects["single_value"].int_var, 10)
-	assert_eq(target_objects["single_value"].str_var, "10")
-	assert_eq(target_objects["single_value"].int_prop, 10)
-	assert_eq(target_objects["single_value"].str_prop, "10")
-	assert_eq(target_objects["single_value"].single_value, 10)
-	assert_eq(target_objects["single_value"].double_value, 20)
+	assert_eq(target_objects["data_single_value"].int_var, 10)
+	assert_eq(target_objects["data_single_value"].str_var, "10")
+	assert_eq(target_objects["data_single_value"].int_prop, 10)
+	assert_eq(target_objects["data_single_value"].str_prop, "10")
+	assert_eq(target_objects["data_single_value"].single_value, 10)
+	assert_eq(target_objects["data_single_value"].double_value, 20)
+
+	assert_eq(target_objects["dict_int_var"].int_var, 6)
+	assert_eq(target_objects["dict_int_var"].str_var, "6")
+	assert_eq(target_objects["dict_int_var"].int_prop, 6)
+	assert_eq(target_objects["dict_int_var"].str_prop, "6")
+	assert_eq(target_objects["dict_int_var"].single_value, 6)
+
+	assert_eq(target_objects["dict_str_var"].int_var, 7)
+	assert_eq(target_objects["dict_str_var"].str_var, "7")
+	assert_eq(target_objects["dict_str_var"].int_prop, 7)
+	assert_eq(target_objects["dict_str_var"].str_prop, "7")
+	assert_eq(target_objects["dict_str_var"].single_value, 7)
+
+	assert_eq(target_objects["dict_int_prop"].int_var, 8)
+	assert_eq(target_objects["dict_int_prop"].str_var, "8")
+	assert_eq(target_objects["dict_int_prop"].int_prop, 8)
+	assert_eq(target_objects["dict_int_prop"].str_prop, "8")
+	assert_eq(target_objects["dict_int_prop"].single_value, 8)
+
+	assert_eq(target_objects["dict_str_prop"].int_var, 9)
+	assert_eq(target_objects["dict_str_prop"].str_var, "9")
+	assert_eq(target_objects["dict_str_prop"].int_prop, 9)
+	assert_eq(target_objects["dict_str_prop"].str_prop, "9")
+	assert_eq(target_objects["dict_str_prop"].single_value, 9)
+
+	assert_eq(target_objects["dict_single_value"].int_var, 10)
+	assert_eq(target_objects["dict_single_value"].str_var, "10")
+	assert_eq(target_objects["dict_single_value"].int_prop, 10)
+	assert_eq(target_objects["dict_single_value"].str_prop, "10")
+	assert_eq(target_objects["dict_single_value"].single_value, 10)
 
 	_unbind_target_objects(source, target_objects)
 
@@ -155,40 +234,70 @@ func test_source_to_target(
 	assert_eq(source.single_value, 15)
 	assert_eq(source.double_value, 30)
 
-	assert_eq(target_objects["int_var"].int_var, 6)
-	assert_eq(target_objects["int_var"].str_var, "6")
-	assert_eq(target_objects["int_var"].int_prop, 6)
-	assert_eq(target_objects["int_var"].str_prop, "6")
-	assert_eq(target_objects["int_var"].single_value, 6)
-	assert_eq(target_objects["int_var"].double_value, 12)
+	assert_eq(target_objects["data_int_var"].int_var, 6)
+	assert_eq(target_objects["data_int_var"].str_var, "6")
+	assert_eq(target_objects["data_int_var"].int_prop, 6)
+	assert_eq(target_objects["data_int_var"].str_prop, "6")
+	assert_eq(target_objects["data_int_var"].single_value, 6)
+	assert_eq(target_objects["data_int_var"].double_value, 12)
 
-	assert_eq(target_objects["str_var"].int_var, 7)
-	assert_eq(target_objects["str_var"].str_var, "7")
-	assert_eq(target_objects["str_var"].int_prop, 7)
-	assert_eq(target_objects["str_var"].str_prop, "7")
-	assert_eq(target_objects["str_var"].single_value, 7)
-	assert_eq(target_objects["str_var"].double_value, 14)
+	assert_eq(target_objects["data_str_var"].int_var, 7)
+	assert_eq(target_objects["data_str_var"].str_var, "7")
+	assert_eq(target_objects["data_str_var"].int_prop, 7)
+	assert_eq(target_objects["data_str_var"].str_prop, "7")
+	assert_eq(target_objects["data_str_var"].single_value, 7)
+	assert_eq(target_objects["data_str_var"].double_value, 14)
 
-	assert_eq(target_objects["int_prop"].int_var, 8)
-	assert_eq(target_objects["int_prop"].str_var, "8")
-	assert_eq(target_objects["int_prop"].int_prop, 8)
-	assert_eq(target_objects["int_prop"].str_prop, "8")
-	assert_eq(target_objects["int_prop"].single_value, 8)
-	assert_eq(target_objects["int_prop"].double_value, 16)
+	assert_eq(target_objects["data_int_prop"].int_var, 8)
+	assert_eq(target_objects["data_int_prop"].str_var, "8")
+	assert_eq(target_objects["data_int_prop"].int_prop, 8)
+	assert_eq(target_objects["data_int_prop"].str_prop, "8")
+	assert_eq(target_objects["data_int_prop"].single_value, 8)
+	assert_eq(target_objects["data_int_prop"].double_value, 16)
 
-	assert_eq(target_objects["str_prop"].int_var, 9)
-	assert_eq(target_objects["str_prop"].str_var, "9")
-	assert_eq(target_objects["str_prop"].int_prop, 9)
-	assert_eq(target_objects["str_prop"].str_prop, "9")
-	assert_eq(target_objects["str_prop"].single_value, 9)
-	assert_eq(target_objects["str_prop"].double_value, 18)
+	assert_eq(target_objects["data_str_prop"].int_var, 9)
+	assert_eq(target_objects["data_str_prop"].str_var, "9")
+	assert_eq(target_objects["data_str_prop"].int_prop, 9)
+	assert_eq(target_objects["data_str_prop"].str_prop, "9")
+	assert_eq(target_objects["data_str_prop"].single_value, 9)
+	assert_eq(target_objects["data_str_prop"].double_value, 18)
 
-	assert_eq(target_objects["single_value"].int_var, 10)
-	assert_eq(target_objects["single_value"].str_var, "10")
-	assert_eq(target_objects["single_value"].int_prop, 10)
-	assert_eq(target_objects["single_value"].str_prop, "10")
-	assert_eq(target_objects["single_value"].single_value, 10)
-	assert_eq(target_objects["single_value"].double_value, 20)
+	assert_eq(target_objects["data_single_value"].int_var, 10)
+	assert_eq(target_objects["data_single_value"].str_var, "10")
+	assert_eq(target_objects["data_single_value"].int_prop, 10)
+	assert_eq(target_objects["data_single_value"].str_prop, "10")
+	assert_eq(target_objects["data_single_value"].single_value, 10)
+	assert_eq(target_objects["data_single_value"].double_value, 20)
+
+	assert_eq(target_objects["dict_int_var"].int_var, 6)
+	assert_eq(target_objects["dict_int_var"].str_var, "6")
+	assert_eq(target_objects["dict_int_var"].int_prop, 6)
+	assert_eq(target_objects["dict_int_var"].str_prop, "6")
+	assert_eq(target_objects["dict_int_var"].single_value, 6)
+
+	assert_eq(target_objects["dict_str_var"].int_var, 7)
+	assert_eq(target_objects["dict_str_var"].str_var, "7")
+	assert_eq(target_objects["dict_str_var"].int_prop, 7)
+	assert_eq(target_objects["dict_str_var"].str_prop, "7")
+	assert_eq(target_objects["dict_str_var"].single_value, 7)
+
+	assert_eq(target_objects["dict_int_prop"].int_var, 8)
+	assert_eq(target_objects["dict_int_prop"].str_var, "8")
+	assert_eq(target_objects["dict_int_prop"].int_prop, 8)
+	assert_eq(target_objects["dict_int_prop"].str_prop, "8")
+	assert_eq(target_objects["dict_int_prop"].single_value, 8)
+
+	assert_eq(target_objects["dict_str_prop"].int_var, 9)
+	assert_eq(target_objects["dict_str_prop"].str_var, "9")
+	assert_eq(target_objects["dict_str_prop"].int_prop, 9)
+	assert_eq(target_objects["dict_str_prop"].str_prop, "9")
+	assert_eq(target_objects["dict_str_prop"].single_value, 9)
+
+	assert_eq(target_objects["dict_single_value"].int_var, 10)
+	assert_eq(target_objects["dict_single_value"].str_var, "10")
+	assert_eq(target_objects["dict_single_value"].int_prop, 10)
+	assert_eq(target_objects["dict_single_value"].str_prop, "10")
+	assert_eq(target_objects["dict_single_value"].single_value, 10)
 
 
 func test_source_to_target_double_value_with_str_notification():
@@ -201,19 +310,33 @@ func test_source_to_target_double_value_with_str_notification():
 
 	source.single_value = 10
 
-	assert_eq(with_signal["double_value"].int_var, 20)
-	assert_eq(with_signal["double_value"].str_var, "20")
-	assert_eq(with_signal["double_value"].int_prop, 20)
-	assert_eq(with_signal["double_value"].str_prop, "20")
-	assert_eq(with_signal["double_value"].single_value, 20)
-	assert_eq(with_signal["double_value"].double_value, 40)
+	assert_eq(with_signal["data_double_value"].int_var, 20)
+	assert_eq(with_signal["data_double_value"].str_var, "20")
+	assert_eq(with_signal["data_double_value"].int_prop, 20)
+	assert_eq(with_signal["data_double_value"].str_prop, "20")
+	assert_eq(with_signal["data_double_value"].single_value, 20)
+	assert_eq(with_signal["data_double_value"].double_value, 40)
 
-	assert_eq(without_signal["double_value"].int_var, 20)
-	assert_eq(without_signal["double_value"].str_var, "20")
-	assert_eq(without_signal["double_value"].int_prop, 20)
-	assert_eq(without_signal["double_value"].str_prop, "20")
-	assert_eq(without_signal["double_value"].single_value, 20)
-	assert_eq(without_signal["double_value"].double_value, 40)
+	assert_eq(without_signal["data_double_value"].int_var, 20)
+	assert_eq(without_signal["data_double_value"].str_var, "20")
+	assert_eq(without_signal["data_double_value"].int_prop, 20)
+	assert_eq(without_signal["data_double_value"].str_prop, "20")
+	assert_eq(without_signal["data_double_value"].single_value, 20)
+	assert_eq(without_signal["data_double_value"].double_value, 40)
+
+	assert_eq(with_signal["dict_double_value"].int_var, 20)
+	assert_eq(with_signal["dict_double_value"].str_var, "20")
+	assert_eq(with_signal["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal["dict_double_value"].single_value, 20)
+	assert_eq(with_signal["dict_double_value"].double_value, 0)
+
+	assert_eq(without_signal["dict_double_value"].int_var, 20)
+	assert_eq(without_signal["dict_double_value"].str_var, "20")
+	assert_eq(without_signal["dict_double_value"].int_prop, 20)
+	assert_eq(without_signal["dict_double_value"].str_prop, "20")
+	assert_eq(without_signal["dict_double_value"].single_value, 20)
+	assert_eq(without_signal["dict_double_value"].double_value, 0)
 
 	_unbind_target_objects(source, with_signal)
 	_unbind_target_objects(source, without_signal)
@@ -223,19 +346,33 @@ func test_source_to_target_double_value_with_str_notification():
 	assert_eq(source.single_value, 20)
 	assert_eq(source.double_value, 40)
 
-	assert_eq(with_signal["double_value"].int_var, 20)
-	assert_eq(with_signal["double_value"].str_var, "20")
-	assert_eq(with_signal["double_value"].int_prop, 20)
-	assert_eq(with_signal["double_value"].str_prop, "20")
-	assert_eq(with_signal["double_value"].single_value, 20)
-	assert_eq(with_signal["double_value"].double_value, 40)
+	assert_eq(with_signal["data_double_value"].int_var, 20)
+	assert_eq(with_signal["data_double_value"].str_var, "20")
+	assert_eq(with_signal["data_double_value"].int_prop, 20)
+	assert_eq(with_signal["data_double_value"].str_prop, "20")
+	assert_eq(with_signal["data_double_value"].single_value, 20)
+	assert_eq(with_signal["data_double_value"].double_value, 40)
 
-	assert_eq(without_signal["double_value"].int_var, 20)
-	assert_eq(without_signal["double_value"].str_var, "20")
-	assert_eq(without_signal["double_value"].int_prop, 20)
-	assert_eq(without_signal["double_value"].str_prop, "20")
-	assert_eq(without_signal["double_value"].single_value, 20)
-	assert_eq(without_signal["double_value"].double_value, 40)
+	assert_eq(without_signal["data_double_value"].int_var, 20)
+	assert_eq(without_signal["data_double_value"].str_var, "20")
+	assert_eq(without_signal["data_double_value"].int_prop, 20)
+	assert_eq(without_signal["data_double_value"].str_prop, "20")
+	assert_eq(without_signal["data_double_value"].single_value, 20)
+	assert_eq(without_signal["data_double_value"].double_value, 40)
+
+	assert_eq(with_signal["dict_double_value"].int_var, 20)
+	assert_eq(with_signal["dict_double_value"].str_var, "20")
+	assert_eq(with_signal["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal["dict_double_value"].single_value, 20)
+	assert_eq(with_signal["dict_double_value"].double_value, 0)
+
+	assert_eq(without_signal["dict_double_value"].int_var, 20)
+	assert_eq(without_signal["dict_double_value"].str_var, "20")
+	assert_eq(without_signal["dict_double_value"].int_prop, 20)
+	assert_eq(without_signal["dict_double_value"].str_prop, "20")
+	assert_eq(without_signal["dict_double_value"].single_value, 20)
+	assert_eq(without_signal["dict_double_value"].double_value, 0)
 
 
 func test_source_to_target_double_value_with_dir_notification():
@@ -248,19 +385,33 @@ func test_source_to_target_double_value_with_dir_notification():
 
 	source.single_value = 10
 
-	assert_eq(with_signal["double_value"].int_var, 20)
-	assert_eq(with_signal["double_value"].str_var, "20")
-	assert_eq(with_signal["double_value"].int_prop, 20)
-	assert_eq(with_signal["double_value"].str_prop, "20")
-	assert_eq(with_signal["double_value"].single_value, 20)
-	assert_eq(with_signal["double_value"].double_value, 40)
+	assert_eq(with_signal["data_double_value"].int_var, 20)
+	assert_eq(with_signal["data_double_value"].str_var, "20")
+	assert_eq(with_signal["data_double_value"].int_prop, 20)
+	assert_eq(with_signal["data_double_value"].str_prop, "20")
+	assert_eq(with_signal["data_double_value"].single_value, 20)
+	assert_eq(with_signal["data_double_value"].double_value, 40)
 
-	assert_eq(without_signal["double_value"].int_var, 20)
-	assert_eq(without_signal["double_value"].str_var, "20")
-	assert_eq(without_signal["double_value"].int_prop, 20)
-	assert_eq(without_signal["double_value"].str_prop, "20")
-	assert_eq(without_signal["double_value"].single_value, 20)
-	assert_eq(without_signal["double_value"].double_value, 40)
+	assert_eq(without_signal["data_double_value"].int_var, 20)
+	assert_eq(without_signal["data_double_value"].str_var, "20")
+	assert_eq(without_signal["data_double_value"].int_prop, 20)
+	assert_eq(without_signal["data_double_value"].str_prop, "20")
+	assert_eq(without_signal["data_double_value"].single_value, 20)
+	assert_eq(without_signal["data_double_value"].double_value, 40)
+
+	assert_eq(with_signal["dict_double_value"].int_var, 20)
+	assert_eq(with_signal["dict_double_value"].str_var, "20")
+	assert_eq(with_signal["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal["dict_double_value"].single_value, 20)
+	assert_eq(with_signal["dict_double_value"].double_value, 0)
+
+	assert_eq(without_signal["dict_double_value"].int_var, 20)
+	assert_eq(without_signal["dict_double_value"].str_var, "20")
+	assert_eq(without_signal["dict_double_value"].int_prop, 20)
+	assert_eq(without_signal["dict_double_value"].str_prop, "20")
+	assert_eq(without_signal["dict_double_value"].single_value, 20)
+	assert_eq(without_signal["dict_double_value"].double_value, 0)
 
 	_unbind_target_objects(source, with_signal)
 	_unbind_target_objects(source, without_signal)
@@ -270,19 +421,33 @@ func test_source_to_target_double_value_with_dir_notification():
 	assert_eq(source.single_value, 20)
 	assert_eq(source.double_value, 40)
 
-	assert_eq(with_signal["double_value"].int_var, 20)
-	assert_eq(with_signal["double_value"].str_var, "20")
-	assert_eq(with_signal["double_value"].int_prop, 20)
-	assert_eq(with_signal["double_value"].str_prop, "20")
-	assert_eq(with_signal["double_value"].single_value, 20)
-	assert_eq(with_signal["double_value"].double_value, 40)
+	assert_eq(with_signal["data_double_value"].int_var, 20)
+	assert_eq(with_signal["data_double_value"].str_var, "20")
+	assert_eq(with_signal["data_double_value"].int_prop, 20)
+	assert_eq(with_signal["data_double_value"].str_prop, "20")
+	assert_eq(with_signal["data_double_value"].single_value, 20)
+	assert_eq(with_signal["data_double_value"].double_value, 40)
 
-	assert_eq(without_signal["double_value"].int_var, 20)
-	assert_eq(without_signal["double_value"].str_var, "20")
-	assert_eq(without_signal["double_value"].int_prop, 20)
-	assert_eq(without_signal["double_value"].str_prop, "20")
-	assert_eq(without_signal["double_value"].single_value, 20)
-	assert_eq(without_signal["double_value"].double_value, 40)
+	assert_eq(without_signal["data_double_value"].int_var, 20)
+	assert_eq(without_signal["data_double_value"].str_var, "20")
+	assert_eq(without_signal["data_double_value"].int_prop, 20)
+	assert_eq(without_signal["data_double_value"].str_prop, "20")
+	assert_eq(without_signal["data_double_value"].single_value, 20)
+	assert_eq(without_signal["data_double_value"].double_value, 40)
+
+	assert_eq(with_signal["dict_double_value"].int_var, 20)
+	assert_eq(with_signal["dict_double_value"].str_var, "20")
+	assert_eq(with_signal["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal["dict_double_value"].single_value, 20)
+	assert_eq(with_signal["dict_double_value"].double_value, 0)
+
+	assert_eq(without_signal["dict_double_value"].int_var, 20)
+	assert_eq(without_signal["dict_double_value"].str_var, "20")
+	assert_eq(without_signal["dict_double_value"].int_prop, 20)
+	assert_eq(without_signal["dict_double_value"].str_prop, "20")
+	assert_eq(without_signal["dict_double_value"].single_value, 20)
+	assert_eq(without_signal["dict_double_value"].double_value, 0)
 
 
 func test_source_to_target_double_value_with_ext_notification():
@@ -296,19 +461,33 @@ func test_source_to_target_double_value_with_ext_notification():
 	source.single_value = 10
 	notified.emit("double_value")
 
-	assert_eq(with_signal["double_value"].int_var, 20)
-	assert_eq(with_signal["double_value"].str_var, "20")
-	assert_eq(with_signal["double_value"].int_prop, 20)
-	assert_eq(with_signal["double_value"].str_prop, "20")
-	assert_eq(with_signal["double_value"].single_value, 20)
-	assert_eq(with_signal["double_value"].double_value, 40)
+	assert_eq(with_signal["data_double_value"].int_var, 20)
+	assert_eq(with_signal["data_double_value"].str_var, "20")
+	assert_eq(with_signal["data_double_value"].int_prop, 20)
+	assert_eq(with_signal["data_double_value"].str_prop, "20")
+	assert_eq(with_signal["data_double_value"].single_value, 20)
+	assert_eq(with_signal["data_double_value"].double_value, 40)
 
-	assert_eq(without_signal["double_value"].int_var, 20)
-	assert_eq(without_signal["double_value"].str_var, "20")
-	assert_eq(without_signal["double_value"].int_prop, 20)
-	assert_eq(without_signal["double_value"].str_prop, "20")
-	assert_eq(without_signal["double_value"].single_value, 20)
-	assert_eq(without_signal["double_value"].double_value, 40)
+	assert_eq(without_signal["data_double_value"].int_var, 20)
+	assert_eq(without_signal["data_double_value"].str_var, "20")
+	assert_eq(without_signal["data_double_value"].int_prop, 20)
+	assert_eq(without_signal["data_double_value"].str_prop, "20")
+	assert_eq(without_signal["data_double_value"].single_value, 20)
+	assert_eq(without_signal["data_double_value"].double_value, 40)
+
+	assert_eq(with_signal["dict_double_value"].int_var, 20)
+	assert_eq(with_signal["dict_double_value"].str_var, "20")
+	assert_eq(with_signal["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal["dict_double_value"].single_value, 20)
+	assert_eq(with_signal["dict_double_value"].double_value, 0)
+
+	assert_eq(without_signal["dict_double_value"].int_var, 20)
+	assert_eq(without_signal["dict_double_value"].str_var, "20")
+	assert_eq(without_signal["dict_double_value"].int_prop, 20)
+	assert_eq(without_signal["dict_double_value"].str_prop, "20")
+	assert_eq(without_signal["dict_double_value"].single_value, 20)
+	assert_eq(without_signal["dict_double_value"].double_value, 0)
 
 	_unbind_target_objects(source, with_signal)
 	_unbind_target_objects(source, without_signal)
@@ -319,19 +498,33 @@ func test_source_to_target_double_value_with_ext_notification():
 	assert_eq(source.single_value, 20)
 	assert_eq(source.double_value, 40)
 
-	assert_eq(with_signal["double_value"].int_var, 20)
-	assert_eq(with_signal["double_value"].str_var, "20")
-	assert_eq(with_signal["double_value"].int_prop, 20)
-	assert_eq(with_signal["double_value"].str_prop, "20")
-	assert_eq(with_signal["double_value"].single_value, 20)
-	assert_eq(with_signal["double_value"].double_value, 40)
+	assert_eq(with_signal["data_double_value"].int_var, 20)
+	assert_eq(with_signal["data_double_value"].str_var, "20")
+	assert_eq(with_signal["data_double_value"].int_prop, 20)
+	assert_eq(with_signal["data_double_value"].str_prop, "20")
+	assert_eq(with_signal["data_double_value"].single_value, 20)
+	assert_eq(with_signal["data_double_value"].double_value, 40)
 
-	assert_eq(without_signal["double_value"].int_var, 20)
-	assert_eq(without_signal["double_value"].str_var, "20")
-	assert_eq(without_signal["double_value"].int_prop, 20)
-	assert_eq(without_signal["double_value"].str_prop, "20")
-	assert_eq(without_signal["double_value"].single_value, 20)
-	assert_eq(without_signal["double_value"].double_value, 40)
+	assert_eq(without_signal["data_double_value"].int_var, 20)
+	assert_eq(without_signal["data_double_value"].str_var, "20")
+	assert_eq(without_signal["data_double_value"].int_prop, 20)
+	assert_eq(without_signal["data_double_value"].str_prop, "20")
+	assert_eq(without_signal["data_double_value"].single_value, 20)
+	assert_eq(without_signal["data_double_value"].double_value, 40)
+
+	assert_eq(with_signal["dict_double_value"].int_var, 20)
+	assert_eq(with_signal["dict_double_value"].str_var, "20")
+	assert_eq(with_signal["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal["dict_double_value"].single_value, 20)
+	assert_eq(with_signal["dict_double_value"].double_value, 0)
+
+	assert_eq(without_signal["dict_double_value"].int_var, 20)
+	assert_eq(without_signal["dict_double_value"].str_var, "20")
+	assert_eq(without_signal["dict_double_value"].int_prop, 20)
+	assert_eq(without_signal["dict_double_value"].str_prop, "20")
+	assert_eq(without_signal["dict_double_value"].single_value, 20)
+	assert_eq(without_signal["dict_double_value"].double_value, 0)
 
 
 func test_source_to_target_double_value_without_notification():
@@ -344,19 +537,33 @@ func test_source_to_target_double_value_without_notification():
 
 	source.single_value = 10
 
-	assert_eq(with_signal["double_value"].int_var, 10)
-	assert_eq(with_signal["double_value"].str_var, "10")
-	assert_eq(with_signal["double_value"].int_prop, 10)
-	assert_eq(with_signal["double_value"].str_prop, "10")
-	assert_eq(with_signal["double_value"].single_value, 10)
-	assert_eq(with_signal["double_value"].double_value, 20)
+	assert_eq(with_signal["data_double_value"].int_var, 10)
+	assert_eq(with_signal["data_double_value"].str_var, "10")
+	assert_eq(with_signal["data_double_value"].int_prop, 10)
+	assert_eq(with_signal["data_double_value"].str_prop, "10")
+	assert_eq(with_signal["data_double_value"].single_value, 10)
+	assert_eq(with_signal["data_double_value"].double_value, 20)
 
-	assert_eq(without_signal["double_value"].int_var, 10)
-	assert_eq(without_signal["double_value"].str_var, "10")
-	assert_eq(without_signal["double_value"].int_prop, 10)
-	assert_eq(without_signal["double_value"].str_prop, "10")
-	assert_eq(without_signal["double_value"].single_value, 10)
-	assert_eq(without_signal["double_value"].double_value, 20)
+	assert_eq(without_signal["data_double_value"].int_var, 10)
+	assert_eq(without_signal["data_double_value"].str_var, "10")
+	assert_eq(without_signal["data_double_value"].int_prop, 10)
+	assert_eq(without_signal["data_double_value"].str_prop, "10")
+	assert_eq(without_signal["data_double_value"].single_value, 10)
+	assert_eq(without_signal["data_double_value"].double_value, 20)
+
+	assert_eq(with_signal["dict_double_value"].int_var, 10)
+	assert_eq(with_signal["dict_double_value"].str_var, "10")
+	assert_eq(with_signal["dict_double_value"].int_prop, 10)
+	assert_eq(with_signal["dict_double_value"].str_prop, "10")
+	assert_eq(with_signal["dict_double_value"].single_value, 10)
+	assert_eq(with_signal["dict_double_value"].double_value, 0)
+
+	assert_eq(without_signal["dict_double_value"].int_var, 10)
+	assert_eq(without_signal["dict_double_value"].str_var, "10")
+	assert_eq(without_signal["dict_double_value"].int_prop, 10)
+	assert_eq(without_signal["dict_double_value"].str_prop, "10")
+	assert_eq(without_signal["dict_double_value"].single_value, 10)
+	assert_eq(without_signal["dict_double_value"].double_value, 0)
 
 	_unbind_target_objects(source, with_signal)
 	_unbind_target_objects(source, without_signal)
@@ -366,19 +573,183 @@ func test_source_to_target_double_value_without_notification():
 	assert_eq(source.single_value, 20)
 	assert_eq(source.double_value, 40)
 
-	assert_eq(with_signal["double_value"].int_var, 10)
-	assert_eq(with_signal["double_value"].str_var, "10")
-	assert_eq(with_signal["double_value"].int_prop, 10)
-	assert_eq(with_signal["double_value"].str_prop, "10")
-	assert_eq(with_signal["double_value"].single_value, 10)
-	assert_eq(with_signal["double_value"].double_value, 20)
+	assert_eq(with_signal["data_double_value"].int_var, 10)
+	assert_eq(with_signal["data_double_value"].str_var, "10")
+	assert_eq(with_signal["data_double_value"].int_prop, 10)
+	assert_eq(with_signal["data_double_value"].str_prop, "10")
+	assert_eq(with_signal["data_double_value"].single_value, 10)
+	assert_eq(with_signal["data_double_value"].double_value, 20)
 
-	assert_eq(without_signal["double_value"].int_var, 10)
-	assert_eq(without_signal["double_value"].str_var, "10")
-	assert_eq(without_signal["double_value"].int_prop, 10)
-	assert_eq(without_signal["double_value"].str_prop, "10")
-	assert_eq(without_signal["double_value"].single_value, 10)
-	assert_eq(without_signal["double_value"].double_value, 20)
+	assert_eq(without_signal["data_double_value"].int_var, 10)
+	assert_eq(without_signal["data_double_value"].str_var, "10")
+	assert_eq(without_signal["data_double_value"].int_prop, 10)
+	assert_eq(without_signal["data_double_value"].str_prop, "10")
+	assert_eq(without_signal["data_double_value"].single_value, 10)
+	assert_eq(without_signal["data_double_value"].double_value, 20)
+
+	assert_eq(with_signal["dict_double_value"].int_var, 10)
+	assert_eq(with_signal["dict_double_value"].str_var, "10")
+	assert_eq(with_signal["dict_double_value"].int_prop, 10)
+	assert_eq(with_signal["dict_double_value"].str_prop, "10")
+	assert_eq(with_signal["dict_double_value"].single_value, 10)
+	assert_eq(with_signal["dict_double_value"].double_value, 0)
+
+	assert_eq(without_signal["dict_double_value"].int_var, 10)
+	assert_eq(without_signal["dict_double_value"].str_var, "10")
+	assert_eq(without_signal["dict_double_value"].int_prop, 10)
+	assert_eq(without_signal["dict_double_value"].str_prop, "10")
+	assert_eq(without_signal["dict_double_value"].single_value, 10)
+	assert_eq(without_signal["dict_double_value"].double_value, 0)
+
+
+func test_source_to_target_double_value_dict_with_wrapped_target():
+	var param: Dictionary = _get_param_for_test_source_to_target_double_value(
+		"dict_with_wrapped_target"
+	)
+	var source = param["source"]
+	var with_signal = param["with_signal"]
+	var without_signal = param["without_signal"]
+
+	source.single_value = 10
+
+	assert_eq(with_signal["data_double_value"].int_var, 20)
+	assert_eq(with_signal["data_double_value"].str_var, "20")
+	assert_eq(with_signal["data_double_value"].int_prop, 20)
+	assert_eq(with_signal["data_double_value"].str_prop, "20")
+	assert_eq(with_signal["data_double_value"].single_value, 20)
+	assert_eq(with_signal["data_double_value"].double_value, 40)
+
+	assert_eq(without_signal["data_double_value"].int_var, 20)
+	assert_eq(without_signal["data_double_value"].str_var, "20")
+	assert_eq(without_signal["data_double_value"].int_prop, 20)
+	assert_eq(without_signal["data_double_value"].str_prop, "20")
+	assert_eq(without_signal["data_double_value"].single_value, 20)
+	assert_eq(without_signal["data_double_value"].double_value, 40)
+
+	assert_eq(with_signal["dict_double_value"].int_var, 20)
+	assert_eq(with_signal["dict_double_value"].str_var, "20")
+	assert_eq(with_signal["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal["dict_double_value"].single_value, 20)
+	assert_eq(with_signal["dict_double_value"].double_value, 0)
+
+	assert_eq(without_signal["dict_double_value"].int_var, 20)
+	assert_eq(without_signal["dict_double_value"].str_var, "20")
+	assert_eq(without_signal["dict_double_value"].int_prop, 20)
+	assert_eq(without_signal["dict_double_value"].str_prop, "20")
+	assert_eq(without_signal["dict_double_value"].single_value, 20)
+	assert_eq(without_signal["dict_double_value"].double_value, 0)
+
+	_unbind_target_objects(source, with_signal)
+	_unbind_target_objects(source, without_signal)
+
+	source.single_value = 20
+
+	assert_eq(source.single_value, 20)
+	assert_eq(source.double_value, 40)
+
+	assert_eq(with_signal["data_double_value"].int_var, 20)
+	assert_eq(with_signal["data_double_value"].str_var, "20")
+	assert_eq(with_signal["data_double_value"].int_prop, 20)
+	assert_eq(with_signal["data_double_value"].str_prop, "20")
+	assert_eq(with_signal["data_double_value"].single_value, 20)
+	assert_eq(with_signal["data_double_value"].double_value, 40)
+
+	assert_eq(without_signal["data_double_value"].int_var, 20)
+	assert_eq(without_signal["data_double_value"].str_var, "20")
+	assert_eq(without_signal["data_double_value"].int_prop, 20)
+	assert_eq(without_signal["data_double_value"].str_prop, "20")
+	assert_eq(without_signal["data_double_value"].single_value, 20)
+	assert_eq(without_signal["data_double_value"].double_value, 40)
+
+	assert_eq(with_signal["dict_double_value"].int_var, 20)
+	assert_eq(with_signal["dict_double_value"].str_var, "20")
+	assert_eq(with_signal["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal["dict_double_value"].single_value, 20)
+	assert_eq(with_signal["dict_double_value"].double_value, 0)
+
+	assert_eq(without_signal["dict_double_value"].int_var, 20)
+	assert_eq(without_signal["dict_double_value"].str_var, "20")
+	assert_eq(without_signal["dict_double_value"].int_prop, 20)
+	assert_eq(without_signal["dict_double_value"].str_prop, "20")
+	assert_eq(without_signal["dict_double_value"].single_value, 20)
+	assert_eq(without_signal["dict_double_value"].double_value, 0)
+
+
+func test_source_to_target_double_value_dict_without_wrapped_target():
+	var param: Dictionary = _get_param_for_test_source_to_target_double_value(
+		"dict_without_wrapped_target"
+	)
+	var source = param["source"]
+	var with_signal = param["with_signal"]
+	var without_signal = param["without_signal"]
+
+	source.single_value = 10
+
+	assert_eq(with_signal["data_double_value"].int_var, 10)
+	assert_eq(with_signal["data_double_value"].str_var, "10")
+	assert_eq(with_signal["data_double_value"].int_prop, 10)
+	assert_eq(with_signal["data_double_value"].str_prop, "10")
+	assert_eq(with_signal["data_double_value"].single_value, 10)
+	assert_eq(with_signal["data_double_value"].double_value, 20)
+
+	assert_eq(without_signal["data_double_value"].int_var, 10)
+	assert_eq(without_signal["data_double_value"].str_var, "10")
+	assert_eq(without_signal["data_double_value"].int_prop, 10)
+	assert_eq(without_signal["data_double_value"].str_prop, "10")
+	assert_eq(without_signal["data_double_value"].single_value, 10)
+	assert_eq(without_signal["data_double_value"].double_value, 20)
+
+	assert_eq(with_signal["dict_double_value"].int_var, 10)
+	assert_eq(with_signal["dict_double_value"].str_var, "10")
+	assert_eq(with_signal["dict_double_value"].int_prop, 10)
+	assert_eq(with_signal["dict_double_value"].str_prop, "10")
+	assert_eq(with_signal["dict_double_value"].single_value, 10)
+	assert_eq(with_signal["dict_double_value"].double_value, 0)
+
+	assert_eq(without_signal["dict_double_value"].int_var, 10)
+	assert_eq(without_signal["dict_double_value"].str_var, "10")
+	assert_eq(without_signal["dict_double_value"].int_prop, 10)
+	assert_eq(without_signal["dict_double_value"].str_prop, "10")
+	assert_eq(without_signal["dict_double_value"].single_value, 10)
+	assert_eq(without_signal["dict_double_value"].double_value, 0)
+
+	_unbind_target_objects(source, with_signal)
+	_unbind_target_objects(source, without_signal)
+
+	source.single_value = 20
+
+	assert_eq(source.single_value, 20)
+	assert_eq(source.double_value, 40)
+
+	assert_eq(with_signal["data_double_value"].int_var, 10)
+	assert_eq(with_signal["data_double_value"].str_var, "10")
+	assert_eq(with_signal["data_double_value"].int_prop, 10)
+	assert_eq(with_signal["data_double_value"].str_prop, "10")
+	assert_eq(with_signal["data_double_value"].single_value, 10)
+	assert_eq(with_signal["data_double_value"].double_value, 20)
+
+	assert_eq(without_signal["data_double_value"].int_var, 10)
+	assert_eq(without_signal["data_double_value"].str_var, "10")
+	assert_eq(without_signal["data_double_value"].int_prop, 10)
+	assert_eq(without_signal["data_double_value"].str_prop, "10")
+	assert_eq(without_signal["data_double_value"].single_value, 10)
+	assert_eq(without_signal["data_double_value"].double_value, 20)
+
+	assert_eq(with_signal["dict_double_value"].int_var, 10)
+	assert_eq(with_signal["dict_double_value"].str_var, "10")
+	assert_eq(with_signal["dict_double_value"].int_prop, 10)
+	assert_eq(with_signal["dict_double_value"].str_prop, "10")
+	assert_eq(with_signal["dict_double_value"].single_value, 10)
+	assert_eq(with_signal["dict_double_value"].double_value, 0)
+
+	assert_eq(without_signal["dict_double_value"].int_var, 10)
+	assert_eq(without_signal["dict_double_value"].str_var, "10")
+	assert_eq(without_signal["dict_double_value"].int_prop, 10)
+	assert_eq(without_signal["dict_double_value"].str_prop, "10")
+	assert_eq(without_signal["dict_double_value"].single_value, 10)
+	assert_eq(without_signal["dict_double_value"].double_value, 0)
 
 
 func test_target_to_source(
@@ -387,116 +758,116 @@ func test_target_to_source(
 	var source = param["source"]
 	var target_objects = param["target_objects"]
 
-	target_objects["int_var"].int_var_changed.emit(6)
+	target_objects["data_int_var"].int_var_changed.emit(6)
 	assert_eq(source.int_var, 6)
-	target_objects["int_var"].str_var_changed.emit("7")
+	target_objects["data_int_var"].str_var_changed.emit("7")
 	assert_eq(source.int_var, 7)
-	target_objects["int_var"].int_prop_changed.emit(8)
+	target_objects["data_int_var"].int_prop_changed.emit(8)
 	assert_eq(source.int_var, 8)
-	target_objects["int_var"].str_prop_changed.emit("9")
+	target_objects["data_int_var"].str_prop_changed.emit("9")
 	assert_eq(source.int_var, 9)
-	target_objects["int_var"].single_value_changed.emit(10)
+	target_objects["data_int_var"].single_value_changed.emit(10)
 	assert_eq(source.int_var, 10)
 
-	target_objects["str_var"].int_var_changed.emit(6)
+	target_objects["data_str_var"].int_var_changed.emit(6)
 	assert_eq(source.str_var, "6")
-	target_objects["str_var"].str_var_changed.emit("7")
+	target_objects["data_str_var"].str_var_changed.emit("7")
 	assert_eq(source.str_var, "7")
-	target_objects["str_var"].int_prop_changed.emit(8)
+	target_objects["data_str_var"].int_prop_changed.emit(8)
 	assert_eq(source.str_var, "8")
-	target_objects["str_var"].str_prop_changed.emit("9")
+	target_objects["data_str_var"].str_prop_changed.emit("9")
 	assert_eq(source.str_var, "9")
-	target_objects["str_var"].single_value_changed.emit(10)
+	target_objects["data_str_var"].single_value_changed.emit(10)
 	assert_eq(source.str_var, "10")
 
-	target_objects["int_prop"].int_var_changed.emit(6)
+	target_objects["data_int_prop"].int_var_changed.emit(6)
 	assert_eq(source.int_prop, 6)
-	target_objects["int_prop"].str_var_changed.emit("7")
+	target_objects["data_int_prop"].str_var_changed.emit("7")
 	assert_eq(source.int_prop, 7)
-	target_objects["int_prop"].int_prop_changed.emit(8)
+	target_objects["data_int_prop"].int_prop_changed.emit(8)
 	assert_eq(source.int_prop, 8)
-	target_objects["int_prop"].str_prop_changed.emit("9")
+	target_objects["data_int_prop"].str_prop_changed.emit("9")
 	assert_eq(source.int_prop, 9)
-	target_objects["int_prop"].single_value_changed.emit(10)
+	target_objects["data_int_prop"].single_value_changed.emit(10)
 	assert_eq(source.int_prop, 10)
 
-	target_objects["str_prop"].int_var_changed.emit(6)
+	target_objects["data_str_prop"].int_var_changed.emit(6)
 	assert_eq(source.str_prop, "6")
-	target_objects["str_prop"].str_var_changed.emit("7")
+	target_objects["data_str_prop"].str_var_changed.emit("7")
 	assert_eq(source.str_prop, "7")
-	target_objects["str_prop"].int_prop_changed.emit(8)
+	target_objects["data_str_prop"].int_prop_changed.emit(8)
 	assert_eq(source.str_prop, "8")
-	target_objects["str_prop"].str_prop_changed.emit("9")
+	target_objects["data_str_prop"].str_prop_changed.emit("9")
 	assert_eq(source.str_prop, "9")
-	target_objects["str_prop"].single_value_changed.emit(10)
+	target_objects["data_str_prop"].single_value_changed.emit(10)
 	assert_eq(source.str_prop, "10")
 
-	target_objects["single_value"].int_var_changed.emit(6)
+	target_objects["data_single_value"].int_var_changed.emit(6)
 	assert_eq(source.single_value, 6)
-	target_objects["single_value"].str_var_changed.emit("7")
+	target_objects["data_single_value"].str_var_changed.emit("7")
 	assert_eq(source.single_value, 7)
-	target_objects["single_value"].int_prop_changed.emit(8)
+	target_objects["data_single_value"].int_prop_changed.emit(8)
 	assert_eq(source.single_value, 8)
-	target_objects["single_value"].str_prop_changed.emit("9")
+	target_objects["data_single_value"].str_prop_changed.emit("9")
 	assert_eq(source.single_value, 9)
-	target_objects["single_value"].single_value_changed.emit(10)
+	target_objects["data_single_value"].single_value_changed.emit(10)
 	assert_eq(source.single_value, 10)
 
 	_unbind_target_objects(source, target_objects)
 
-	target_objects["int_var"].int_var_changed.emit(11)
+	target_objects["data_int_var"].int_var_changed.emit(11)
 	assert_eq(source.int_var, 10)
-	target_objects["int_var"].str_var_changed.emit("12")
+	target_objects["data_int_var"].str_var_changed.emit("12")
 	assert_eq(source.int_var, 10)
-	target_objects["int_var"].int_prop_changed.emit(13)
+	target_objects["data_int_var"].int_prop_changed.emit(13)
 	assert_eq(source.int_var, 10)
-	target_objects["int_var"].str_prop_changed.emit("14")
+	target_objects["data_int_var"].str_prop_changed.emit("14")
 	assert_eq(source.int_var, 10)
-	target_objects["int_var"].single_value_changed.emit(15)
+	target_objects["data_int_var"].single_value_changed.emit(15)
 	assert_eq(source.int_var, 10)
 
-	target_objects["str_var"].int_var_changed.emit(11)
+	target_objects["data_str_var"].int_var_changed.emit(11)
 	assert_eq(source.str_var, "10")
-	target_objects["str_var"].str_var_changed.emit("12")
+	target_objects["data_str_var"].str_var_changed.emit("12")
 	assert_eq(source.str_var, "10")
-	target_objects["str_var"].int_prop_changed.emit(13)
+	target_objects["data_str_var"].int_prop_changed.emit(13)
 	assert_eq(source.str_var, "10")
-	target_objects["str_var"].str_prop_changed.emit("14")
+	target_objects["data_str_var"].str_prop_changed.emit("14")
 	assert_eq(source.str_var, "10")
-	target_objects["str_var"].single_value_changed.emit(15)
+	target_objects["data_str_var"].single_value_changed.emit(15)
 	assert_eq(source.str_var, "10")
 
-	target_objects["int_prop"].int_var_changed.emit(11)
+	target_objects["data_int_prop"].int_var_changed.emit(11)
 	assert_eq(source.int_prop, 10)
-	target_objects["int_prop"].str_var_changed.emit("12")
+	target_objects["data_int_prop"].str_var_changed.emit("12")
 	assert_eq(source.int_prop, 10)
-	target_objects["int_prop"].int_prop_changed.emit(13)
+	target_objects["data_int_prop"].int_prop_changed.emit(13)
 	assert_eq(source.int_prop, 10)
-	target_objects["int_prop"].str_prop_changed.emit("14")
+	target_objects["data_int_prop"].str_prop_changed.emit("14")
 	assert_eq(source.int_prop, 10)
-	target_objects["int_prop"].single_value_changed.emit(15)
+	target_objects["data_int_prop"].single_value_changed.emit(15)
 	assert_eq(source.int_prop, 10)
 
-	target_objects["str_prop"].int_var_changed.emit(11)
+	target_objects["data_str_prop"].int_var_changed.emit(11)
 	assert_eq(source.str_prop, "10")
-	target_objects["str_prop"].str_var_changed.emit("12")
+	target_objects["data_str_prop"].str_var_changed.emit("12")
 	assert_eq(source.str_prop, "10")
-	target_objects["str_prop"].int_prop_changed.emit(13)
+	target_objects["data_str_prop"].int_prop_changed.emit(13)
 	assert_eq(source.str_prop, "10")
-	target_objects["str_prop"].str_prop_changed.emit("14")
+	target_objects["data_str_prop"].str_prop_changed.emit("14")
 	assert_eq(source.str_prop, "10")
-	target_objects["str_prop"].single_value_changed.emit(15)
+	target_objects["data_str_prop"].single_value_changed.emit(15)
 	assert_eq(source.str_prop, "10")
 
-	target_objects["single_value"].int_var_changed.emit(11)
+	target_objects["data_single_value"].int_var_changed.emit(11)
 	assert_eq(source.single_value, 10)
-	target_objects["single_value"].str_var_changed.emit("12")
+	target_objects["data_single_value"].str_var_changed.emit("12")
 	assert_eq(source.single_value, 10)
-	target_objects["single_value"].int_prop_changed.emit(13)
+	target_objects["data_single_value"].int_prop_changed.emit(13)
 	assert_eq(source.single_value, 10)
-	target_objects["single_value"].str_prop_changed.emit("14")
+	target_objects["data_single_value"].str_prop_changed.emit("14")
 	assert_eq(source.single_value, 10)
-	target_objects["single_value"].single_value_changed.emit(15)
+	target_objects["data_single_value"].single_value_changed.emit(15)
 	assert_eq(source.single_value, 10)
 
 
@@ -563,118 +934,166 @@ func _get_params_for_test_target_to_source():
 	return params
 
 
-func _bind_target_objects(source: BindingSource, with_signal: bool):
+func _bind_target_objects(source: BaseBindingSource, with_signal: bool):
 	var target_objects = {
-		"int_var": Data.new(),
-		"str_var": Data.new(),
-		"int_prop": Data.new(),
-		"str_prop": Data.new(),
-		"single_value": Data.new(),
-		"double_value": Data.new(),
+		"data_int_var": Data.new(),
+		"data_str_var": Data.new(),
+		"data_int_prop": Data.new(),
+		"data_str_prop": Data.new(),
+		"data_single_value": Data.new(),
+		"data_double_value": Data.new(),
+		"dict_int_var": _dict_new(),
+		"dict_str_var": _dict_new(),
+		"dict_int_prop": _dict_new(),
+		"dict_str_prop": _dict_new(),
+		"dict_single_value": _dict_new(),
+		"dict_double_value": _dict_new(),
 	}
 
-	_bind_int(source, "int_var", target_objects["int_var"], with_signal)
-	_bind_str(source, "str_var", target_objects["str_var"], with_signal)
+	_bind_int(source, "int_var", target_objects["data_int_var"], with_signal)
+	_bind_str(source, "str_var", target_objects["data_str_var"], with_signal)
 
-	_bind_int(source, "int_prop", target_objects["int_prop"], with_signal)
-	_bind_str(source, "str_prop", target_objects["str_prop"], with_signal)
+	_bind_int(source, "int_prop", target_objects["data_int_prop"], with_signal)
+	_bind_str(source, "str_prop", target_objects["data_str_prop"], with_signal)
 
-	_bind_int(source, "single_value", target_objects["single_value"], with_signal)
-	_bind_int(source, "double_value", target_objects["double_value"], with_signal)
+	_bind_int(source, "single_value", target_objects["data_single_value"], with_signal)
+	_bind_int(source, "double_value", target_objects["data_double_value"], with_signal)
+
+	_bind_int(source, "int_var", target_objects["dict_int_var"], false)
+	_bind_str(source, "str_var", target_objects["dict_str_var"], false)
+
+	_bind_int(source, "int_prop", target_objects["dict_int_prop"], false)
+	_bind_str(source, "str_prop", target_objects["dict_str_prop"], false)
+
+	_bind_int(source, "single_value", target_objects["dict_single_value"], false)
+	_bind_int(source, "double_value", target_objects["dict_double_value"], false)
 
 	return target_objects
 
 
-func _unbind_target_objects(source: BindingSource, target_objects: Dictionary):
-	_unbind(source, "int_var", target_objects["int_var"])
-	_unbind(source, "str_var", target_objects["str_var"])
+func _unbind_target_objects(source: BaseBindingSource, target_objects: Dictionary):
+	_unbind(source, "int_var", target_objects["data_int_var"])
+	_unbind(source, "str_var", target_objects["data_str_var"])
 
-	_unbind(source, "int_prop", target_objects["int_prop"])
-	_unbind(source, "str_prop", target_objects["str_prop"])
+	_unbind(source, "int_prop", target_objects["data_int_prop"])
+	_unbind(source, "str_prop", target_objects["data_str_prop"])
 
-	_unbind(source, "single_value", target_objects["single_value"])
-	_unbind(source, "double_value", target_objects["double_value"])
+	_unbind(source, "single_value", target_objects["data_single_value"])
+	_unbind(source, "double_value", target_objects["data_double_value"])
+
+	_unbind(source, "int_var", target_objects["dict_int_var"])
+	_unbind(source, "str_var", target_objects["dict_str_var"])
+
+	_unbind(source, "int_prop", target_objects["dict_int_prop"])
+	_unbind(source, "str_prop", target_objects["dict_str_prop"])
+
+	_unbind(source, "single_value", target_objects["dict_single_value"])
+	_unbind(source, "double_value", target_objects["dict_double_value"])
 
 
 func _bind_int(
-	source: BindingSource, source_property: StringName, target_object: Data, with_signal: bool
+	source: BaseBindingSource, source_property: StringName, target_object, with_signal: bool
 ):
-	var converter = [str, BindingUtils.to_int]
+	var pipe = BindingConverterPipeline.new([str], [BindingUtils.to_int])
 
 	if with_signal:
-		source.bind(source_property).to(target_object, "int_var", target_object.int_var_changed)
-		source.bind(source_property).using(converter).to(
-			target_object, "str_var", target_object.str_var_changed
+		source.bind_to(
+			source_property, target_object, "int_var", null, target_object.int_var_changed
+		)
+		source.bind_to(
+			source_property, target_object, "str_var", pipe, target_object.str_var_changed
 		)
 
-		source.bind(source_property).to(target_object, "int_prop", target_object.int_prop_changed)
-		source.bind(source_property).using(converter).to(
-			target_object, "str_prop", target_object.str_prop_changed
+		source.bind_to(
+			source_property, target_object, "int_prop", null, target_object.int_prop_changed
+		)
+		source.bind_to(
+			source_property, target_object, "str_prop", pipe, target_object.str_prop_changed
 		)
 
-		source.bind(source_property).to(
-			target_object, "single_value", target_object.single_value_changed
+		source.bind_to(
+			source_property, target_object, "single_value", null, target_object.single_value_changed
 		)
 
 	else:
-		source.bind(source_property).to(target_object, "int_var")
-		source.bind(source_property).using(converter).to(target_object, "str_var")
+		source.bind_to(source_property, target_object, "int_var", null)
+		source.bind_to(source_property, target_object, "str_var", pipe)
 
-		source.bind(source_property).to(target_object, "int_prop")
-		source.bind(source_property).using(converter).to(target_object, "str_prop")
+		source.bind_to(source_property, target_object, "int_prop", null)
+		source.bind_to(source_property, target_object, "str_prop", pipe)
 
-		source.bind(source_property).to(target_object, "single_value")
+		source.bind_to(source_property, target_object, "single_value", null)
 
 
 func _bind_str(
-	source: BindingSource, source_property: StringName, target_object: Data, with_signal: bool
+	source: BaseBindingSource, source_property: StringName, target_object, with_signal: bool
 ):
-	var converter = [BindingUtils.to_int, str]
+	var pipe = BindingConverterPipeline.new([BindingUtils.to_int], [str])
 
 	if with_signal:
-		source.bind(source_property).using(converter).to(
-			target_object, "int_var", target_object.int_var_changed
+		source.bind_to(
+			source_property, target_object, "int_var", pipe, target_object.int_var_changed
 		)
-		source.bind(source_property).to(target_object, "str_var", target_object.str_var_changed)
-
-		source.bind(source_property).using(converter).to(
-			target_object, "int_prop", target_object.int_prop_changed
+		source.bind_to(
+			source_property, target_object, "str_var", null, target_object.str_var_changed
 		)
-		source.bind(source_property).to(target_object, "str_prop", target_object.str_prop_changed)
 
-		source.bind(source_property).using(converter).to(
-			target_object, "single_value", target_object.single_value_changed
+		source.bind_to(
+			source_property, target_object, "int_prop", pipe, target_object.int_prop_changed
+		)
+		source.bind_to(
+			source_property, target_object, "str_prop", null, target_object.str_prop_changed
+		)
+
+		source.bind_to(
+			source_property, target_object, "single_value", pipe, target_object.single_value_changed
 		)
 
 	else:
-		source.bind(source_property).using(converter).to(target_object, "int_var")
-		source.bind(source_property).to(target_object, "str_var")
+		source.bind_to(source_property, target_object, "int_var", pipe)
+		source.bind_to(source_property, target_object, "str_var", null)
 
-		source.bind(source_property).using(converter).to(target_object, "int_prop")
-		source.bind(source_property).to(target_object, "str_prop")
+		source.bind_to(source_property, target_object, "int_prop", pipe)
+		source.bind_to(source_property, target_object, "str_prop", null)
 
-		source.bind(source_property).using(converter).to(target_object, "single_value")
+		source.bind_to(source_property, target_object, "single_value", pipe)
 
 
-func _unbind(source: BindingSource, source_property: StringName, target_object: Data):
-	source.unbind(source_property).from(target_object, "int_var")
-	source.unbind(source_property).from(target_object, "str_var")
+func _unbind(source: BaseBindingSource, source_property: StringName, target_object):
+	source.unbind_from(source_property, target_object, "int_var")
+	source.unbind_from(source_property, target_object, "str_var")
 
-	source.unbind(source_property).from(target_object, "int_prop")
-	source.unbind(source_property).from(target_object, "str_prop")
+	source.unbind_from(source_property, target_object, "int_prop")
+	source.unbind_from(source_property, target_object, "str_prop")
 
-	source.unbind(source_property).from(target_object, "single_value")
+	source.unbind_from(source_property, target_object, "single_value")
+
+
+func _dict_new():
+	return {
+		"int_var": 0,
+		"str_var": "",
+		"int_prop": 0,
+		"str_prop": "",
+		"single_value": 0,
+		"double_value": 0,
+	}
 
 
 class Data:
 	signal notified(property: StringName)
 
+	@warning_ignore("unused_signal")
 	signal int_var_changed(new_value: int)
+	@warning_ignore("unused_signal")
 	signal str_var_changed(new_value: String)
 
+	@warning_ignore("unused_signal")
 	signal int_prop_changed(new_value: int)
+	@warning_ignore("unused_signal")
 	signal str_prop_changed(new_value: String)
 
+	@warning_ignore("unused_signal")
 	signal single_value_changed(new_value: int)
 
 	var int_var: int
