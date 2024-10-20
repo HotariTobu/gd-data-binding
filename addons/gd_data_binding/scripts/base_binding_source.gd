@@ -139,12 +139,11 @@ static func _get_binding_key(target_object, target_property: StringName):
 	if target_object is Object:
 		return "%s.%s" % [target_object.get_instance_id(), target_property]
 
-	elif target_object is Dictionary:
+	if target_object is Dictionary:
 		var id = target_object.get_or_add("__BINDING_ID__", UUID.v7())
 		return "%s.%s" % [id, target_property]
 
-	else:
-		push_error("The target object must be an object or a dict.")
+	push_error("The target object must be an object or a dict.")
 
 
 class BindingWithTargetSignal:

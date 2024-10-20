@@ -1126,3 +1126,5 @@ class Data:
 	var double_value: int:
 		get:
 			return single_value * 2
+
+# gdlint:ignore = max-file-lines
