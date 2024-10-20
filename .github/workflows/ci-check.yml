@@ -30,7 +30,7 @@ jobs:
         include-templates: false
 
     - name: Setup GUT
-      run: godot --headless --import --path "$PWD"
+      run: godot --headless --import
 
     - name: Test
-      run: godot --headless --debug --path "$PWD" -s addons/gut/gut_cmdln.gd -gexit -gconfig .gutconfig
+      run: godot --headless --debug -s addons/gut/gut_cmdln.gd -gexit -gconfig .gutconfig
