@@ -2,6 +2,8 @@ extends GutTest
 
 signal notified(property: StringName)
 
+enum TargetSignal { INSTANCE, NAME, NONE }
+
 var _source_dict: Dictionary
 var _sources: Array:
 	get:
@@ -305,17 +307,25 @@ func test_source_to_target_double_value_with_str_notification():
 		"with_str_notification"
 	)
 	var source = param["source"]
-	var with_signal = param["with_signal"]
+	var with_signal_instance = param["with_signal_instance"]
+	var with_signal_name = param["with_signal_name"]
 	var without_signal = param["without_signal"]
 
 	source.single_value = 10
 
-	assert_eq(with_signal["data_double_value"].int_var, 20)
-	assert_eq(with_signal["data_double_value"].str_var, "20")
-	assert_eq(with_signal["data_double_value"].int_prop, 20)
-	assert_eq(with_signal["data_double_value"].str_prop, "20")
-	assert_eq(with_signal["data_double_value"].single_value, 20)
-	assert_eq(with_signal["data_double_value"].double_value, 40)
+	assert_eq(with_signal_instance["data_double_value"].int_var, 20)
+	assert_eq(with_signal_instance["data_double_value"].str_var, "20")
+	assert_eq(with_signal_instance["data_double_value"].int_prop, 20)
+	assert_eq(with_signal_instance["data_double_value"].str_prop, "20")
+	assert_eq(with_signal_instance["data_double_value"].single_value, 20)
+	assert_eq(with_signal_instance["data_double_value"].double_value, 40)
+
+	assert_eq(with_signal_name["data_double_value"].int_var, 20)
+	assert_eq(with_signal_name["data_double_value"].str_var, "20")
+	assert_eq(with_signal_name["data_double_value"].int_prop, 20)
+	assert_eq(with_signal_name["data_double_value"].str_prop, "20")
+	assert_eq(with_signal_name["data_double_value"].single_value, 20)
+	assert_eq(with_signal_name["data_double_value"].double_value, 40)
 
 	assert_eq(without_signal["data_double_value"].int_var, 20)
 	assert_eq(without_signal["data_double_value"].str_var, "20")
@@ -324,12 +334,19 @@ func test_source_to_target_double_value_with_str_notification():
 	assert_eq(without_signal["data_double_value"].single_value, 20)
 	assert_eq(without_signal["data_double_value"].double_value, 40)
 
-	assert_eq(with_signal["dict_double_value"].int_var, 20)
-	assert_eq(with_signal["dict_double_value"].str_var, "20")
-	assert_eq(with_signal["dict_double_value"].int_prop, 20)
-	assert_eq(with_signal["dict_double_value"].str_prop, "20")
-	assert_eq(with_signal["dict_double_value"].single_value, 20)
-	assert_eq(with_signal["dict_double_value"].double_value, 0)
+	assert_eq(with_signal_instance["dict_double_value"].int_var, 20)
+	assert_eq(with_signal_instance["dict_double_value"].str_var, "20")
+	assert_eq(with_signal_instance["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal_instance["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal_instance["dict_double_value"].single_value, 20)
+	assert_eq(with_signal_instance["dict_double_value"].double_value, 0)
+
+	assert_eq(with_signal_name["dict_double_value"].int_var, 20)
+	assert_eq(with_signal_name["dict_double_value"].str_var, "20")
+	assert_eq(with_signal_name["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal_name["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal_name["dict_double_value"].single_value, 20)
+	assert_eq(with_signal_name["dict_double_value"].double_value, 0)
 
 	assert_eq(without_signal["dict_double_value"].int_var, 20)
 	assert_eq(without_signal["dict_double_value"].str_var, "20")
@@ -338,7 +355,8 @@ func test_source_to_target_double_value_with_str_notification():
 	assert_eq(without_signal["dict_double_value"].single_value, 20)
 	assert_eq(without_signal["dict_double_value"].double_value, 0)
 
-	_unbind_target_objects(source, with_signal)
+	_unbind_target_objects(source, with_signal_instance)
+	_unbind_target_objects(source, with_signal_name)
 	_unbind_target_objects(source, without_signal)
 
 	source.single_value = 20
@@ -346,12 +364,19 @@ func test_source_to_target_double_value_with_str_notification():
 	assert_eq(source.single_value, 20)
 	assert_eq(source.double_value, 40)
 
-	assert_eq(with_signal["data_double_value"].int_var, 20)
-	assert_eq(with_signal["data_double_value"].str_var, "20")
-	assert_eq(with_signal["data_double_value"].int_prop, 20)
-	assert_eq(with_signal["data_double_value"].str_prop, "20")
-	assert_eq(with_signal["data_double_value"].single_value, 20)
-	assert_eq(with_signal["data_double_value"].double_value, 40)
+	assert_eq(with_signal_instance["data_double_value"].int_var, 20)
+	assert_eq(with_signal_instance["data_double_value"].str_var, "20")
+	assert_eq(with_signal_instance["data_double_value"].int_prop, 20)
+	assert_eq(with_signal_instance["data_double_value"].str_prop, "20")
+	assert_eq(with_signal_instance["data_double_value"].single_value, 20)
+	assert_eq(with_signal_instance["data_double_value"].double_value, 40)
+
+	assert_eq(with_signal_name["data_double_value"].int_var, 20)
+	assert_eq(with_signal_name["data_double_value"].str_var, "20")
+	assert_eq(with_signal_name["data_double_value"].int_prop, 20)
+	assert_eq(with_signal_name["data_double_value"].str_prop, "20")
+	assert_eq(with_signal_name["data_double_value"].single_value, 20)
+	assert_eq(with_signal_name["data_double_value"].double_value, 40)
 
 	assert_eq(without_signal["data_double_value"].int_var, 20)
 	assert_eq(without_signal["data_double_value"].str_var, "20")
@@ -360,12 +385,19 @@ func test_source_to_target_double_value_with_str_notification():
 	assert_eq(without_signal["data_double_value"].single_value, 20)
 	assert_eq(without_signal["data_double_value"].double_value, 40)
 
-	assert_eq(with_signal["dict_double_value"].int_var, 20)
-	assert_eq(with_signal["dict_double_value"].str_var, "20")
-	assert_eq(with_signal["dict_double_value"].int_prop, 20)
-	assert_eq(with_signal["dict_double_value"].str_prop, "20")
-	assert_eq(with_signal["dict_double_value"].single_value, 20)
-	assert_eq(with_signal["dict_double_value"].double_value, 0)
+	assert_eq(with_signal_instance["dict_double_value"].int_var, 20)
+	assert_eq(with_signal_instance["dict_double_value"].str_var, "20")
+	assert_eq(with_signal_instance["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal_instance["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal_instance["dict_double_value"].single_value, 20)
+	assert_eq(with_signal_instance["dict_double_value"].double_value, 0)
+
+	assert_eq(with_signal_name["dict_double_value"].int_var, 20)
+	assert_eq(with_signal_name["dict_double_value"].str_var, "20")
+	assert_eq(with_signal_name["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal_name["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal_name["dict_double_value"].single_value, 20)
+	assert_eq(with_signal_name["dict_double_value"].double_value, 0)
 
 	assert_eq(without_signal["dict_double_value"].int_var, 20)
 	assert_eq(without_signal["dict_double_value"].str_var, "20")
@@ -380,17 +412,25 @@ func test_source_to_target_double_value_with_dir_notification():
 		"with_dir_notification"
 	)
 	var source = param["source"]
-	var with_signal = param["with_signal"]
+	var with_signal_instance = param["with_signal_instance"]
+	var with_signal_name = param["with_signal_name"]
 	var without_signal = param["without_signal"]
 
 	source.single_value = 10
 
-	assert_eq(with_signal["data_double_value"].int_var, 20)
-	assert_eq(with_signal["data_double_value"].str_var, "20")
-	assert_eq(with_signal["data_double_value"].int_prop, 20)
-	assert_eq(with_signal["data_double_value"].str_prop, "20")
-	assert_eq(with_signal["data_double_value"].single_value, 20)
-	assert_eq(with_signal["data_double_value"].double_value, 40)
+	assert_eq(with_signal_instance["data_double_value"].int_var, 20)
+	assert_eq(with_signal_instance["data_double_value"].str_var, "20")
+	assert_eq(with_signal_instance["data_double_value"].int_prop, 20)
+	assert_eq(with_signal_instance["data_double_value"].str_prop, "20")
+	assert_eq(with_signal_instance["data_double_value"].single_value, 20)
+	assert_eq(with_signal_instance["data_double_value"].double_value, 40)
+
+	assert_eq(with_signal_name["data_double_value"].int_var, 20)
+	assert_eq(with_signal_name["data_double_value"].str_var, "20")
+	assert_eq(with_signal_name["data_double_value"].int_prop, 20)
+	assert_eq(with_signal_name["data_double_value"].str_prop, "20")
+	assert_eq(with_signal_name["data_double_value"].single_value, 20)
+	assert_eq(with_signal_name["data_double_value"].double_value, 40)
 
 	assert_eq(without_signal["data_double_value"].int_var, 20)
 	assert_eq(without_signal["data_double_value"].str_var, "20")
@@ -399,12 +439,19 @@ func test_source_to_target_double_value_with_dir_notification():
 	assert_eq(without_signal["data_double_value"].single_value, 20)
 	assert_eq(without_signal["data_double_value"].double_value, 40)
 
-	assert_eq(with_signal["dict_double_value"].int_var, 20)
-	assert_eq(with_signal["dict_double_value"].str_var, "20")
-	assert_eq(with_signal["dict_double_value"].int_prop, 20)
-	assert_eq(with_signal["dict_double_value"].str_prop, "20")
-	assert_eq(with_signal["dict_double_value"].single_value, 20)
-	assert_eq(with_signal["dict_double_value"].double_value, 0)
+	assert_eq(with_signal_instance["dict_double_value"].int_var, 20)
+	assert_eq(with_signal_instance["dict_double_value"].str_var, "20")
+	assert_eq(with_signal_instance["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal_instance["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal_instance["dict_double_value"].single_value, 20)
+	assert_eq(with_signal_instance["dict_double_value"].double_value, 0)
+
+	assert_eq(with_signal_name["dict_double_value"].int_var, 20)
+	assert_eq(with_signal_name["dict_double_value"].str_var, "20")
+	assert_eq(with_signal_name["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal_name["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal_name["dict_double_value"].single_value, 20)
+	assert_eq(with_signal_name["dict_double_value"].double_value, 0)
 
 	assert_eq(without_signal["dict_double_value"].int_var, 20)
 	assert_eq(without_signal["dict_double_value"].str_var, "20")
@@ -413,7 +460,8 @@ func test_source_to_target_double_value_with_dir_notification():
 	assert_eq(without_signal["dict_double_value"].single_value, 20)
 	assert_eq(without_signal["dict_double_value"].double_value, 0)
 
-	_unbind_target_objects(source, with_signal)
+	_unbind_target_objects(source, with_signal_instance)
+	_unbind_target_objects(source, with_signal_name)
 	_unbind_target_objects(source, without_signal)
 
 	source.single_value = 20
@@ -421,12 +469,19 @@ func test_source_to_target_double_value_with_dir_notification():
 	assert_eq(source.single_value, 20)
 	assert_eq(source.double_value, 40)
 
-	assert_eq(with_signal["data_double_value"].int_var, 20)
-	assert_eq(with_signal["data_double_value"].str_var, "20")
-	assert_eq(with_signal["data_double_value"].int_prop, 20)
-	assert_eq(with_signal["data_double_value"].str_prop, "20")
-	assert_eq(with_signal["data_double_value"].single_value, 20)
-	assert_eq(with_signal["data_double_value"].double_value, 40)
+	assert_eq(with_signal_instance["data_double_value"].int_var, 20)
+	assert_eq(with_signal_instance["data_double_value"].str_var, "20")
+	assert_eq(with_signal_instance["data_double_value"].int_prop, 20)
+	assert_eq(with_signal_instance["data_double_value"].str_prop, "20")
+	assert_eq(with_signal_instance["data_double_value"].single_value, 20)
+	assert_eq(with_signal_instance["data_double_value"].double_value, 40)
+
+	assert_eq(with_signal_name["data_double_value"].int_var, 20)
+	assert_eq(with_signal_name["data_double_value"].str_var, "20")
+	assert_eq(with_signal_name["data_double_value"].int_prop, 20)
+	assert_eq(with_signal_name["data_double_value"].str_prop, "20")
+	assert_eq(with_signal_name["data_double_value"].single_value, 20)
+	assert_eq(with_signal_name["data_double_value"].double_value, 40)
 
 	assert_eq(without_signal["data_double_value"].int_var, 20)
 	assert_eq(without_signal["data_double_value"].str_var, "20")
@@ -435,12 +490,19 @@ func test_source_to_target_double_value_with_dir_notification():
 	assert_eq(without_signal["data_double_value"].single_value, 20)
 	assert_eq(without_signal["data_double_value"].double_value, 40)
 
-	assert_eq(with_signal["dict_double_value"].int_var, 20)
-	assert_eq(with_signal["dict_double_value"].str_var, "20")
-	assert_eq(with_signal["dict_double_value"].int_prop, 20)
-	assert_eq(with_signal["dict_double_value"].str_prop, "20")
-	assert_eq(with_signal["dict_double_value"].single_value, 20)
-	assert_eq(with_signal["dict_double_value"].double_value, 0)
+	assert_eq(with_signal_instance["dict_double_value"].int_var, 20)
+	assert_eq(with_signal_instance["dict_double_value"].str_var, "20")
+	assert_eq(with_signal_instance["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal_instance["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal_instance["dict_double_value"].single_value, 20)
+	assert_eq(with_signal_instance["dict_double_value"].double_value, 0)
+
+	assert_eq(with_signal_name["dict_double_value"].int_var, 20)
+	assert_eq(with_signal_name["dict_double_value"].str_var, "20")
+	assert_eq(with_signal_name["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal_name["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal_name["dict_double_value"].single_value, 20)
+	assert_eq(with_signal_name["dict_double_value"].double_value, 0)
 
 	assert_eq(without_signal["dict_double_value"].int_var, 20)
 	assert_eq(without_signal["dict_double_value"].str_var, "20")
@@ -455,18 +517,26 @@ func test_source_to_target_double_value_with_ext_notification():
 		"with_ext_notification"
 	)
 	var source = param["source"]
-	var with_signal = param["with_signal"]
+	var with_signal_instance = param["with_signal_instance"]
+	var with_signal_name = param["with_signal_name"]
 	var without_signal = param["without_signal"]
 
 	source.single_value = 10
 	notified.emit("double_value")
 
-	assert_eq(with_signal["data_double_value"].int_var, 20)
-	assert_eq(with_signal["data_double_value"].str_var, "20")
-	assert_eq(with_signal["data_double_value"].int_prop, 20)
-	assert_eq(with_signal["data_double_value"].str_prop, "20")
-	assert_eq(with_signal["data_double_value"].single_value, 20)
-	assert_eq(with_signal["data_double_value"].double_value, 40)
+	assert_eq(with_signal_instance["data_double_value"].int_var, 20)
+	assert_eq(with_signal_instance["data_double_value"].str_var, "20")
+	assert_eq(with_signal_instance["data_double_value"].int_prop, 20)
+	assert_eq(with_signal_instance["data_double_value"].str_prop, "20")
+	assert_eq(with_signal_instance["data_double_value"].single_value, 20)
+	assert_eq(with_signal_instance["data_double_value"].double_value, 40)
+
+	assert_eq(with_signal_name["data_double_value"].int_var, 20)
+	assert_eq(with_signal_name["data_double_value"].str_var, "20")
+	assert_eq(with_signal_name["data_double_value"].int_prop, 20)
+	assert_eq(with_signal_name["data_double_value"].str_prop, "20")
+	assert_eq(with_signal_name["data_double_value"].single_value, 20)
+	assert_eq(with_signal_name["data_double_value"].double_value, 40)
 
 	assert_eq(without_signal["data_double_value"].int_var, 20)
 	assert_eq(without_signal["data_double_value"].str_var, "20")
@@ -475,12 +545,19 @@ func test_source_to_target_double_value_with_ext_notification():
 	assert_eq(without_signal["data_double_value"].single_value, 20)
 	assert_eq(without_signal["data_double_value"].double_value, 40)
 
-	assert_eq(with_signal["dict_double_value"].int_var, 20)
-	assert_eq(with_signal["dict_double_value"].str_var, "20")
-	assert_eq(with_signal["dict_double_value"].int_prop, 20)
-	assert_eq(with_signal["dict_double_value"].str_prop, "20")
-	assert_eq(with_signal["dict_double_value"].single_value, 20)
-	assert_eq(with_signal["dict_double_value"].double_value, 0)
+	assert_eq(with_signal_instance["dict_double_value"].int_var, 20)
+	assert_eq(with_signal_instance["dict_double_value"].str_var, "20")
+	assert_eq(with_signal_instance["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal_instance["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal_instance["dict_double_value"].single_value, 20)
+	assert_eq(with_signal_instance["dict_double_value"].double_value, 0)
+
+	assert_eq(with_signal_name["dict_double_value"].int_var, 20)
+	assert_eq(with_signal_name["dict_double_value"].str_var, "20")
+	assert_eq(with_signal_name["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal_name["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal_name["dict_double_value"].single_value, 20)
+	assert_eq(with_signal_name["dict_double_value"].double_value, 0)
 
 	assert_eq(without_signal["dict_double_value"].int_var, 20)
 	assert_eq(without_signal["dict_double_value"].str_var, "20")
@@ -489,7 +566,8 @@ func test_source_to_target_double_value_with_ext_notification():
 	assert_eq(without_signal["dict_double_value"].single_value, 20)
 	assert_eq(without_signal["dict_double_value"].double_value, 0)
 
-	_unbind_target_objects(source, with_signal)
+	_unbind_target_objects(source, with_signal_instance)
+	_unbind_target_objects(source, with_signal_name)
 	_unbind_target_objects(source, without_signal)
 
 	source.single_value = 20
@@ -498,12 +576,19 @@ func test_source_to_target_double_value_with_ext_notification():
 	assert_eq(source.single_value, 20)
 	assert_eq(source.double_value, 40)
 
-	assert_eq(with_signal["data_double_value"].int_var, 20)
-	assert_eq(with_signal["data_double_value"].str_var, "20")
-	assert_eq(with_signal["data_double_value"].int_prop, 20)
-	assert_eq(with_signal["data_double_value"].str_prop, "20")
-	assert_eq(with_signal["data_double_value"].single_value, 20)
-	assert_eq(with_signal["data_double_value"].double_value, 40)
+	assert_eq(with_signal_instance["data_double_value"].int_var, 20)
+	assert_eq(with_signal_instance["data_double_value"].str_var, "20")
+	assert_eq(with_signal_instance["data_double_value"].int_prop, 20)
+	assert_eq(with_signal_instance["data_double_value"].str_prop, "20")
+	assert_eq(with_signal_instance["data_double_value"].single_value, 20)
+	assert_eq(with_signal_instance["data_double_value"].double_value, 40)
+
+	assert_eq(with_signal_name["data_double_value"].int_var, 20)
+	assert_eq(with_signal_name["data_double_value"].str_var, "20")
+	assert_eq(with_signal_name["data_double_value"].int_prop, 20)
+	assert_eq(with_signal_name["data_double_value"].str_prop, "20")
+	assert_eq(with_signal_name["data_double_value"].single_value, 20)
+	assert_eq(with_signal_name["data_double_value"].double_value, 40)
 
 	assert_eq(without_signal["data_double_value"].int_var, 20)
 	assert_eq(without_signal["data_double_value"].str_var, "20")
@@ -512,12 +597,19 @@ func test_source_to_target_double_value_with_ext_notification():
 	assert_eq(without_signal["data_double_value"].single_value, 20)
 	assert_eq(without_signal["data_double_value"].double_value, 40)
 
-	assert_eq(with_signal["dict_double_value"].int_var, 20)
-	assert_eq(with_signal["dict_double_value"].str_var, "20")
-	assert_eq(with_signal["dict_double_value"].int_prop, 20)
-	assert_eq(with_signal["dict_double_value"].str_prop, "20")
-	assert_eq(with_signal["dict_double_value"].single_value, 20)
-	assert_eq(with_signal["dict_double_value"].double_value, 0)
+	assert_eq(with_signal_instance["dict_double_value"].int_var, 20)
+	assert_eq(with_signal_instance["dict_double_value"].str_var, "20")
+	assert_eq(with_signal_instance["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal_instance["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal_instance["dict_double_value"].single_value, 20)
+	assert_eq(with_signal_instance["dict_double_value"].double_value, 0)
+
+	assert_eq(with_signal_name["dict_double_value"].int_var, 20)
+	assert_eq(with_signal_name["dict_double_value"].str_var, "20")
+	assert_eq(with_signal_name["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal_name["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal_name["dict_double_value"].single_value, 20)
+	assert_eq(with_signal_name["dict_double_value"].double_value, 0)
 
 	assert_eq(without_signal["dict_double_value"].int_var, 20)
 	assert_eq(without_signal["dict_double_value"].str_var, "20")
@@ -532,17 +624,25 @@ func test_source_to_target_double_value_without_notification():
 		"without_notification"
 	)
 	var source = param["source"]
-	var with_signal = param["with_signal"]
+	var with_signal_instance = param["with_signal_instance"]
+	var with_signal_name = param["with_signal_name"]
 	var without_signal = param["without_signal"]
 
 	source.single_value = 10
 
-	assert_eq(with_signal["data_double_value"].int_var, 10)
-	assert_eq(with_signal["data_double_value"].str_var, "10")
-	assert_eq(with_signal["data_double_value"].int_prop, 10)
-	assert_eq(with_signal["data_double_value"].str_prop, "10")
-	assert_eq(with_signal["data_double_value"].single_value, 10)
-	assert_eq(with_signal["data_double_value"].double_value, 20)
+	assert_eq(with_signal_instance["data_double_value"].int_var, 10)
+	assert_eq(with_signal_instance["data_double_value"].str_var, "10")
+	assert_eq(with_signal_instance["data_double_value"].int_prop, 10)
+	assert_eq(with_signal_instance["data_double_value"].str_prop, "10")
+	assert_eq(with_signal_instance["data_double_value"].single_value, 10)
+	assert_eq(with_signal_instance["data_double_value"].double_value, 20)
+
+	assert_eq(with_signal_name["data_double_value"].int_var, 10)
+	assert_eq(with_signal_name["data_double_value"].str_var, "10")
+	assert_eq(with_signal_name["data_double_value"].int_prop, 10)
+	assert_eq(with_signal_name["data_double_value"].str_prop, "10")
+	assert_eq(with_signal_name["data_double_value"].single_value, 10)
+	assert_eq(with_signal_name["data_double_value"].double_value, 20)
 
 	assert_eq(without_signal["data_double_value"].int_var, 10)
 	assert_eq(without_signal["data_double_value"].str_var, "10")
@@ -551,12 +651,19 @@ func test_source_to_target_double_value_without_notification():
 	assert_eq(without_signal["data_double_value"].single_value, 10)
 	assert_eq(without_signal["data_double_value"].double_value, 20)
 
-	assert_eq(with_signal["dict_double_value"].int_var, 10)
-	assert_eq(with_signal["dict_double_value"].str_var, "10")
-	assert_eq(with_signal["dict_double_value"].int_prop, 10)
-	assert_eq(with_signal["dict_double_value"].str_prop, "10")
-	assert_eq(with_signal["dict_double_value"].single_value, 10)
-	assert_eq(with_signal["dict_double_value"].double_value, 0)
+	assert_eq(with_signal_instance["dict_double_value"].int_var, 10)
+	assert_eq(with_signal_instance["dict_double_value"].str_var, "10")
+	assert_eq(with_signal_instance["dict_double_value"].int_prop, 10)
+	assert_eq(with_signal_instance["dict_double_value"].str_prop, "10")
+	assert_eq(with_signal_instance["dict_double_value"].single_value, 10)
+	assert_eq(with_signal_instance["dict_double_value"].double_value, 0)
+
+	assert_eq(with_signal_name["dict_double_value"].int_var, 10)
+	assert_eq(with_signal_name["dict_double_value"].str_var, "10")
+	assert_eq(with_signal_name["dict_double_value"].int_prop, 10)
+	assert_eq(with_signal_name["dict_double_value"].str_prop, "10")
+	assert_eq(with_signal_name["dict_double_value"].single_value, 10)
+	assert_eq(with_signal_name["dict_double_value"].double_value, 0)
 
 	assert_eq(without_signal["dict_double_value"].int_var, 10)
 	assert_eq(without_signal["dict_double_value"].str_var, "10")
@@ -565,7 +672,8 @@ func test_source_to_target_double_value_without_notification():
 	assert_eq(without_signal["dict_double_value"].single_value, 10)
 	assert_eq(without_signal["dict_double_value"].double_value, 0)
 
-	_unbind_target_objects(source, with_signal)
+	_unbind_target_objects(source, with_signal_instance)
+	_unbind_target_objects(source, with_signal_name)
 	_unbind_target_objects(source, without_signal)
 
 	source.single_value = 20
@@ -573,12 +681,19 @@ func test_source_to_target_double_value_without_notification():
 	assert_eq(source.single_value, 20)
 	assert_eq(source.double_value, 40)
 
-	assert_eq(with_signal["data_double_value"].int_var, 10)
-	assert_eq(with_signal["data_double_value"].str_var, "10")
-	assert_eq(with_signal["data_double_value"].int_prop, 10)
-	assert_eq(with_signal["data_double_value"].str_prop, "10")
-	assert_eq(with_signal["data_double_value"].single_value, 10)
-	assert_eq(with_signal["data_double_value"].double_value, 20)
+	assert_eq(with_signal_instance["data_double_value"].int_var, 10)
+	assert_eq(with_signal_instance["data_double_value"].str_var, "10")
+	assert_eq(with_signal_instance["data_double_value"].int_prop, 10)
+	assert_eq(with_signal_instance["data_double_value"].str_prop, "10")
+	assert_eq(with_signal_instance["data_double_value"].single_value, 10)
+	assert_eq(with_signal_instance["data_double_value"].double_value, 20)
+
+	assert_eq(with_signal_name["data_double_value"].int_var, 10)
+	assert_eq(with_signal_name["data_double_value"].str_var, "10")
+	assert_eq(with_signal_name["data_double_value"].int_prop, 10)
+	assert_eq(with_signal_name["data_double_value"].str_prop, "10")
+	assert_eq(with_signal_name["data_double_value"].single_value, 10)
+	assert_eq(with_signal_name["data_double_value"].double_value, 20)
 
 	assert_eq(without_signal["data_double_value"].int_var, 10)
 	assert_eq(without_signal["data_double_value"].str_var, "10")
@@ -587,12 +702,19 @@ func test_source_to_target_double_value_without_notification():
 	assert_eq(without_signal["data_double_value"].single_value, 10)
 	assert_eq(without_signal["data_double_value"].double_value, 20)
 
-	assert_eq(with_signal["dict_double_value"].int_var, 10)
-	assert_eq(with_signal["dict_double_value"].str_var, "10")
-	assert_eq(with_signal["dict_double_value"].int_prop, 10)
-	assert_eq(with_signal["dict_double_value"].str_prop, "10")
-	assert_eq(with_signal["dict_double_value"].single_value, 10)
-	assert_eq(with_signal["dict_double_value"].double_value, 0)
+	assert_eq(with_signal_instance["dict_double_value"].int_var, 10)
+	assert_eq(with_signal_instance["dict_double_value"].str_var, "10")
+	assert_eq(with_signal_instance["dict_double_value"].int_prop, 10)
+	assert_eq(with_signal_instance["dict_double_value"].str_prop, "10")
+	assert_eq(with_signal_instance["dict_double_value"].single_value, 10)
+	assert_eq(with_signal_instance["dict_double_value"].double_value, 0)
+
+	assert_eq(with_signal_name["dict_double_value"].int_var, 10)
+	assert_eq(with_signal_name["dict_double_value"].str_var, "10")
+	assert_eq(with_signal_name["dict_double_value"].int_prop, 10)
+	assert_eq(with_signal_name["dict_double_value"].str_prop, "10")
+	assert_eq(with_signal_name["dict_double_value"].single_value, 10)
+	assert_eq(with_signal_name["dict_double_value"].double_value, 0)
 
 	assert_eq(without_signal["dict_double_value"].int_var, 10)
 	assert_eq(without_signal["dict_double_value"].str_var, "10")
@@ -607,17 +729,25 @@ func test_source_to_target_double_value_dict_with_wrapped_target():
 		"dict_with_wrapped_target"
 	)
 	var source = param["source"]
-	var with_signal = param["with_signal"]
+	var with_signal_instance = param["with_signal_instance"]
+	var with_signal_name = param["with_signal_name"]
 	var without_signal = param["without_signal"]
 
 	source.single_value = 10
 
-	assert_eq(with_signal["data_double_value"].int_var, 20)
-	assert_eq(with_signal["data_double_value"].str_var, "20")
-	assert_eq(with_signal["data_double_value"].int_prop, 20)
-	assert_eq(with_signal["data_double_value"].str_prop, "20")
-	assert_eq(with_signal["data_double_value"].single_value, 20)
-	assert_eq(with_signal["data_double_value"].double_value, 40)
+	assert_eq(with_signal_instance["data_double_value"].int_var, 20)
+	assert_eq(with_signal_instance["data_double_value"].str_var, "20")
+	assert_eq(with_signal_instance["data_double_value"].int_prop, 20)
+	assert_eq(with_signal_instance["data_double_value"].str_prop, "20")
+	assert_eq(with_signal_instance["data_double_value"].single_value, 20)
+	assert_eq(with_signal_instance["data_double_value"].double_value, 40)
+
+	assert_eq(with_signal_name["data_double_value"].int_var, 20)
+	assert_eq(with_signal_name["data_double_value"].str_var, "20")
+	assert_eq(with_signal_name["data_double_value"].int_prop, 20)
+	assert_eq(with_signal_name["data_double_value"].str_prop, "20")
+	assert_eq(with_signal_name["data_double_value"].single_value, 20)
+	assert_eq(with_signal_name["data_double_value"].double_value, 40)
 
 	assert_eq(without_signal["data_double_value"].int_var, 20)
 	assert_eq(without_signal["data_double_value"].str_var, "20")
@@ -626,12 +756,19 @@ func test_source_to_target_double_value_dict_with_wrapped_target():
 	assert_eq(without_signal["data_double_value"].single_value, 20)
 	assert_eq(without_signal["data_double_value"].double_value, 40)
 
-	assert_eq(with_signal["dict_double_value"].int_var, 20)
-	assert_eq(with_signal["dict_double_value"].str_var, "20")
-	assert_eq(with_signal["dict_double_value"].int_prop, 20)
-	assert_eq(with_signal["dict_double_value"].str_prop, "20")
-	assert_eq(with_signal["dict_double_value"].single_value, 20)
-	assert_eq(with_signal["dict_double_value"].double_value, 0)
+	assert_eq(with_signal_instance["dict_double_value"].int_var, 20)
+	assert_eq(with_signal_instance["dict_double_value"].str_var, "20")
+	assert_eq(with_signal_instance["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal_instance["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal_instance["dict_double_value"].single_value, 20)
+	assert_eq(with_signal_instance["dict_double_value"].double_value, 0)
+
+	assert_eq(with_signal_name["dict_double_value"].int_var, 20)
+	assert_eq(with_signal_name["dict_double_value"].str_var, "20")
+	assert_eq(with_signal_name["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal_name["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal_name["dict_double_value"].single_value, 20)
+	assert_eq(with_signal_name["dict_double_value"].double_value, 0)
 
 	assert_eq(without_signal["dict_double_value"].int_var, 20)
 	assert_eq(without_signal["dict_double_value"].str_var, "20")
@@ -640,7 +777,8 @@ func test_source_to_target_double_value_dict_with_wrapped_target():
 	assert_eq(without_signal["dict_double_value"].single_value, 20)
 	assert_eq(without_signal["dict_double_value"].double_value, 0)
 
-	_unbind_target_objects(source, with_signal)
+	_unbind_target_objects(source, with_signal_instance)
+	_unbind_target_objects(source, with_signal_name)
 	_unbind_target_objects(source, without_signal)
 
 	source.single_value = 20
@@ -648,12 +786,19 @@ func test_source_to_target_double_value_dict_with_wrapped_target():
 	assert_eq(source.single_value, 20)
 	assert_eq(source.double_value, 40)
 
-	assert_eq(with_signal["data_double_value"].int_var, 20)
-	assert_eq(with_signal["data_double_value"].str_var, "20")
-	assert_eq(with_signal["data_double_value"].int_prop, 20)
-	assert_eq(with_signal["data_double_value"].str_prop, "20")
-	assert_eq(with_signal["data_double_value"].single_value, 20)
-	assert_eq(with_signal["data_double_value"].double_value, 40)
+	assert_eq(with_signal_instance["data_double_value"].int_var, 20)
+	assert_eq(with_signal_instance["data_double_value"].str_var, "20")
+	assert_eq(with_signal_instance["data_double_value"].int_prop, 20)
+	assert_eq(with_signal_instance["data_double_value"].str_prop, "20")
+	assert_eq(with_signal_instance["data_double_value"].single_value, 20)
+	assert_eq(with_signal_instance["data_double_value"].double_value, 40)
+
+	assert_eq(with_signal_name["data_double_value"].int_var, 20)
+	assert_eq(with_signal_name["data_double_value"].str_var, "20")
+	assert_eq(with_signal_name["data_double_value"].int_prop, 20)
+	assert_eq(with_signal_name["data_double_value"].str_prop, "20")
+	assert_eq(with_signal_name["data_double_value"].single_value, 20)
+	assert_eq(with_signal_name["data_double_value"].double_value, 40)
 
 	assert_eq(without_signal["data_double_value"].int_var, 20)
 	assert_eq(without_signal["data_double_value"].str_var, "20")
@@ -662,12 +807,19 @@ func test_source_to_target_double_value_dict_with_wrapped_target():
 	assert_eq(without_signal["data_double_value"].single_value, 20)
 	assert_eq(without_signal["data_double_value"].double_value, 40)
 
-	assert_eq(with_signal["dict_double_value"].int_var, 20)
-	assert_eq(with_signal["dict_double_value"].str_var, "20")
-	assert_eq(with_signal["dict_double_value"].int_prop, 20)
-	assert_eq(with_signal["dict_double_value"].str_prop, "20")
-	assert_eq(with_signal["dict_double_value"].single_value, 20)
-	assert_eq(with_signal["dict_double_value"].double_value, 0)
+	assert_eq(with_signal_instance["dict_double_value"].int_var, 20)
+	assert_eq(with_signal_instance["dict_double_value"].str_var, "20")
+	assert_eq(with_signal_instance["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal_instance["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal_instance["dict_double_value"].single_value, 20)
+	assert_eq(with_signal_instance["dict_double_value"].double_value, 0)
+
+	assert_eq(with_signal_name["dict_double_value"].int_var, 20)
+	assert_eq(with_signal_name["dict_double_value"].str_var, "20")
+	assert_eq(with_signal_name["dict_double_value"].int_prop, 20)
+	assert_eq(with_signal_name["dict_double_value"].str_prop, "20")
+	assert_eq(with_signal_name["dict_double_value"].single_value, 20)
+	assert_eq(with_signal_name["dict_double_value"].double_value, 0)
 
 	assert_eq(without_signal["dict_double_value"].int_var, 20)
 	assert_eq(without_signal["dict_double_value"].str_var, "20")
@@ -682,17 +834,25 @@ func test_source_to_target_double_value_dict_without_wrapped_target():
 		"dict_without_wrapped_target"
 	)
 	var source = param["source"]
-	var with_signal = param["with_signal"]
+	var with_signal_instance = param["with_signal_instance"]
+	var with_signal_name = param["with_signal_name"]
 	var without_signal = param["without_signal"]
 
 	source.single_value = 10
 
-	assert_eq(with_signal["data_double_value"].int_var, 10)
-	assert_eq(with_signal["data_double_value"].str_var, "10")
-	assert_eq(with_signal["data_double_value"].int_prop, 10)
-	assert_eq(with_signal["data_double_value"].str_prop, "10")
-	assert_eq(with_signal["data_double_value"].single_value, 10)
-	assert_eq(with_signal["data_double_value"].double_value, 20)
+	assert_eq(with_signal_instance["data_double_value"].int_var, 10)
+	assert_eq(with_signal_instance["data_double_value"].str_var, "10")
+	assert_eq(with_signal_instance["data_double_value"].int_prop, 10)
+	assert_eq(with_signal_instance["data_double_value"].str_prop, "10")
+	assert_eq(with_signal_instance["data_double_value"].single_value, 10)
+	assert_eq(with_signal_instance["data_double_value"].double_value, 20)
+
+	assert_eq(with_signal_name["data_double_value"].int_var, 10)
+	assert_eq(with_signal_name["data_double_value"].str_var, "10")
+	assert_eq(with_signal_name["data_double_value"].int_prop, 10)
+	assert_eq(with_signal_name["data_double_value"].str_prop, "10")
+	assert_eq(with_signal_name["data_double_value"].single_value, 10)
+	assert_eq(with_signal_name["data_double_value"].double_value, 20)
 
 	assert_eq(without_signal["data_double_value"].int_var, 10)
 	assert_eq(without_signal["data_double_value"].str_var, "10")
@@ -701,12 +861,19 @@ func test_source_to_target_double_value_dict_without_wrapped_target():
 	assert_eq(without_signal["data_double_value"].single_value, 10)
 	assert_eq(without_signal["data_double_value"].double_value, 20)
 
-	assert_eq(with_signal["dict_double_value"].int_var, 10)
-	assert_eq(with_signal["dict_double_value"].str_var, "10")
-	assert_eq(with_signal["dict_double_value"].int_prop, 10)
-	assert_eq(with_signal["dict_double_value"].str_prop, "10")
-	assert_eq(with_signal["dict_double_value"].single_value, 10)
-	assert_eq(with_signal["dict_double_value"].double_value, 0)
+	assert_eq(with_signal_instance["dict_double_value"].int_var, 10)
+	assert_eq(with_signal_instance["dict_double_value"].str_var, "10")
+	assert_eq(with_signal_instance["dict_double_value"].int_prop, 10)
+	assert_eq(with_signal_instance["dict_double_value"].str_prop, "10")
+	assert_eq(with_signal_instance["dict_double_value"].single_value, 10)
+	assert_eq(with_signal_instance["dict_double_value"].double_value, 0)
+
+	assert_eq(with_signal_name["dict_double_value"].int_var, 10)
+	assert_eq(with_signal_name["dict_double_value"].str_var, "10")
+	assert_eq(with_signal_name["dict_double_value"].int_prop, 10)
+	assert_eq(with_signal_name["dict_double_value"].str_prop, "10")
+	assert_eq(with_signal_name["dict_double_value"].single_value, 10)
+	assert_eq(with_signal_name["dict_double_value"].double_value, 0)
 
 	assert_eq(without_signal["dict_double_value"].int_var, 10)
 	assert_eq(without_signal["dict_double_value"].str_var, "10")
@@ -715,7 +882,8 @@ func test_source_to_target_double_value_dict_without_wrapped_target():
 	assert_eq(without_signal["dict_double_value"].single_value, 10)
 	assert_eq(without_signal["dict_double_value"].double_value, 0)
 
-	_unbind_target_objects(source, with_signal)
+	_unbind_target_objects(source, with_signal_instance)
+	_unbind_target_objects(source, with_signal_name)
 	_unbind_target_objects(source, without_signal)
 
 	source.single_value = 20
@@ -723,12 +891,19 @@ func test_source_to_target_double_value_dict_without_wrapped_target():
 	assert_eq(source.single_value, 20)
 	assert_eq(source.double_value, 40)
 
-	assert_eq(with_signal["data_double_value"].int_var, 10)
-	assert_eq(with_signal["data_double_value"].str_var, "10")
-	assert_eq(with_signal["data_double_value"].int_prop, 10)
-	assert_eq(with_signal["data_double_value"].str_prop, "10")
-	assert_eq(with_signal["data_double_value"].single_value, 10)
-	assert_eq(with_signal["data_double_value"].double_value, 20)
+	assert_eq(with_signal_instance["data_double_value"].int_var, 10)
+	assert_eq(with_signal_instance["data_double_value"].str_var, "10")
+	assert_eq(with_signal_instance["data_double_value"].int_prop, 10)
+	assert_eq(with_signal_instance["data_double_value"].str_prop, "10")
+	assert_eq(with_signal_instance["data_double_value"].single_value, 10)
+	assert_eq(with_signal_instance["data_double_value"].double_value, 20)
+
+	assert_eq(with_signal_name["data_double_value"].int_var, 10)
+	assert_eq(with_signal_name["data_double_value"].str_var, "10")
+	assert_eq(with_signal_name["data_double_value"].int_prop, 10)
+	assert_eq(with_signal_name["data_double_value"].str_prop, "10")
+	assert_eq(with_signal_name["data_double_value"].single_value, 10)
+	assert_eq(with_signal_name["data_double_value"].double_value, 20)
 
 	assert_eq(without_signal["data_double_value"].int_var, 10)
 	assert_eq(without_signal["data_double_value"].str_var, "10")
@@ -737,12 +912,19 @@ func test_source_to_target_double_value_dict_without_wrapped_target():
 	assert_eq(without_signal["data_double_value"].single_value, 10)
 	assert_eq(without_signal["data_double_value"].double_value, 20)
 
-	assert_eq(with_signal["dict_double_value"].int_var, 10)
-	assert_eq(with_signal["dict_double_value"].str_var, "10")
-	assert_eq(with_signal["dict_double_value"].int_prop, 10)
-	assert_eq(with_signal["dict_double_value"].str_prop, "10")
-	assert_eq(with_signal["dict_double_value"].single_value, 10)
-	assert_eq(with_signal["dict_double_value"].double_value, 0)
+	assert_eq(with_signal_instance["dict_double_value"].int_var, 10)
+	assert_eq(with_signal_instance["dict_double_value"].str_var, "10")
+	assert_eq(with_signal_instance["dict_double_value"].int_prop, 10)
+	assert_eq(with_signal_instance["dict_double_value"].str_prop, "10")
+	assert_eq(with_signal_instance["dict_double_value"].single_value, 10)
+	assert_eq(with_signal_instance["dict_double_value"].double_value, 0)
+
+	assert_eq(with_signal_name["dict_double_value"].int_var, 10)
+	assert_eq(with_signal_name["dict_double_value"].str_var, "10")
+	assert_eq(with_signal_name["dict_double_value"].int_prop, 10)
+	assert_eq(with_signal_name["dict_double_value"].str_prop, "10")
+	assert_eq(with_signal_name["dict_double_value"].single_value, 10)
+	assert_eq(with_signal_name["dict_double_value"].double_value, 0)
 
 	assert_eq(without_signal["dict_double_value"].int_var, 10)
 	assert_eq(without_signal["dict_double_value"].str_var, "10")
@@ -875,10 +1057,12 @@ func _get_params_for_test_init_target_value():
 	var params = []
 
 	for source in _sources:
-		var with_signal = _bind_target_objects(source, true)
-		var without_signal = _bind_target_objects(source, false)
+		var with_signal_instance = _bind_target_objects(source, TargetSignal.INSTANCE)
+		var with_signal_name = _bind_target_objects(source, TargetSignal.NAME)
+		var without_signal = _bind_target_objects(source, TargetSignal.NONE)
 
-		params.append(with_signal)
+		params.append(with_signal_instance)
+		params.append(with_signal_name)
 		params.append(without_signal)
 
 	return params
@@ -888,19 +1072,25 @@ func _get_params_for_test_source_to_target():
 	var params = []
 
 	for source in _sources:
-		var with_signal = _bind_target_objects(source, true)
-		var without_signal = _bind_target_objects(source, false)
+		var with_signal_instance = _bind_target_objects(source, TargetSignal.INSTANCE)
+		var with_signal_name = _bind_target_objects(source, TargetSignal.NAME)
+		var without_signal = _bind_target_objects(source, TargetSignal.NONE)
 
-		var with_signal_param = {
+		var with_signal_instance_param = {
 			"source": source,
-			"target_objects": with_signal,
+			"target_objects": with_signal_instance,
+		}
+		var with_signal_name_param = {
+			"source": source,
+			"target_objects": with_signal_name,
 		}
 		var without_signal_param = {
 			"source": source,
 			"target_objects": without_signal,
 		}
 
-		params.append(with_signal_param)
+		params.append(with_signal_instance_param)
+		params.append(with_signal_name_param)
 		params.append(without_signal_param)
 
 	return params
@@ -911,8 +1101,9 @@ func _get_param_for_test_source_to_target_double_value(type: String):
 
 	var param = {
 		"source": source,
-		"with_signal": _bind_target_objects(source, true),
-		"without_signal": _bind_target_objects(source, false),
+		"with_signal_instance": _bind_target_objects(source, TargetSignal.INSTANCE),
+		"with_signal_name": _bind_target_objects(source, TargetSignal.NAME),
+		"without_signal": _bind_target_objects(source, TargetSignal.NONE),
 	}
 
 	return param
@@ -922,19 +1113,25 @@ func _get_params_for_test_target_to_source():
 	var params = []
 
 	for source in _sources:
-		var with_signal = _bind_target_objects(source, true)
+		var with_signal_instance = _bind_target_objects(source, TargetSignal.INSTANCE)
+		var with_signal_name = _bind_target_objects(source, TargetSignal.NAME)
 
-		var with_signal_param = {
+		var with_signal_instance_param = {
 			"source": source,
-			"target_objects": with_signal,
+			"target_objects": with_signal_instance,
+		}
+		var with_signal_name_param = {
+			"source": source,
+			"target_objects": with_signal_name,
 		}
 
-		params.append(with_signal_param)
+		params.append(with_signal_instance_param)
+		params.append(with_signal_name_param)
 
 	return params
 
 
-func _bind_target_objects(source: BaseBindingSource, with_signal: bool):
+func _bind_target_objects(source: BaseBindingSource, target_signal: TargetSignal):
 	var target_objects = {
 		"data_int_var": Data.new(),
 		"data_str_var": Data.new(),
@@ -950,23 +1147,23 @@ func _bind_target_objects(source: BaseBindingSource, with_signal: bool):
 		"dict_double_value": _dict_new(),
 	}
 
-	_bind_int(source, "int_var", target_objects["data_int_var"], with_signal)
-	_bind_str(source, "str_var", target_objects["data_str_var"], with_signal)
+	_bind_int(source, "int_var", target_objects["data_int_var"], target_signal)
+	_bind_str(source, "str_var", target_objects["data_str_var"], target_signal)
 
-	_bind_int(source, "int_prop", target_objects["data_int_prop"], with_signal)
-	_bind_str(source, "str_prop", target_objects["data_str_prop"], with_signal)
+	_bind_int(source, "int_prop", target_objects["data_int_prop"], target_signal)
+	_bind_str(source, "str_prop", target_objects["data_str_prop"], target_signal)
 
-	_bind_int(source, "single_value", target_objects["data_single_value"], with_signal)
-	_bind_int(source, "double_value", target_objects["data_double_value"], with_signal)
+	_bind_int(source, "single_value", target_objects["data_single_value"], target_signal)
+	_bind_int(source, "double_value", target_objects["data_double_value"], target_signal)
 
-	_bind_int(source, "int_var", target_objects["dict_int_var"], false)
-	_bind_str(source, "str_var", target_objects["dict_str_var"], false)
+	_bind_int(source, "int_var", target_objects["dict_int_var"], TargetSignal.NONE)
+	_bind_str(source, "str_var", target_objects["dict_str_var"], TargetSignal.NONE)
 
-	_bind_int(source, "int_prop", target_objects["dict_int_prop"], false)
-	_bind_str(source, "str_prop", target_objects["dict_str_prop"], false)
+	_bind_int(source, "int_prop", target_objects["dict_int_prop"], TargetSignal.NONE)
+	_bind_str(source, "str_prop", target_objects["dict_str_prop"], TargetSignal.NONE)
 
-	_bind_int(source, "single_value", target_objects["dict_single_value"], false)
-	_bind_int(source, "double_value", target_objects["dict_double_value"], false)
+	_bind_int(source, "single_value", target_objects["dict_single_value"], TargetSignal.NONE)
+	_bind_int(source, "double_value", target_objects["dict_double_value"], TargetSignal.NONE)
 
 	return target_objects
 
@@ -992,81 +1189,113 @@ func _unbind_target_objects(source: BaseBindingSource, target_objects: Dictionar
 
 
 func _bind_int(
-	source: BaseBindingSource, source_property: StringName, target_object, with_signal: bool
+	source: BaseBindingSource,
+	source_property: StringName,
+	target_object,
+	target_signal: TargetSignal
 ):
-	var pipe = BindingConverterPipeline.new([str], [BindingUtils.to_int])
+	var converter = [str, BindingUtils.to_int]
 
-	if with_signal:
-		source.bind_to(
-			source_property, target_object, "int_var", null, target_object.int_var_changed
-		)
-		source.bind_to(
-			source_property, target_object, "str_var", pipe, target_object.str_var_changed
-		)
+	match target_signal:
+		TargetSignal.INSTANCE:
+			source.bind(source_property).to(target_object, "int_var", target_object.int_var_changed)
+			source.bind(source_property).using(converter).to(
+				target_object, "str_var", target_object.str_var_changed
+			)
 
-		source.bind_to(
-			source_property, target_object, "int_prop", null, target_object.int_prop_changed
-		)
-		source.bind_to(
-			source_property, target_object, "str_prop", pipe, target_object.str_prop_changed
-		)
+			source.bind(source_property).to(
+				target_object, "int_prop", target_object.int_prop_changed
+			)
+			source.bind(source_property).using(converter).to(
+				target_object, "str_prop", target_object.str_prop_changed
+			)
 
-		source.bind_to(
-			source_property, target_object, "single_value", null, target_object.single_value_changed
-		)
+			source.bind(source_property).to(
+				target_object, "single_value", target_object.single_value_changed
+			)
 
-	else:
-		source.bind_to(source_property, target_object, "int_var", null)
-		source.bind_to(source_property, target_object, "str_var", pipe)
+		TargetSignal.NAME:
+			source.bind(source_property).to(target_object, "int_var", "int_var_changed")
+			source.bind(source_property).using(converter).to(
+				target_object, "str_var", "str_var_changed"
+			)
 
-		source.bind_to(source_property, target_object, "int_prop", null)
-		source.bind_to(source_property, target_object, "str_prop", pipe)
+			source.bind(source_property).to(target_object, "int_prop", "int_prop_changed")
+			source.bind(source_property).using(converter).to(
+				target_object, "str_prop", "str_prop_changed"
+			)
 
-		source.bind_to(source_property, target_object, "single_value", null)
+			source.bind(source_property).to(target_object, "single_value", "single_value_changed")
+
+		TargetSignal.NONE:
+			source.bind(source_property).to(target_object, "int_var")
+			source.bind(source_property).using(converter).to(target_object, "str_var")
+
+			source.bind(source_property).to(target_object, "int_prop")
+			source.bind(source_property).using(converter).to(target_object, "str_prop")
+
+			source.bind(source_property).to(target_object, "single_value")
 
 
 func _bind_str(
-	source: BaseBindingSource, source_property: StringName, target_object, with_signal: bool
+	source: BaseBindingSource,
+	source_property: StringName,
+	target_object,
+	target_signal: TargetSignal
 ):
-	var pipe = BindingConverterPipeline.new([BindingUtils.to_int], [str])
+	var converter = [BindingUtils.to_int, str]
 
-	if with_signal:
-		source.bind_to(
-			source_property, target_object, "int_var", pipe, target_object.int_var_changed
-		)
-		source.bind_to(
-			source_property, target_object, "str_var", null, target_object.str_var_changed
-		)
+	match target_signal:
+		TargetSignal.INSTANCE:
+			source.bind(source_property).using(converter).to(
+				target_object, "int_var", target_object.int_var_changed
+			)
+			source.bind(source_property).to(target_object, "str_var", target_object.str_var_changed)
 
-		source.bind_to(
-			source_property, target_object, "int_prop", pipe, target_object.int_prop_changed
-		)
-		source.bind_to(
-			source_property, target_object, "str_prop", null, target_object.str_prop_changed
-		)
+			source.bind(source_property).using(converter).to(
+				target_object, "int_prop", target_object.int_prop_changed
+			)
+			source.bind(source_property).to(
+				target_object, "str_prop", target_object.str_prop_changed
+			)
 
-		source.bind_to(
-			source_property, target_object, "single_value", pipe, target_object.single_value_changed
-		)
+			source.bind(source_property).using(converter).to(
+				target_object, "single_value", target_object.single_value_changed
+			)
 
-	else:
-		source.bind_to(source_property, target_object, "int_var", pipe)
-		source.bind_to(source_property, target_object, "str_var", null)
+		TargetSignal.NAME:
+			source.bind(source_property).using(converter).to(
+				target_object, "int_var", "int_var_changed"
+			)
+			source.bind(source_property).to(target_object, "str_var", "str_var_changed")
 
-		source.bind_to(source_property, target_object, "int_prop", pipe)
-		source.bind_to(source_property, target_object, "str_prop", null)
+			source.bind(source_property).using(converter).to(
+				target_object, "int_prop", "int_prop_changed"
+			)
+			source.bind(source_property).to(target_object, "str_prop", "str_prop_changed")
 
-		source.bind_to(source_property, target_object, "single_value", pipe)
+			source.bind(source_property).using(converter).to(
+				target_object, "single_value", "single_value_changed"
+			)
+
+		TargetSignal.NONE:
+			source.bind(source_property).using(converter).to(target_object, "int_var")
+			source.bind(source_property).to(target_object, "str_var")
+
+			source.bind(source_property).using(converter).to(target_object, "int_prop")
+			source.bind(source_property).to(target_object, "str_prop")
+
+			source.bind(source_property).using(converter).to(target_object, "single_value")
 
 
 func _unbind(source: BaseBindingSource, source_property: StringName, target_object):
-	source.unbind_from(source_property, target_object, "int_var")
-	source.unbind_from(source_property, target_object, "str_var")
+	source.unbind(source_property).from(target_object, "int_var")
+	source.unbind(source_property).from(target_object, "str_var")
 
-	source.unbind_from(source_property, target_object, "int_prop")
-	source.unbind_from(source_property, target_object, "str_prop")
+	source.unbind(source_property).from(target_object, "int_prop")
+	source.unbind(source_property).from(target_object, "str_prop")
 
-	source.unbind_from(source_property, target_object, "single_value")
+	source.unbind(source_property).from(target_object, "single_value")
 
 
 func _dict_new():
