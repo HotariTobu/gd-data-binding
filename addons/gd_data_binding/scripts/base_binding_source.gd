@@ -108,6 +108,10 @@ func _update_target(source_property: StringName, source_value: Variant):
 
 	for binding_key in binding_dict:
 		var binding = binding_dict[binding_key] as Binding
+		if binding.is_null:
+			binding_dict.erase(binding_key)
+			continue
+
 		binding.pass_source_value(source_value)
 
 

@@ -1,5 +1,9 @@
 class_name Binding
 
+var is_null: bool:
+	get:
+		return _source_object == null or _target_object == null
+
 var _source_object
 var _source_property: StringName
 
