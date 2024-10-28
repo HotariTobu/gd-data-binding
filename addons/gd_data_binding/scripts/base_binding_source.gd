@@ -28,16 +28,9 @@ func _init(source_object = self, source_value_change_notify_signal = null):
 	else:
 		push_error("The source object must be an object or a dict.")
 
-	if (
-		(
-			source_value_change_notify_signal is String
-			or source_value_change_notify_signal is StringName
-		)
-		and source_object.has_signal(source_value_change_notify_signal)
-	):
-		source_object.connect(source_value_change_notify_signal, _on_source_value_change_notified)
-	elif source_value_change_notify_signal is Signal:
-		source_value_change_notify_signal.connect(_on_source_value_change_notified)
+	var signal_instance = _get_signal(source_object, source_value_change_notify_signal)
+	if signal_instance is Signal:
+		signal_instance.connect(_on_source_value_change_notified)
 
 
 func _get_property_list():
@@ -78,7 +71,7 @@ func bind_to(
 		target_object,
 		target_property,
 		converter_pipeline,
-		target_value_change_signal
+		_get_signal(target_object, target_value_change_signal)
 	)
 	binding_dict[binding_key] = binding
 
@@ -133,6 +126,23 @@ static func _get_dict_property_list(dict: Dictionary):
 		property_list.append(property)
 
 	return property_list
+
+
+static func _get_signal(object, signal_ref):
+	if signal_ref == null:
+		return null
+
+	if signal_ref is String or signal_ref is StringName:
+		assert(
+			object.has_signal(signal_ref),
+			"The signal name must refer to an existing signal of the specified object."
+		)
+		return Signal(object, signal_ref)
+
+	if signal_ref is Signal:
+		return signal_ref
+
+	push_error("The arg signal_ref must be null, String, StringName, or Signal.")
 
 
 static func _get_binding_key(target_object, target_property: StringName):
