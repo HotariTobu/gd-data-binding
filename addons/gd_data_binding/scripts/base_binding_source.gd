@@ -38,7 +38,10 @@ func _get_property_list():
 
 
 func _get(property):
-	return _source_object[property]
+	if property in _source_object:
+		return _source_object[property]
+
+	return null
 
 
 func _set(property, value):
