@@ -1,8 +1,8 @@
 class_name Binding
 
-var is_null: bool:
+var is_valid: bool:
 	get:
-		return _source_object == null or _target_object == null
+		return _is_valid(_source_object) and _is_valid(_target_object)
 
 var _source_object
 var _source_property: StringName
@@ -68,3 +68,10 @@ func pass_target_value(target_value: Variant):
 		return
 
 	_source_object[_source_property] = next_source_value
+
+
+func _is_valid(object):
+	if object is Object:
+		return is_instance_valid(object)
+
+	return object != null
