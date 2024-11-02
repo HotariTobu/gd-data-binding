@@ -10,7 +10,7 @@ var _sources: Array:
 		return _source_dict.values()
 
 
-func before_all():
+func before_each():
 	var data = Data.new()
 
 	var x2 = func(value): return value * 2
@@ -38,8 +38,6 @@ func before_all():
 		"dict_without_wrapped_target": dict_source_without_wrapped_target,
 	}
 
-
-func before_each():
 	for source in _sources:
 		source.int_var = 1
 		source.str_var = "2"
@@ -68,7 +66,7 @@ func test_init_target_value(
 	var target_signal = param["target_signal"]
 
 	var source = _source_dict[source_key]
-	var target_objects = _bind_target_objects(source, target_signal)
+	var target_objects = _create_bound_target_objects(source, target_signal)
 
 	assert_eq(target_objects["data_int_var"].int_var, 1)
 	assert_eq(target_objects["data_int_var"].str_var, "1")
@@ -156,7 +154,7 @@ func test_source_to_target(
 	var target_signal = param["target_signal"]
 
 	var source = _source_dict[source_key]
-	var target_objects = _bind_target_objects(source, target_signal)
+	var target_objects = _create_bound_target_objects(source, target_signal)
 
 	source.int_var = 6
 	source.str_var = "7"
@@ -318,9 +316,9 @@ func test_source_to_target(
 
 func test_source_to_target_double_value_with_str_notification():
 	var source = _source_dict["with_str_notification"]
-	var with_signal_instance = _bind_target_objects(source, TargetSignal.INSTANCE)
-	var with_signal_name = _bind_target_objects(source, TargetSignal.NAME)
-	var without_signal = _bind_target_objects(source, TargetSignal.NONE)
+	var with_signal_instance = _create_bound_target_objects(source, TargetSignal.INSTANCE)
+	var with_signal_name = _create_bound_target_objects(source, TargetSignal.NAME)
+	var without_signal = _create_bound_target_objects(source, TargetSignal.NONE)
 
 	source.single_value = 10
 
@@ -420,9 +418,9 @@ func test_source_to_target_double_value_with_str_notification():
 
 func test_source_to_target_double_value_with_dir_notification():
 	var source = _source_dict["with_dir_notification"]
-	var with_signal_instance = _bind_target_objects(source, TargetSignal.INSTANCE)
-	var with_signal_name = _bind_target_objects(source, TargetSignal.NAME)
-	var without_signal = _bind_target_objects(source, TargetSignal.NONE)
+	var with_signal_instance = _create_bound_target_objects(source, TargetSignal.INSTANCE)
+	var with_signal_name = _create_bound_target_objects(source, TargetSignal.NAME)
+	var without_signal = _create_bound_target_objects(source, TargetSignal.NONE)
 
 	source.single_value = 10
 
@@ -522,9 +520,9 @@ func test_source_to_target_double_value_with_dir_notification():
 
 func test_source_to_target_double_value_with_ext_notification():
 	var source = _source_dict["with_ext_notification"]
-	var with_signal_instance = _bind_target_objects(source, TargetSignal.INSTANCE)
-	var with_signal_name = _bind_target_objects(source, TargetSignal.NAME)
-	var without_signal = _bind_target_objects(source, TargetSignal.NONE)
+	var with_signal_instance = _create_bound_target_objects(source, TargetSignal.INSTANCE)
+	var with_signal_name = _create_bound_target_objects(source, TargetSignal.NAME)
+	var without_signal = _create_bound_target_objects(source, TargetSignal.NONE)
 
 	source.single_value = 10
 	notified.emit("double_value")
@@ -626,9 +624,9 @@ func test_source_to_target_double_value_with_ext_notification():
 
 func test_source_to_target_double_value_without_notification():
 	var source = _source_dict["without_notification"]
-	var with_signal_instance = _bind_target_objects(source, TargetSignal.INSTANCE)
-	var with_signal_name = _bind_target_objects(source, TargetSignal.NAME)
-	var without_signal = _bind_target_objects(source, TargetSignal.NONE)
+	var with_signal_instance = _create_bound_target_objects(source, TargetSignal.INSTANCE)
+	var with_signal_name = _create_bound_target_objects(source, TargetSignal.NAME)
+	var without_signal = _create_bound_target_objects(source, TargetSignal.NONE)
 
 	source.single_value = 10
 
@@ -728,9 +726,9 @@ func test_source_to_target_double_value_without_notification():
 
 func test_source_to_target_double_value_dict_with_wrapped_target():
 	var source = _source_dict["dict_with_wrapped_target"]
-	var with_signal_instance = _bind_target_objects(source, TargetSignal.INSTANCE)
-	var with_signal_name = _bind_target_objects(source, TargetSignal.NAME)
-	var without_signal = _bind_target_objects(source, TargetSignal.NONE)
+	var with_signal_instance = _create_bound_target_objects(source, TargetSignal.INSTANCE)
+	var with_signal_name = _create_bound_target_objects(source, TargetSignal.NAME)
+	var without_signal = _create_bound_target_objects(source, TargetSignal.NONE)
 
 	source.single_value = 10
 
@@ -830,9 +828,9 @@ func test_source_to_target_double_value_dict_with_wrapped_target():
 
 func test_source_to_target_double_value_dict_without_wrapped_target():
 	var source = _source_dict["dict_without_wrapped_target"]
-	var with_signal_instance = _bind_target_objects(source, TargetSignal.INSTANCE)
-	var with_signal_name = _bind_target_objects(source, TargetSignal.NAME)
-	var without_signal = _bind_target_objects(source, TargetSignal.NONE)
+	var with_signal_instance = _create_bound_target_objects(source, TargetSignal.INSTANCE)
+	var with_signal_name = _create_bound_target_objects(source, TargetSignal.NAME)
+	var without_signal = _create_bound_target_objects(source, TargetSignal.NONE)
 
 	source.single_value = 10
 
@@ -937,7 +935,7 @@ func test_target_to_source(
 	var target_signal = param["target_signal"]
 
 	var source = _source_dict[source_key]
-	var target_objects = _bind_target_objects(source, target_signal)
+	var target_objects = _create_bound_target_objects(source, target_signal)
 
 	target_objects["data_int_var"].int_var_changed.emit(6)
 	assert_eq(source.int_var, 6)
@@ -1078,9 +1076,15 @@ func _get_params_for_test_target_to_source():
 	return params
 
 
-func _bind_target_objects(source: BaseBindingSource, target_signal: TargetSignal):
+func _create_bound_target_objects(source: BaseBindingSource, target_signal: TargetSignal):
 	var target_objects = create_target_objects()
+	_bind_target_objects(source, target_objects, target_signal)
+	return target_objects
 
+
+func _bind_target_objects(
+	source: BaseBindingSource, target_objects: Dictionary, target_signal: TargetSignal
+):
 	_bind_int(source, "int_var", target_objects["data_int_var"], target_signal)
 	_bind_str(source, "str_var", target_objects["data_str_var"], target_signal)
 
@@ -1098,8 +1102,6 @@ func _bind_target_objects(source: BaseBindingSource, target_signal: TargetSignal
 
 	_bind_int(source, "single_value", target_objects["dict_single_value"], TargetSignal.NONE)
 	_bind_int(source, "double_value", target_objects["dict_double_value"], TargetSignal.NONE)
-
-	return target_objects
 
 
 func _unbind_target_objects(source: BaseBindingSource, target_objects: Dictionary):
