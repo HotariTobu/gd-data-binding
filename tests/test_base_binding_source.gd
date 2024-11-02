@@ -1082,7 +1082,9 @@ func _create_bound_target_objects(source: BaseBindingSource, target_signal: Targ
 	return target_objects
 
 
-func _bind_target_objects(source: BaseBindingSource, target_objects: Dictionary, target_signal: TargetSignal):
+func _bind_target_objects(
+	source: BaseBindingSource, target_objects: Dictionary, target_signal: TargetSignal
+):
 	_bind_int(source, "int_var", target_objects["data_int_var"], target_signal)
 	_bind_str(source, "str_var", target_objects["data_str_var"], target_signal)
 
