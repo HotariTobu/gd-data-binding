@@ -925,6 +925,113 @@ func test_source_to_target_double_value_dict_without_wrapped_target():
 	assert_eq(without_signal["dict_double_value"].double_value, 0)
 
 
+func test_source_to_freed_target(
+	param: Dictionary = use_parameters(_get_params_for_test_source_to_freed_target())
+):
+	var source_key = param["source_key"]
+	var target_signal = param["target_signal"]
+
+	var source = _source_dict[source_key]
+	var front_target_objects = _create_bound_target_objects(source, target_signal)
+	var freed_target_objects = _create_bound_target_objects(source, target_signal)
+	var back_target_objects = _create_bound_target_objects(source, target_signal)
+
+	for target_object in freed_target_objects.values():
+		if target_object is RefCounted:
+			for _index in range(target_object.get_reference_count()):
+				target_object.unreference()
+
+	await wait_frames(1)
+
+	source.int_var = 6
+	source.str_var = "7"
+
+	source.int_prop = 8
+	source.str_prop = "9"
+
+	source.single_value = 10
+
+	assert_eq(front_target_objects["data_int_var"].int_var, 6)
+	assert_eq(front_target_objects["data_int_var"].str_var, "6")
+	assert_eq(front_target_objects["data_int_var"].int_prop, 6)
+	assert_eq(front_target_objects["data_int_var"].str_prop, "6")
+	assert_eq(front_target_objects["data_int_var"].single_value, 6)
+	assert_eq(front_target_objects["data_int_var"].double_value, 12)
+
+	assert_freed(freed_target_objects["data_int_var"])
+
+	assert_eq(back_target_objects["data_int_var"].int_var, 6)
+	assert_eq(back_target_objects["data_int_var"].str_var, "6")
+	assert_eq(back_target_objects["data_int_var"].int_prop, 6)
+	assert_eq(back_target_objects["data_int_var"].str_prop, "6")
+	assert_eq(back_target_objects["data_int_var"].single_value, 6)
+	assert_eq(back_target_objects["data_int_var"].double_value, 12)
+
+	assert_eq(front_target_objects["data_str_var"].int_var, 7)
+	assert_eq(front_target_objects["data_str_var"].str_var, "7")
+	assert_eq(front_target_objects["data_str_var"].int_prop, 7)
+	assert_eq(front_target_objects["data_str_var"].str_prop, "7")
+	assert_eq(front_target_objects["data_str_var"].single_value, 7)
+	assert_eq(front_target_objects["data_str_var"].double_value, 14)
+
+	assert_freed(freed_target_objects["data_str_var"])
+
+	assert_eq(back_target_objects["data_str_var"].int_var, 7)
+	assert_eq(back_target_objects["data_str_var"].str_var, "7")
+	assert_eq(back_target_objects["data_str_var"].int_prop, 7)
+	assert_eq(back_target_objects["data_str_var"].str_prop, "7")
+	assert_eq(back_target_objects["data_str_var"].single_value, 7)
+	assert_eq(back_target_objects["data_str_var"].double_value, 14)
+
+	assert_eq(front_target_objects["data_int_prop"].int_var, 8)
+	assert_eq(front_target_objects["data_int_prop"].str_var, "8")
+	assert_eq(front_target_objects["data_int_prop"].int_prop, 8)
+	assert_eq(front_target_objects["data_int_prop"].str_prop, "8")
+	assert_eq(front_target_objects["data_int_prop"].single_value, 8)
+	assert_eq(front_target_objects["data_int_prop"].double_value, 16)
+
+	assert_freed(freed_target_objects["data_int_prop"])
+
+	assert_eq(back_target_objects["data_int_prop"].int_var, 8)
+	assert_eq(back_target_objects["data_int_prop"].str_var, "8")
+	assert_eq(back_target_objects["data_int_prop"].int_prop, 8)
+	assert_eq(back_target_objects["data_int_prop"].str_prop, "8")
+	assert_eq(back_target_objects["data_int_prop"].single_value, 8)
+	assert_eq(back_target_objects["data_int_prop"].double_value, 16)
+
+	assert_eq(front_target_objects["data_str_prop"].int_var, 9)
+	assert_eq(front_target_objects["data_str_prop"].str_var, "9")
+	assert_eq(front_target_objects["data_str_prop"].int_prop, 9)
+	assert_eq(front_target_objects["data_str_prop"].str_prop, "9")
+	assert_eq(front_target_objects["data_str_prop"].single_value, 9)
+	assert_eq(front_target_objects["data_str_prop"].double_value, 18)
+
+	assert_freed(freed_target_objects["data_str_prop"])
+
+	assert_eq(back_target_objects["data_str_prop"].int_var, 9)
+	assert_eq(back_target_objects["data_str_prop"].str_var, "9")
+	assert_eq(back_target_objects["data_str_prop"].int_prop, 9)
+	assert_eq(back_target_objects["data_str_prop"].str_prop, "9")
+	assert_eq(back_target_objects["data_str_prop"].single_value, 9)
+	assert_eq(back_target_objects["data_str_prop"].double_value, 18)
+
+	assert_eq(front_target_objects["data_single_value"].int_var, 10)
+	assert_eq(front_target_objects["data_single_value"].str_var, "10")
+	assert_eq(front_target_objects["data_single_value"].int_prop, 10)
+	assert_eq(front_target_objects["data_single_value"].str_prop, "10")
+	assert_eq(front_target_objects["data_single_value"].single_value, 10)
+	assert_eq(front_target_objects["data_single_value"].double_value, 20)
+
+	assert_freed(freed_target_objects["data_single_value"])
+
+	assert_eq(back_target_objects["data_single_value"].int_var, 10)
+	assert_eq(back_target_objects["data_single_value"].str_var, "10")
+	assert_eq(back_target_objects["data_single_value"].int_prop, 10)
+	assert_eq(back_target_objects["data_single_value"].str_prop, "10")
+	assert_eq(back_target_objects["data_single_value"].single_value, 10)
+	assert_eq(back_target_objects["data_single_value"].double_value, 20)
+
+
 func test_target_to_source(
 	param: Dictionary = use_parameters(_get_params_for_test_target_to_source())
 ):
@@ -1060,6 +1167,10 @@ func _get_params_for_test_source_to_target():
 			params.append(param)
 
 	return params
+
+
+func _get_params_for_test_source_to_freed_target():
+	return _get_params_for_test_source_to_target()
 
 
 func _get_params_for_test_target_to_source():

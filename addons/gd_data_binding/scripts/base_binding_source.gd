@@ -105,17 +105,18 @@ func _on_source_value_change_notified(source_property: StringName):
 
 
 func _update_target(source_property: StringName, source_value: Variant):
-	var binding_dict = _target_dict.get(source_property)
-	if binding_dict == null:
+	var binding_dict_or_null = _target_dict.get(source_property)
+	if binding_dict_or_null == null:
 		return
 
-	for binding_key in binding_dict:
-		var binding = binding_dict[binding_key] as Binding
-		if binding.is_null:
-			binding_dict.erase(binding_key)
-			continue
+	var binding_dict = binding_dict_or_null as Dictionary
 
-		binding.pass_source_value(source_value)
+	for binding_key in binding_dict.keys():
+		var binding = binding_dict[binding_key] as Binding
+		if binding.is_valid:
+			binding.pass_source_value(source_value)
+		else:
+			binding_dict.erase(binding_key)
 
 
 static func _get_dict_property_list(dict: Dictionary):
@@ -176,7 +177,7 @@ class BindingWithTargetSignal:
 	):
 		super(source_object, source_property, target_object, target_property, converter_pipeline)
 
-		var source_value = _source_object.get(source_property)
+		var source_value = source_object[source_property]
 		pass_source_value(source_value)
 
 		if target_value_change_signal is Signal:
