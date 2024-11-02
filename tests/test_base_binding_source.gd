@@ -11,7 +11,7 @@ var _sources: Array:
 
 
 func before_each():
-	var data = Data.new()
+	var data = _data_new()
 
 	var x2 = func(value): return value * 2
 
@@ -30,10 +30,10 @@ func before_each():
 	)
 
 	_source_dict = {
-		"with_str_notification": BaseBindingSource.new(Data.new(), "notified"),
+		"with_str_notification": BaseBindingSource.new(_data_new(), "notified"),
 		"with_dir_notification": BaseBindingSource.new(data, data.notified),
-		"with_ext_notification": BaseBindingSource.new(Data.new(), notified),
-		"without_notification": BaseBindingSource.new(Data.new()),
+		"with_ext_notification": BaseBindingSource.new(_data_new(), notified),
+		"without_notification": BaseBindingSource.new(_data_new()),
 		"dict_with_wrapped_target": dict_source_with_wrapped_target,
 		"dict_without_wrapped_target": dict_source_without_wrapped_target,
 	}
@@ -48,7 +48,15 @@ func before_each():
 		source.single_value = 5
 
 
-func test_access_src(source: BaseBindingSource = use_parameters(_sources)):
+func after_each():
+	for connection in notified.get_connections():
+		var callable = connection["callable"]
+		notified.disconnect(callable)
+
+
+func test_access_src(source_key: String = use_parameters(_source_dict.keys())):
+	var source = _source_dict[source_key]
+
 	assert_eq(source.int_var, 1)
 	assert_eq(source.str_var, "2")
 
@@ -940,11 +948,8 @@ func test_source_to_freed_target(
 	var back_target_objects = _create_bound_target_objects(source, target_signal)
 
 	for target_object in freed_target_objects.values():
-		if target_object is RefCounted:
-			for _index in range(target_object.get_reference_count()):
-				target_object.unreference()
-
-	await wait_frames(1)
+		if target_object is Object:
+			target_object.free()
 
 	source.int_var = 6
 	source.str_var = "7"
@@ -1188,7 +1193,7 @@ func _get_params_for_test_target_to_source():
 
 
 func _create_bound_target_objects(source: BaseBindingSource, target_signal: TargetSignal):
-	var target_objects = create_target_objects()
+	var target_objects = _create_target_objects()
 	_bind_target_objects(source, target_objects, target_signal)
 	return target_objects
 
@@ -1351,14 +1356,14 @@ func _unbind(source: BaseBindingSource, source_property: StringName, target_obje
 	source.unbind_from(source_property, target_object, "single_value")
 
 
-static func create_target_objects():
+func _create_target_objects():
 	return {
-		"data_int_var": Data.new(),
-		"data_str_var": Data.new(),
-		"data_int_prop": Data.new(),
-		"data_str_prop": Data.new(),
-		"data_single_value": Data.new(),
-		"data_double_value": Data.new(),
+		"data_int_var": _data_new(),
+		"data_str_var": _data_new(),
+		"data_int_prop": _data_new(),
+		"data_str_prop": _data_new(),
+		"data_single_value": _data_new(),
+		"data_double_value": _data_new(),
 		"dict_int_var": dict_new(),
 		"dict_str_var": dict_new(),
 		"dict_int_prop": dict_new(),
@@ -1366,6 +1371,10 @@ static func create_target_objects():
 		"dict_single_value": dict_new(),
 		"dict_double_value": dict_new(),
 	}
+
+
+func _data_new():
+	return autofree(Data.new())
 
 
 static func dict_new():
@@ -1380,6 +1389,8 @@ static func dict_new():
 
 
 class Data:
+	extends Object
+
 	signal notified(property: StringName)
 
 	@warning_ignore("unused_signal")

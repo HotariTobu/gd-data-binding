@@ -2,13 +2,15 @@ class_name Binding
 
 var is_valid: bool:
 	get:
-		return _is_valid(_source_object) and _is_valid(_target_object)
+		return _source_validator.call(_source_object) and _target_validator.call(_target_object)
 
 var _source_object
 var _source_property: StringName
+var _source_validator: Callable
 
 var _target_object
 var _target_property: StringName
+var _target_validator: Callable
 
 var _converter_pipeline: BindingConverterPipeline
 
@@ -42,9 +44,11 @@ func _init(
 
 	_source_object = source_object
 	_source_property = source_property
+	_source_validator = _get_validator(source_object)
 
 	_target_object = target_object
 	_target_property = target_property
+	_target_validator = _get_validator(target_object)
 
 	if converter_pipeline == null:
 		_converter_pipeline = BindingConverterPipeline.new()
@@ -70,8 +74,12 @@ func pass_target_value(target_value: Variant):
 	_source_object[_source_property] = next_source_value
 
 
-func _is_valid(object):
+static func _get_validator(object) -> Callable:
 	if object is Object:
-		return is_instance_valid(object)
+		return is_instance_valid
 
-	return object != null
+	return _none_object_validator
+
+
+static func _none_object_validator(_p) -> bool:
+	return true
