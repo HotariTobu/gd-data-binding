@@ -10,7 +10,7 @@ var _sources: Array:
 		return _source_dict.values()
 
 
-func before_all():
+func before_each():
 	var data = Data.new()
 
 	var x2 = func(value): return value * 2
@@ -38,8 +38,6 @@ func before_all():
 		"dict_without_wrapped_target": dict_source_without_wrapped_target,
 	}
 
-
-func before_each():
 	for source in _sources:
 		source.int_var = 1
 		source.str_var = "2"
