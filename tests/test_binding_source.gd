@@ -1122,10 +1122,7 @@ func _unbind_target_objects(source: BindingSource, target_objects: Dictionary):
 
 
 func _bind_int(
-	source: BindingSource,
-	source_property: StringName,
-	target_object,
-	target_signal: TargetSignal
+	source: BindingSource, source_property: StringName, target_object, target_signal: TargetSignal
 ):
 	var converter = [str, BindingUtils.to_int]
 
@@ -1171,10 +1168,7 @@ func _bind_int(
 
 
 func _bind_str(
-	source: BindingSource,
-	source_property: StringName,
-	target_object,
-	target_signal: TargetSignal
+	source: BindingSource, source_property: StringName, target_object, target_signal: TargetSignal
 ):
 	var converter = [BindingUtils.to_int, str]
 
