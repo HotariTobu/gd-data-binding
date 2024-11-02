@@ -13,7 +13,7 @@ var _sources: Array:
 
 
 func before_each():
-	var data = TestBaseBindingSource.Data.new()
+	var data = _data_new()
 
 	var x2 = func(value): return value * 2
 
@@ -27,10 +27,10 @@ func before_each():
 	dict_source_without_wrapped_target.bind("single_value").using(x2).to(dict, "double_value")
 
 	_source_dict = {
-		"with_str_notification": BindingSource.new(TestBaseBindingSource.Data.new(), "notified"),
+		"with_str_notification": BindingSource.new(_data_new(), "notified"),
 		"with_dir_notification": BindingSource.new(data, data.notified),
-		"with_ext_notification": BindingSource.new(TestBaseBindingSource.Data.new(), notified),
-		"without_notification": BindingSource.new(TestBaseBindingSource.Data.new()),
+		"with_ext_notification": BindingSource.new(_data_new(), notified),
+		"without_notification": BindingSource.new(_data_new()),
 		"dict_with_wrapped_target": dict_source_with_wrapped_target,
 		"dict_without_wrapped_target": dict_source_without_wrapped_target,
 	}
@@ -45,7 +45,15 @@ func before_each():
 		source.single_value = 5
 
 
-func test_access_src(source: BindingSource = use_parameters(_sources)):
+func after_each():
+	for connection in notified.get_connections():
+		var callable = connection["callable"]
+		notified.disconnect(callable)
+
+
+func test_access_src(source_key: String = use_parameters(_source_dict.keys())):
+	var source = _source_dict[source_key]
+
 	assert_eq(source.int_var, 1)
 	assert_eq(source.str_var, "2")
 
@@ -937,11 +945,8 @@ func test_source_to_freed_target(
 	var back_target_objects = _create_bound_target_objects(source, target_signal)
 
 	for target_object in freed_target_objects.values():
-		if target_object is RefCounted:
-			for _index in range(target_object.get_reference_count()):
-				target_object.unreference()
-
-	await wait_frames(1)
+		if target_object is Object:
+			target_object.free()
 
 	source.int_var = 6
 	source.str_var = "7"
@@ -1185,7 +1190,7 @@ func _get_params_for_test_target_to_source():
 
 
 func _create_bound_target_objects(source: BindingSource, target_signal: TargetSignal):
-	var target_objects = TestBaseBindingSource.create_target_objects()
+	var target_objects = _create_target_objects()
 	_bind_target_objects(source, target_objects, target_signal)
 	return target_objects
 
@@ -1334,6 +1339,27 @@ func _unbind(source: BindingSource, source_property: StringName, target_object):
 	source.unbind(source_property).from(target_object, "str_prop")
 
 	source.unbind(source_property).from(target_object, "single_value")
+
+
+func _create_target_objects():
+	return {
+		"data_int_var": _data_new(),
+		"data_str_var": _data_new(),
+		"data_int_prop": _data_new(),
+		"data_str_prop": _data_new(),
+		"data_single_value": _data_new(),
+		"data_double_value": _data_new(),
+		"dict_int_var": TestBaseBindingSource.dict_new(),
+		"dict_str_var": TestBaseBindingSource.dict_new(),
+		"dict_int_prop": TestBaseBindingSource.dict_new(),
+		"dict_str_prop": TestBaseBindingSource.dict_new(),
+		"dict_single_value": TestBaseBindingSource.dict_new(),
+		"dict_double_value": TestBaseBindingSource.dict_new(),
+	}
+
+
+func _data_new():
+	return autofree(TestBaseBindingSource.Data.new())
 
 
 # gdlint:ignore = max-public-methods
