@@ -28,7 +28,7 @@ class Data:
 			return
 
 		items.append(item)
-		notified.emit("items")
+		notified.emit(&"items")
 
 	func add_current_item():
 		if current_item == "":
@@ -37,4 +37,4 @@ class Data:
 		add_item(current_item)
 
 		current_item = ""
-		notified.emit("current_item")
+		notified.emit(&"current_item")

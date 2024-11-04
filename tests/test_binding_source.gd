@@ -530,7 +530,7 @@ func test_source_to_target_double_value_with_ext_notification():
 	var without_signal = _create_bound_target_objects(source, TargetSignal.NONE)
 
 	source.single_value = 10
-	notified.emit("double_value")
+	notified.emit(&"double_value")
 
 	assert_eq(with_signal_instance["data_double_value"].int_var, 20)
 	assert_eq(with_signal_instance["data_double_value"].str_var, "20")
@@ -579,7 +579,7 @@ func test_source_to_target_double_value_with_ext_notification():
 	_unbind_target_objects(source, without_signal)
 
 	source.single_value = 20
-	notified.emit("double_value")
+	notified.emit(&"double_value")
 
 	assert_eq(source.single_value, 20)
 	assert_eq(source.double_value, 40)
