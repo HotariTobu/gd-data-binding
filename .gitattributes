@@ -6,3 +6,5 @@
 /addons    !export-ignore
 /addons/gd_data_binding    !export-ignore
 /addons/gd_data_binding/** !export-ignore
+/addons/gd_uuid    !export-ignore
+/addons/gd_uuid/** !export-ignore
