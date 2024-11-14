@@ -4,7 +4,7 @@ var _data = BindingSource.new(Data.new())
 
 
 func _ready():
-	_data.bind("count").using(_get_label).to_label($Label)
+	_data.bind(&"count").using(_get_label).to_label($Label)
 
 
 func _on_button_pressed():
