@@ -4,8 +4,8 @@ var _data = BindingSource.new(Data.new(), "notified")
 
 
 func _ready():
-	_data.bind("items").using(", ".join).to_label($Col1/DisplayRow/ItemsLabel)
-	_data.bind("current_item").to_line_edit($Col1/ActionRow/ItemEdit)
+	_data.bind(&"items").using(", ".join).to_label($Col1/DisplayRow/ItemsLabel)
+	_data.bind(&"current_item").to_line_edit($Col1/ActionRow/ItemEdit)
 
 
 func _on_item_edit_text_submitted(new_text):
