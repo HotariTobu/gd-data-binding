@@ -22,6 +22,18 @@ func _ready():
 	_data.bind(&"option_index").using(str).to_label($Col3/DisplayRow/OptionIndexLabel)
 	_data.bind(&"option_index").to_option_button($Col3/OptionButton)
 
+	# gdlint:ignore = constant-name
+	const Mode = Data.TravelMode
+	var get_mode_key = func(mode: Mode): return Mode.find_key(mode)
+	# gdlint:ignore = function-variable-name,
+	var Case = CaseBindingConverter
+	_data.bind(&"travel_mode").using(get_mode_key).to_label($Col4/DisplayRow/RadioValueLabel)
+	_data.bind(&"travel_mode").using(Case.new(Mode.DRIVING)).to_check_box($Col4/DrivingCheckBox)
+	_data.bind(&"travel_mode").using(Case.new(Mode.TRANSIT)).to_check_box($Col4/TransitCheckBox)
+	_data.bind(&"travel_mode").using(Case.new(Mode.WALKING)).to_check_box($Col4/WalkingCheckBox)
+	_data.bind(&"travel_mode").using(Case.new(Mode.CYCLING)).to_check_box($Col4/CyclingCheckBox)
+	_data.bind(&"travel_mode").using(Case.new(Mode.FLIGHTS)).to_check_box($Col4/FlightsCheckBox)
+
 
 func _on_on_button_pressed():
 	_data.binary_state = true
@@ -44,11 +56,15 @@ func _on_color_button_pressed(color):
 
 
 class Data:
+	enum TravelMode { DRIVING, TRANSIT, WALKING, CYCLING, FLIGHTS }
+
 	var binary_state = false
 
 	var color = Color.RED
 
 	var option_index: int = -1
+
+	var travel_mode: TravelMode = TravelMode.DRIVING
 
 
 class BoolToOnOff:
