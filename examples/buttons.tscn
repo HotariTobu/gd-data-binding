@@ -1,7 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://p7swf5sjivj0"]
+[gd_scene load_steps=8 format=3 uid="uid://p7swf5sjivj0"]
 
 [ext_resource type="Script" path="res://examples/buttons.gd" id="1_sfuve"]
 [ext_resource type="LabelSettings" uid="uid://bcnt8xhjv02bx" path="res://examples/header_label_settings.tres" id="2_u12hm"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_w2qvh"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_hari6"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_77akt"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_x7oww"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_4ynul"]
 
 [node name="Buttons" type="HBoxContainer"]
 anchors_preset = 8
@@ -172,6 +182,54 @@ text = "Select 3"
 [node name="DeselectButton" type="Button" parent="Col3"]
 layout_mode = 2
 text = "Deselect"
+
+[node name="VSeparator3" type="VSeparator" parent="."]
+layout_mode = 2
+
+[node name="Col4" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Col4"]
+layout_mode = 2
+text = "Radio Button"
+label_settings = ExtResource("2_u12hm")
+
+[node name="DisplayRow" type="HBoxContainer" parent="Col4"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Col4/DisplayRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Current Value:"
+
+[node name="RadioValueLabel" type="Label" parent="Col4/DisplayRow"]
+layout_mode = 2
+
+[node name="DrivingCheckBox" type="CheckBox" parent="Col4"]
+layout_mode = 2
+button_group = SubResource("ButtonGroup_w2qvh")
+text = "Driving"
+
+[node name="TransitCheckBox" type="CheckBox" parent="Col4"]
+layout_mode = 2
+button_group = SubResource("ButtonGroup_hari6")
+text = "Transit"
+
+[node name="WalkingCheckBox" type="CheckBox" parent="Col4"]
+layout_mode = 2
+button_group = SubResource("ButtonGroup_77akt")
+text = "Walking"
+
+[node name="CyclingCheckBox" type="CheckBox" parent="Col4"]
+layout_mode = 2
+button_group = SubResource("ButtonGroup_x7oww")
+text = "Cycling"
+
+[node name="FlightsCheckBox" type="CheckBox" parent="Col4"]
+layout_mode = 2
+button_group = SubResource("ButtonGroup_4ynul")
+text = "Flights"
 
 [connection signal="pressed" from="Col1/HBoxContainer/OnButton" to="." method="_on_on_button_pressed"]
 [connection signal="pressed" from="Col1/HBoxContainer/OffButton" to="." method="_on_off_button_pressed"]
