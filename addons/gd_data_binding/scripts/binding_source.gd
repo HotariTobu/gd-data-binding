@@ -172,7 +172,11 @@ class Binder:
 		to_text_edit(code_edit, trigger)
 
 	func _convert_to(target_type: Variant.Type):
-		var source_value = _source.get(_source_property)
+		assert(
+			_source_property in _source,
+			"The source property %s was not in the source object." % _source_property
+		)
+		var source_value = _source[_source_property]
 		var target_value = _converter_pipeline.source_to_target(source_value)
 		return typeof(target_value) == target_type
 
