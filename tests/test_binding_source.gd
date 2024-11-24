@@ -1504,6 +1504,29 @@ class TestBinder:
 		assert_eq(_source.int_var, -1)
 		assert_eq(option_button.selected, 1)
 
+	func test_texture_button():
+		var texture_button = TextureButton.new()
+		texture_button.toggle_mode = true
+		_add_and_focus(texture_button)
+
+		_source.bind("bool_var").to_texture_button(texture_button)
+
+		_source.bool_var = true
+		assert_true(texture_button.button_pressed)
+
+		_accept()
+		assert_false(_source.bool_var)
+
+		_source.unbind("bool_var").from_texture_button(texture_button)
+
+		_source.bool_var = true
+		assert_false(texture_button.button_pressed)
+
+		_source.bool_var = false
+		_accept()
+		assert_false(_source.bool_var)
+		assert_true(texture_button.button_pressed)
+
 	func test_color_rect():
 		var color_rect = ColorRect.new()
 		_add_and_focus(color_rect)
