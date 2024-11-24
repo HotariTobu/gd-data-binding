@@ -60,7 +60,7 @@ class Binder:
 			target_value_change_signal
 		)
 
-	func to_toggle_button(toggle_button: Button):
+	func to_toggle_button(toggle_button: BaseButton):
 		assert(_convert_to(TYPE_BOOL), "A value bound to Button must be a bool.")
 		assert(toggle_button.toggle_mode, "The button must be toggle mode.")
 		to(toggle_button, "button_pressed", toggle_button.toggled)
@@ -80,6 +80,10 @@ class Binder:
 	func to_option_button(option_button: OptionButton):
 		assert(_convert_to(TYPE_INT), "A value bound to OptionButton must be an int.")
 		to(option_button, "selected", option_button.item_selected)
+
+	func to_texture_button(texture_button: TextureButton):
+		assert(_convert_to(TYPE_BOOL), "A value bound to TextureButton must be a bool.")
+		to_toggle_button(texture_button)
 
 	func to_color_rect(color_rect: ColorRect):
 		assert(_convert_to(TYPE_COLOR), "A value bound to ColorRect must be a color.")
@@ -193,7 +197,7 @@ class Unbinder:
 	func from(target_object, target_property: StringName):
 		_source.unbind_from(_source_property, target_object, target_property)
 
-	func from_toggle_button(button: Button):
+	func from_toggle_button(button: BaseButton):
 		from(button, "button_pressed")
 
 	func from_check_box(check_box: CheckBox):
@@ -207,6 +211,9 @@ class Unbinder:
 
 	func from_option_button(option_button: OptionButton):
 		from(option_button, "selected")
+
+	func from_texture_button(texture_button: TextureButton):
+		from_toggle_button(texture_button)
 
 	func from_color_rect(color_rect: ColorRect):
 		from(color_rect, "color")
