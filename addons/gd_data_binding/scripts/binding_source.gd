@@ -63,7 +63,7 @@ class Binder:
 	func to_toggle_button(toggle_button: BaseButton):
 		assert(_convert_to(TYPE_BOOL), "A value bound to Button must be a bool.")
 		assert(toggle_button.toggle_mode, "The button must be toggle mode.")
-		to(toggle_button, "button_pressed", toggle_button.toggled)
+		to(toggle_button, &"button_pressed", toggle_button.toggled)
 
 	func to_check_box(check_box: CheckBox):
 		assert(_convert_to(TYPE_BOOL), "A value bound to CheckBox must be a bool.")
@@ -75,11 +75,11 @@ class Binder:
 
 	func to_color_picker_button(color_picker_button: ColorPickerButton):
 		assert(_convert_to(TYPE_COLOR), "A value bound to ColorPickerButton must be a color.")
-		to(color_picker_button, "color", color_picker_button.color_changed)
+		to(color_picker_button, &"color", color_picker_button.color_changed)
 
 	func to_option_button(option_button: OptionButton):
 		assert(_convert_to(TYPE_INT), "A value bound to OptionButton must be an int.")
-		to(option_button, "selected", option_button.item_selected)
+		to(option_button, &"selected", option_button.item_selected)
 
 	func to_texture_button(texture_button: TextureButton):
 		assert(_convert_to(TYPE_BOOL), "A value bound to TextureButton must be a bool.")
@@ -87,23 +87,23 @@ class Binder:
 
 	func to_color_rect(color_rect: ColorRect):
 		assert(_convert_to(TYPE_COLOR), "A value bound to ColorRect must be a color.")
-		to(color_rect, "color")
+		to(color_rect, &"color")
 
 	func to_color_picker(color_picker: ColorPicker):
 		assert(_convert_to(TYPE_COLOR), "A value bound to ColorPicker must be a color.")
-		to(color_picker, "color", color_picker.color_changed)
+		to(color_picker, &"color", color_picker.color_changed)
 
 	func to_split_container(split_container: SplitContainer):
 		assert(_convert_to(TYPE_INT), "A value bound to SplitContainer must be an int.")
-		to(split_container, "split_offset", split_container.dragged)
+		to(split_container, &"split_offset", split_container.dragged)
 
 	func to_tab_container(tab_container: TabContainer):
 		assert(_convert_to(TYPE_INT), "A value bound to TabContainer must be an int.")
-		to(tab_container, "current_tab", tab_container.tab_selected)
+		to(tab_container, &"current_tab", tab_container.tab_selected)
 
 	func to_label(label: Label):
 		assert(_convert_to(TYPE_STRING), "A value bound to Label must be a string.")
-		to(label, "text")
+		to(label, &"text")
 
 	func to_line_edit(
 		line_edit: LineEdit, trigger: LineEditTrigger = LineEditTrigger.ON_FOCUS_EXITED
@@ -122,11 +122,11 @@ class Binder:
 			LineEditTrigger.ON_CHANGED:
 				target_value_change_signal = line_edit.text_changed
 
-		to(line_edit, "text", target_value_change_signal)
+		to(line_edit, &"text", target_value_change_signal)
 
 	func to_range(range: Range, target_value_change_signal = range.value_changed):
 		assert(_convert_to(TYPE_FLOAT), "A value bound to Range must be a float.")
-		to(range, "value", target_value_change_signal)
+		to(range, &"value", target_value_change_signal)
 
 	func to_progress_bar(progress_bar: ProgressBar):
 		assert(_convert_to(TYPE_FLOAT), "A value bound to ProgressBar must be a float.")
@@ -146,7 +146,7 @@ class Binder:
 
 	func to_tab_bar(tab_bar: TabBar):
 		assert(_convert_to(TYPE_INT), "A value bound to TabBar must be an int.")
-		to(tab_bar, "current_tab", tab_bar.tab_selected)
+		to(tab_bar, &"current_tab", tab_bar.tab_selected)
 
 	func to_text_edit(
 		text_edit: TextEdit, trigger: TextEditTrigger = TextEditTrigger.ON_FOCUS_EXITED
@@ -167,7 +167,7 @@ class Binder:
 				# gdlint:ignore = private-method-call
 				_source._add_wrapper(_source_property, text_edit_wrapper)
 
-		to(text_edit, "text", target_value_change_signal)
+		to(text_edit, &"text", target_value_change_signal)
 
 	func to_code_edit(
 		code_edit: CodeEdit, trigger: TextEditTrigger = TextEditTrigger.ON_FOCUS_EXITED
@@ -198,7 +198,7 @@ class Unbinder:
 		_source.unbind_from(_source_property, target_object, target_property)
 
 	func from_toggle_button(button: BaseButton):
-		from(button, "button_pressed")
+		from(button, &"button_pressed")
 
 	func from_check_box(check_box: CheckBox):
 		from_toggle_button(check_box)
@@ -207,36 +207,36 @@ class Unbinder:
 		from_toggle_button(check_button)
 
 	func from_color_picker_button(color_picker_button: ColorPickerButton):
-		from(color_picker_button, "color")
+		from(color_picker_button, &"color")
 
 	func from_option_button(option_button: OptionButton):
-		from(option_button, "selected")
+		from(option_button, &"selected")
 
 	func from_texture_button(texture_button: TextureButton):
 		from_toggle_button(texture_button)
 
 	func from_color_rect(color_rect: ColorRect):
-		from(color_rect, "color")
+		from(color_rect, &"color")
 
 	func from_color_picker(color_picker: ColorPicker):
-		from(color_picker, "color")
+		from(color_picker, &"color")
 
 	func from_split_container(split_container: SplitContainer):
-		from(split_container, "split_offset")
+		from(split_container, &"split_offset")
 
 	func from_tab_container(tab_container: TabContainer):
-		from(tab_container, "current_tab")
+		from(tab_container, &"current_tab")
 
 	func from_label(label: Label):
-		from(label, "text")
+		from(label, &"text")
 
 	func from_line_edit(line_edit: LineEdit):
 		# gdlint:ignore = private-method-call
 		_source._remove_wrapper(_source_property, line_edit)
-		from(line_edit, "text")
+		from(line_edit, &"text")
 
 	func from_range(range: Range):
-		from(range, "value")
+		from(range, &"value")
 
 	func from_progress_bar(progress_bar: ProgressBar):
 		from_range(progress_bar)
@@ -251,12 +251,12 @@ class Unbinder:
 		from_range(texture_progress_bar)
 
 	func from_tab_bar(tab_bar: TabBar):
-		from(tab_bar, "current_tab")
+		from(tab_bar, &"current_tab")
 
 	func from_text_edit(text_edit: TextEdit):
 		# gdlint:ignore = private-method-call
 		_source._remove_wrapper(_source_property, text_edit)
-		from(text_edit, "text")
+		from(text_edit, &"text")
 
 	func from_code_edit(code_edit: CodeEdit):
 		from_text_edit(code_edit)
