@@ -32,11 +32,13 @@ class Binder:
 	var _source: BindingSource
 	var _source_property: StringName
 	var _converter_pipeline: BindingConverterPipeline
+	var _with_pipeline: BindingWithPipeline
 
 	func _init(
 		source: BindingSource,
 		source_property: StringName,
-		converter_pipeline: BindingConverterPipeline = null
+		converter_pipeline: BindingConverterPipeline = null,
+		with_pipeline: BindingWithPipeline = null
 	):
 		_source = source
 		_source_property = source_property
@@ -45,11 +47,22 @@ class Binder:
 			_converter_pipeline = BindingConverterPipeline.new()
 		else:
 			_converter_pipeline = converter_pipeline
+			
+		if with_pipeline == null:
+			_with_pipeline = BindingWithPipeline.new()
+		else:
+			_with_pipeline = with_pipeline
+			
 
 	func using(converter) -> Binder:
 		var converter_pipeline = _converter_pipeline.copy()
 		converter_pipeline.append(converter)
 		return Binder.new(_source, _source_property, converter_pipeline)
+		
+	func with(with_func: Callable):
+		var with_pipeline = _with_pipeline.copy()
+		with_pipeline.append(with_func)
+		return Binder.new(_source, _source_property, _converter_pipeline, with_pipeline)
 
 	func to(target_object, target_property: StringName, target_value_change_signal = null):
 		_source.bind_to(
@@ -57,7 +70,8 @@ class Binder:
 			target_object,
 			target_property,
 			_converter_pipeline,
-			target_value_change_signal
+			target_value_change_signal,
+			_with_pipeline
 		)
 
 	func to_toggle_button(toggle_button: BaseButton):
@@ -87,7 +101,7 @@ class Binder:
 
 	func to_color_rect(color_rect: ColorRect):
 		assert(_convert_to(TYPE_COLOR), "A value bound to ColorRect must be a color.")
-		to(color_rect, &"color")
+		to(color_rect, &"color", null)
 
 	func to_color_picker(color_picker: ColorPicker):
 		assert(_convert_to(TYPE_COLOR), "A value bound to ColorPicker must be a color.")
@@ -103,7 +117,7 @@ class Binder:
 
 	func to_label(label: Label):
 		assert(_convert_to(TYPE_STRING), "A value bound to Label must be a string.")
-		to(label, &"text")
+		to(label, &"text", null)
 
 	func to_line_edit(
 		line_edit: LineEdit, trigger: LineEditTrigger = LineEditTrigger.ON_FOCUS_EXITED

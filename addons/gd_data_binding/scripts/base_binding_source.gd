@@ -55,7 +55,8 @@ func bind_to(
 	target_object,
 	target_property: StringName,
 	converter_pipeline: BindingConverterPipeline = null,
-	target_value_change_signal = null
+	target_value_change_signal = null,
+	with_pipeline: BindingWithPipeline = null,
 ):
 	var binding_dict = _target_dict.get_or_add(source_property, {}) as Dictionary
 	var binding_key = _get_binding_key(target_object, target_property)
@@ -74,7 +75,8 @@ func bind_to(
 		target_object,
 		target_property,
 		converter_pipeline,
-		_get_signal(target_object, target_value_change_signal)
+		_get_signal(target_object, target_value_change_signal),
+		with_pipeline
 	)
 	binding_dict[binding_key] = binding
 
@@ -173,9 +175,10 @@ class BindingWithTargetSignal:
 		target_object,
 		target_property: StringName,
 		converter_pipeline: BindingConverterPipeline,
-		target_value_change_signal
+		target_value_change_signal,
+		with_pipeline: BindingWithPipeline = null,
 	):
-		super(source_object, source_property, target_object, target_property, converter_pipeline)
+		super(source_object, source_property, target_object, target_property, converter_pipeline, with_pipeline)
 
 		var source_value = source_object[source_property]
 		pass_source_value(source_value)
