@@ -13,6 +13,7 @@ var _target_property: StringName
 var _target_validator: Callable
 
 var _converter_pipeline: BindingConverterPipeline
+var _with_pipeline: BindingWithPipeline
 
 
 func _init(
@@ -20,7 +21,8 @@ func _init(
 	source_property: StringName,
 	target_object,
 	target_property: StringName,
-	converter_pipeline: BindingConverterPipeline = null
+	converter_pipeline: BindingConverterPipeline = null,
+	with_pipeline: BindingWithPipeline = null,
 ):
 	assert(
 		source_object is Object or source_object is Dictionary,
@@ -54,7 +56,8 @@ func _init(
 		_converter_pipeline = BindingConverterPipeline.new()
 	else:
 		_converter_pipeline = converter_pipeline
-
+		
+	_with_pipeline = with_pipeline
 
 func pass_source_value(source_value: Variant):
 	var prev_target_value = _target_object[_target_property]
@@ -72,6 +75,11 @@ func pass_target_value(target_value: Variant):
 		return
 
 	_source_object[_source_property] = next_source_value
+	
+	for with_func in _with_pipeline.get_pipeline():
+		assert(with_func.is_valid(), "The with function must be a valid Callable.")
+		with_func.call(_source_property, next_source_value)
+			
 
 
 static func _get_validator(object) -> Callable:
